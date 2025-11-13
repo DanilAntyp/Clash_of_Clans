@@ -18,9 +18,9 @@ public class ResourceBuilding extends Building implements Serializable {
     }
 
     public void addResources() {
-        System.out.println("Resources added to storage.");
+        System.out.println("Resources added to storage at rate: " +
+                productionRate + " per hour");
     }
-
 
     public ResourceBuildingTypes getType() { return type; }
     public void setType(ResourceBuildingTypes type) { this.type = type; }

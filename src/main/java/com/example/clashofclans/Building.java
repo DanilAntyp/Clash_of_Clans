@@ -23,13 +23,29 @@ public class Building implements Serializable {
         this.upgradeConstructionTime = 0.25;
     }
 
-    public void buildNewBuilding() {
+    public BuildingInstance buildNewBuilding(int[] location) {
         System.out.println("Building a new structure...");
+        System.out.println("What type of building would you like to build?");
+
+        // create the new building instance
+        BuildingInstance newBuilding = new BuildingInstance(
+                this,
+                this.getHitPoints(),
+                1,
+                java.time.LocalDateTime.now().plusHours((long) this.getBuildTime()),
+                location,
+                false
+        );
+
+        System.out.println("New building constructed at location: " + location);
+        System.out.println("Hit points: " + this.getHitPoints());
+        System.out.println("Build time (hours): " + this.getBuildTime());
+        System.out.println("Resource cost: " + this.getResourceCost());
+        System.out.println("Expected completion time: " + newBuilding.getTimeTillConstruction());
+
+        return newBuilding;
     }
 
-    public void upgradeBuilding() {
-        System.out.println("Upgrading building to next level...");
-    }
 
     public double getHitPoints() { return hitPoints; }
     public void setHitPoints(double hitPoints) { this.hitPoints = hitPoints; }
