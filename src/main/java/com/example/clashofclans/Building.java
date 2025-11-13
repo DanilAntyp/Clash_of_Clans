@@ -130,5 +130,13 @@ public class Building implements Serializable {
                 break;
         }
     }
+
+    public double getUpgradeCost() {
+        return upgradeCost;
+    }
+
+    public double getUpgradeConstructionTime() {
+        return upgradeConstructionTime;
+    }
 }
 
