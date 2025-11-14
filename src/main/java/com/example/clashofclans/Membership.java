@@ -1,7 +1,6 @@
 package com.example.clashofclans;
 
 import com.example.clashofclans.enums.ClanRole;
-import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Entity
 public class Membership implements Serializable {
 
 
@@ -25,12 +23,8 @@ public class Membership implements Serializable {
         return Collections.unmodifiableList(extent);
     }
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     private ClanRole clanRole;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

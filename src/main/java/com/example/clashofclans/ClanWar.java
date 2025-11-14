@@ -1,6 +1,5 @@
 package com.example.clashofclans;
 
-import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Entity
 public class ClanWar implements Serializable {
 
     private static final List<ClanWar> extent = new ArrayList<>();
@@ -23,8 +21,6 @@ public class ClanWar implements Serializable {
         extent.add(war);
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private int duration;

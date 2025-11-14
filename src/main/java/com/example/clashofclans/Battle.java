@@ -1,18 +1,13 @@
 package com.example.clashofclans;
 import com.example.clashofclans.enums.BattleType;
-import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 
-@Entity
+
 public class Battle implements Serializable {
 
     private static final List<Battle> extent = new ArrayList<>();
@@ -26,11 +21,8 @@ public class Battle implements Serializable {
         extent.add(battle);
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     private BattleType type;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
