@@ -8,10 +8,6 @@ import java.util.Objects;
 
 public final class Troop extends Unit {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-
     public static final boolean availableOncePerPlayer = false;
     private AttackStyle attackStyle;
 
