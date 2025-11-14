@@ -1,11 +1,12 @@
 package com.example.clashofclans;
 
+import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.VillageType;
 
 import java.io.Serializable;
 import java.util.EnumMap;
 
-import static com.example.clashofclans.ResourceKind.GOLD;
+import static com.example.clashofclans.enums.ResourceKind.GOLD;
 
 public class Village implements Serializable {
 

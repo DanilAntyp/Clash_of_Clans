@@ -1,5 +1,6 @@
 package com.example.clashofclans;
 
+import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.VillageType;
 import org.junit.jupiter.api.Test;
 

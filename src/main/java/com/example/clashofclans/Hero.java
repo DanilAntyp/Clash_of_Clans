@@ -1,14 +1,15 @@
 package com.example.clashofclans;
 
-import enums.AttackDomain;
-import enums.ResourceKind;
-import enums.UnitType;
+
+import com.example.clashofclans.enums.AttackDomain;
+import com.example.clashofclans.enums.ResourceKind;
+import com.example.clashofclans.enums.UnitType;
 
 import java.util.Objects;
 
-public final class Hero extends Unit {
+public class Hero extends Unit {
 
-    public static final boolean availableOncePerPlayer = true;
+    public static  boolean availableOncePerPlayer = true;
     private String uniqueAbility;
     private Integer regenerationTime;
     private String upgradeSystem;

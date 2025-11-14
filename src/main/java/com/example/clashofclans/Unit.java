@@ -1,8 +1,9 @@
 package com.example.clashofclans;
 
-import enums.AttackDomain;
-import enums.ResourceKind;
-import enums.UnitType;
+
+import com.example.clashofclans.enums.AttackDomain;
+import com.example.clashofclans.enums.ResourceKind;
+import com.example.clashofclans.enums.UnitType;
 
 import java.io.IOException;
 import java.io.Serializable;
