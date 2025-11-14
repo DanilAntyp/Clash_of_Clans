@@ -78,3 +78,4 @@ public class Player {
         else villages[1] = v;
     }
 }
+//league is gonna be enum

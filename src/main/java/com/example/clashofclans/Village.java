@@ -1,9 +1,13 @@
 package com.example.clashofclans;
 
+import java.util.EnumMap;
+
+import static com.example.clashofclans.ResourceKind.GOLD;
+
 public class Village {
 
     private final VillageType type;
-    private int resources;  //lets say gold is 2x val other is nx or create another type
+    private EnumMap<ResourceKind, Integer> resources = new EnumMap<>(ResourceKind.class);
     //private ArrayList<Buildings> buildings;
     private final Player owner;
     //private ArrayList<Unit> units;
@@ -15,7 +19,9 @@ public class Village {
                 throw new IllegalStateException("Player cannot have more than 2 villages.");
             }
             this.type = type;
-            resources = 0;
+            for (ResourceKind kind : ResourceKind.values()) {
+                resources.put(kind, 0);
+            }
             //buildings=new ArrayList<>();
             //units=new ArrayList<>();
             this.owner = owner;
@@ -28,8 +34,8 @@ public class Village {
     public VillageType getType() {
         return type;
     }
-    public int getResources() {
-        return resources;
+    public int getResources(ResourceKind kind) {
+        return resources.get(kind);
     }
     public Player getOwner() {
         return owner;
@@ -43,11 +49,11 @@ public class Village {
     }*/
     //add new buildings and add units
 
-    public void setMoreResources(int resources) {
-        this.resources += resources;
+    public void setMoreResources(int res, ResourceKind kind) {
+        resources.put(kind, resources.get(kind) + res);
     }
     public boolean isEnoughResourcesToTrain(int cost) {
-        if(resources >= cost) {
+        if(resources.get(GOLD) >= cost) {
             return true;
         }
         return false;

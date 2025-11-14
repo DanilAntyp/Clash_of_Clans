@@ -12,7 +12,9 @@ public class TestVillage {
         Village village = new Village(VillageType.regular, owner);
 
         assertEquals(VillageType.regular, village.getType());
-        assertEquals(0, village.getResources());
+        assertEquals(0, village.getResources(ResourceKind.GOLD));
+        assertEquals(0, village.getResources(ResourceKind.ELIXIR));
+        assertEquals(0, village.getResources(ResourceKind.DARK_ELIXIR));
         assertEquals(owner, village.getOwner());
     }
 
