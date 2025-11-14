@@ -1,4 +1,4 @@
-package enums;
+package com.example.clashofclans.enums;
 
 public enum UnitType {
     //troops

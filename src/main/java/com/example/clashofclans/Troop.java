@@ -1,9 +1,10 @@
+package com.example.clashofclans;
+
 import enums.AttackDomain;
 import enums.AttackStyle;
 import enums.ResourceKind;
 import enums.UnitType;
 
-import java.io.Serial;
 import java.util.Objects;
 
 public final class Troop extends Unit {

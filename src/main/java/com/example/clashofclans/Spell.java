@@ -1,5 +1,7 @@
 package com.example.clashofclans;
 
+import com.example.clashofclans.enums.SpellType;
+
 import java.io.Serializable;
 
 public class Spell implements Serializable {

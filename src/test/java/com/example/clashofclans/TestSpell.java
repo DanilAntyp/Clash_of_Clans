@@ -1,5 +1,6 @@
 package com.example.clashofclans;
 
+import com.example.clashofclans.enums.SpellType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

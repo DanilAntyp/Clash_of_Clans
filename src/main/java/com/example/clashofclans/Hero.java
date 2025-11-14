@@ -1,8 +1,9 @@
+package com.example.clashofclans;
+
 import enums.AttackDomain;
 import enums.ResourceKind;
 import enums.UnitType;
 
-import java.io.Serial;
 import java.util.Objects;
 
 public final class Hero extends Unit {

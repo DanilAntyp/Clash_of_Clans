@@ -1,4 +1,4 @@
-package com.example.clashofclans;
+package com.example.clashofclans.enums;
 
 public enum VillageType {
     regular,dark

@@ -1,5 +1,7 @@
 package com.example.clashofclans;
 
+import com.example.clashofclans.enums.VillageType;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 

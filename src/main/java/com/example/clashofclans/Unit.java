@@ -1,9 +1,10 @@
+package com.example.clashofclans;
+
 import enums.AttackDomain;
 import enums.ResourceKind;
 import enums.UnitType;
 
 import java.io.IOException;
-import java.io.Serial;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.*;
@@ -61,7 +62,7 @@ public abstract class Unit implements Serializable {
 
     public static void saveExtent(Path file) throws IOException {
         try (var out = new java.io.ObjectOutputStream(java.nio.file.Files.newOutputStream(file))) {
-            out.writeObject(new java.util.ArrayList<>(EXTENT));
+            out.writeObject(new ArrayList<>(EXTENT));
         }
     }
 
@@ -70,7 +71,7 @@ public abstract class Unit implements Serializable {
         EXTENT.clear();
         if (!java.nio.file.Files.exists(file)) return;
         try (var in = new java.io.ObjectInputStream(java.nio.file.Files.newInputStream(file))) {
-            var list = (java.util.List<Unit>) in.readObject();
+            var list = (List<Unit>) in.readObject();
             EXTENT.addAll(list);
         }
     }
