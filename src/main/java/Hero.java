@@ -7,9 +7,6 @@ import java.util.Objects;
 
 public final class Hero extends Unit {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     public static final boolean availableOncePerPlayer = true;
     private String uniqueAbility;
     private Integer regenerationTime;
