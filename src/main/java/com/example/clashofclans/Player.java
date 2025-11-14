@@ -46,7 +46,7 @@ public class Player {
     public int getTrophies() {
         return trophies;
     }
-    public String getLeauge() {
+    public String getLeague() {
         return leauge;
     }
     public void setLevel(int level) {
@@ -55,8 +55,15 @@ public class Player {
     public void setTrophies(int trophies) {
         this.trophies = trophies;
     }
-    public void setLeauge(String leauge) {
+    public void setLeague(String leauge) {
         this.leauge = leauge;
+    }
+    public int getVillagesCount() {
+        int count = 0;
+        for (Village v : villages) {
+            if (v != null) count++;
+        }
+        return count;
     }
     /*
     public Membership getMembership() {
@@ -66,4 +73,8 @@ public class Player {
         this.membership = membership;
     }
      */
+    public void addVillageDirectForTest(Village v) {
+        if (villages[0] == null) villages[0] = v;
+        else villages[1] = v;
+    }
 }

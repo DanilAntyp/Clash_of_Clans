@@ -2,8 +2,7 @@ package com.example.clashofclans;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestVillage {
 
@@ -23,5 +22,18 @@ public class TestVillage {
         Village village = new Village(VillageType.regular, owner);
 
         assertFalse(village.isEnoughResourcesToTrain(10));
+    }
+
+    @Test
+    void testCannotCreateMoreThanTwoVillages() {
+        Player p = new Player("Alice");
+
+
+        Village v1 = new Village(VillageType.regular, p);
+        p.addVillageDirectForTest(v1);
+
+        assertThrows(IllegalStateException.class, () -> {
+            new Village(VillageType.regular, p);
+        });
     }
 }
