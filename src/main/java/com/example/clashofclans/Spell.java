@@ -1,6 +1,8 @@
 package com.example.clashofclans;
 
-public class Spell {
+import java.io.Serializable;
+
+public class Spell implements Serializable {
 
     private SpellType type;
     private int cost;

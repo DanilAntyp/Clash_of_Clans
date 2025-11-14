@@ -1,10 +1,11 @@
 package com.example.clashofclans;
 
+import java.io.Serializable;
 import java.util.EnumMap;
 
 import static com.example.clashofclans.ResourceKind.GOLD;
 
-public class Village {
+public class Village implements Serializable {
 
     private final VillageType type;
     private EnumMap<ResourceKind, Integer> resources = new EnumMap<>(ResourceKind.class);

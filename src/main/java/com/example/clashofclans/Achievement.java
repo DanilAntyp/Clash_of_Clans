@@ -1,6 +1,8 @@
 package com.example.clashofclans;
 
-public class Achievement {
+import java.io.Serializable;
+
+public class Achievement implements Serializable {
     private String name;
     private String description;
     private String type;
