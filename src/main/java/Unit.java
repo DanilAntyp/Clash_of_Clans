@@ -10,9 +10,6 @@ import java.util.*;
 
 public abstract class Unit implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private int hitPoint;
     private int damage;
     private int housingSpace;
