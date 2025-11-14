@@ -1,12 +1,12 @@
 package com.example.clashofclans;
 
-public class Achivement {
+public class Achievement {
     private String name;
     private String description;
     private String type;
     private String reward;
 
-    public Achivement(String name, String description, String type, String reward) {
+    public Achievement(String name, String description, String type, String reward) {
         this.name = name;
         this.description = description;
         this.type = type;

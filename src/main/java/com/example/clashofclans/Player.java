@@ -9,7 +9,7 @@ public class Player {
     private int trophies;
     private String leauge; //assuming there are only few types of leauge we might make this one enum
     //private Membership membership;
-    private ArrayList<Achivement> achivements;
+    private ArrayList<Achievement> achivements;
     private ArrayList<Spell> spells;
     private Village[]  villages;
 

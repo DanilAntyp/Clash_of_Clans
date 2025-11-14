@@ -44,6 +44,12 @@ public class Clan {
         return banList.contains(p);
     }
 
+    public void addBan(Player p) {
+        if (banList.contains(p)) {
+            return;
+        }
+        banList.add(p);
+    }
     //add adjustmennt methods
 
 }
