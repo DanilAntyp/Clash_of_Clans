@@ -21,7 +21,8 @@ The system tracks Battles between players, where a battle has attributes such as
 Achievements are awarded to players when they reach specific milestones . Each achievement has a name, type, description and reward.
 The system includes Friendship between players. A player can add another player as a friend, enabling friendly challenges and visits to their villages.
 
-palce for class diagram 
+![Clash of Clans Screenshot](src/readme_assets/ClashOfClans - Page 1 (2).png)
+
 
 Analytical Class Diagram Description 
 
