@@ -15,8 +15,8 @@ public class BuildingInstance implements Serializable {
     private int[] location;//can be null
     private boolean inBag;
 
-    private List<Integer> trainingQueue = new ArrayList<>();
-    private List<Integer> chillBuffer = new ArrayList<>();
+    private List<Unit> trainingQueue = new ArrayList<>();
+    private List<Unit> chillBuffer = new ArrayList<>();
 
 
     public BuildingInstance() {}
@@ -64,7 +64,7 @@ public class BuildingInstance implements Serializable {
 
 
     //later change integer to unit (troop)
-    public void moveToArmyCamp(Integer unit, ArmyBuilding armyCamp) {
+    public void moveToArmyCamp(Unit unit, ArmyBuilding armyCamp) {
         if (!(buildingType instanceof ArmyBuilding) ||
                 ((ArmyBuilding) buildingType).getType() != ArmyBuildingType.barracks) {
             System.out.println("Only Barracks can move units to Army Camp.");
@@ -72,7 +72,7 @@ public class BuildingInstance implements Serializable {
         }
 
         long currentTroopsInCamp = armyCamp.getCurrentTroops(); // need to implement
-        if (armyCamp.isEnoughCapacity(currentTroopsInCamp + unit)) {
+        if (armyCamp.isEnoughCapacity(currentTroopsInCamp + 1)) {
             armyCamp.addTroop(unit); // need method in ArmyBuilding
             trainingQueue.remove(unit);
             System.out.println("Unit moved successfully to Army Camp!");

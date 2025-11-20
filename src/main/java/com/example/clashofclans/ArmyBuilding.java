@@ -10,7 +10,7 @@ public class ArmyBuilding extends Building implements Serializable {
     private ArmyBuildingType type;
     private int troopsCapacity;
 
-    private List<Integer> campTroops = new ArrayList<>();
+    private List<Unit> campTroops = new ArrayList<>();
 
     public ArmyBuilding() {}
 
@@ -24,7 +24,7 @@ public class ArmyBuilding extends Building implements Serializable {
         return currentTroops <= troopsCapacity;
     }
 
-    public void addTroop(Integer unit) {
+    public void addTroop(Unit unit) {
         campTroops.add(unit);
     }
 
