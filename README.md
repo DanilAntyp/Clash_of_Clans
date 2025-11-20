@@ -21,7 +21,6 @@ The system tracks Battles between players, where a battle has attributes such as
 Achievements are awarded to players when they reach specific milestones . Each achievement has a name, type, description and reward.
 The system includes Friendship between players. A player can add another player as a friend, enabling friendly challenges and visits to their villages.
 
-![Clash of Clans Screenshot](src/readme_assets/ClashOfClans - Page 1 (2).png)
 
 
 Analytical Class Diagram Description 
@@ -30,7 +29,8 @@ The main entity is the Player, who owns a Village/Villages (max 2) made up of di
 It's worth showcasing that the Troop can either train or rest in the building.
 Players can join Clans, forming social groups through the Membership relationship, which defines roles, levels, and join dates. We need to store information of the player’s membership to not add the player that is banned in a given clan. Clans compete in Clan Wars, earning rewards and trophies based on their performance. Players can also engage in Solo Battles with other villages to gain loot, trophies, and experience. The diagram includes Spells that influence battles and Achievements that track player progress and offer rewards.
 
-Design Digram placae
+![class diagram ss](src/readme_assets/ClashOfClans%20-%20Page%201%20(12).png)
+
 
 Design Diagram Description 
 
@@ -51,11 +51,21 @@ Time Till constraction -calculated by current time and buildTIme
 Village 
 Resource calculated by total of resources created and gained during battles
 
-USE CASE DIAGRAM PLACE 
-ACTIVITY DIAGRAMS AND SO ALL 
+![Clash of Clans Screenshot](src/readme_assets/%20designDiagram.png)
 
+![Clash of Clans Screenshot](src/readme_assets/Train1.png)
+![Clash of Clans Screenshot](src/readme_assets/Train2.png)
 
-Design Diagram after the analytic analysis- place 
+![Clash of Clans Screenshot](src/readme_assets/attack.png)
+![Clash of Clans Screenshot](src/readme_assets/attack2.png)
+
+![Clash of Clans Screenshot](src/readme_assets/building1.png)
+![Clash of Clans Screenshot](src/readme_assets/building2.png)
+
+![Clash of Clans Screenshot](src/readme_assets/joinClan1.png)
+![Clash of Clans Screenshot](src/readme_assets/joinClan2.png)
+
+![Clash of Clans Screenshot](src/readme_assets/analyticalD.png)   
 
 Design Diagram after the analytic analysis - description 
 
