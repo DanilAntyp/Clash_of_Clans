@@ -86,7 +86,7 @@ class BuildingsAndTrainingWitChillingTests{
         );
         barracks.addTroop(testunit);
         buildingInstance.moveToArmyCamp(testunit, armyCamp);
-        assertEquals(0, armyCamp.getCurrentTroops());
+        assertEquals(1, armyCamp.getCurrentTroops());
     }
 
     @Test

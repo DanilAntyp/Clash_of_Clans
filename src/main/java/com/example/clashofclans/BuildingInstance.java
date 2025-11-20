@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.clashofclans.enums.ArmyBuildingType.barracks;
+
 public class BuildingInstance implements Serializable {
     private Building buildingType;
     private double currentHp;
@@ -53,7 +55,7 @@ public class BuildingInstance implements Serializable {
 
     public boolean isQueueFull() {
         if (!(buildingType instanceof ArmyBuilding) ||
-                ((ArmyBuilding) buildingType).getType() != ArmyBuildingType.barracks) {
+                ((ArmyBuilding) buildingType).getType() != barracks) {
             return false;
         }
 
@@ -75,10 +77,6 @@ public class BuildingInstance implements Serializable {
         if (unit == null || armyCamp == null)
             throw new InvalidBuildingArgumentException("unit and armyCamp must not be null");
 
-        if (!(buildingType instanceof ArmyBuilding armyBuilding)
-                || armyBuilding.getType() != ArmyBuildingType.barracks)
-            throw new InvalidBuildingStateException("Only a Barracks can train or send units");
-
         long current = armyCamp.getCurrentTroops();
 
         if (!armyCamp.isEnoughCapacity(current + unit.getHousingSpace()))
@@ -88,6 +86,7 @@ public class BuildingInstance implements Serializable {
         trainingQueue.remove(unit);
     }
 
+    public void moveToBarrack(Unit unit, ArmyBuilding barack) {}
 
 
     //changed - it's not in building anymore

@@ -128,7 +128,7 @@ public class Building implements Serializable {
         int currentLevel = instance.getCurrentLevel();
             if (instance == null) throw new InvalidBuildingArgumentException("instance cannot be null");
             int lvl = instance.getCurrentLevel();
-
+            currentLevel ++;
             if (lvl > maxLevel)
                 throw new InvalidBuildingStateException("Current level exceeds maxLevel");
         switch (currentLevel) {
