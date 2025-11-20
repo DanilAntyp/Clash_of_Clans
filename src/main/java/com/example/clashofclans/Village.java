@@ -56,6 +56,9 @@ public class Village implements Serializable {
     public void setMoreResources(int res, ResourceKind kind) {
         resources.put(kind, resources.get(kind) + res);
     }
+    public void deductResources(int res, ResourceKind kind) {
+        resources.put(kind, resources.get(kind) - res);
+    }
     public boolean isEnoughResourcesToTrain(int cost) {
         if(resources.get(GOLD) >= cost) {
             return true;
