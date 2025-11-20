@@ -1,6 +1,10 @@
 package com.example.clashofclans;
 
 import com.example.clashofclans.enums.ClanRole;
+import com.example.clashofclans.exceptions.membership.InvalidClanRoleException;
+import com.example.clashofclans.exceptions.membership.InvalidEndDateException;
+import com.example.clashofclans.exceptions.membership.InvalidJoinDateException;
+import com.example.clashofclans.exceptions.membership.NullMembershipException;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -15,7 +19,7 @@ public class Membership implements Serializable {
     private static final List<Membership> extent = new ArrayList<>();
 
     private static void addToExtent(Membership m) {
-        if (m == null) throw new IllegalArgumentException("Membership cannot be null");
+        if (m == null) throw new NullMembershipException("Membership cannot be null");
         extent.add(m);
     }
 
@@ -51,20 +55,20 @@ public class Membership implements Serializable {
 
     public void setClanRole(ClanRole role) {
         if (role == null)
-            throw new IllegalArgumentException("Clan role cannot be null");
+            throw new InvalidClanRoleException("Clan role cannot be null");
         this.clanRole = role;
     }
 
     public void setJoinDate(LocalDate joinDate) {
         if (joinDate == null)
-            throw new IllegalArgumentException("Join date cannot be null");
+            throw new InvalidJoinDateException("Join date cannot be null");
 
         this.joinDate = joinDate;
     }
 
     public void setDateEnd(LocalDate dateEnd) {
         if (dateEnd != null && dateEnd.isBefore(joinDate))
-            throw new IllegalArgumentException("End date cannot be earlier than join date");
+            throw new InvalidEndDateException("End date cannot be earlier than join date");
 
         this.dateEnd = dateEnd;
     }

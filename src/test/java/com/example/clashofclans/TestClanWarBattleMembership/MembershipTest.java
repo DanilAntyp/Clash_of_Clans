@@ -2,6 +2,9 @@ package com.example.clashofclans.TestClanWarBattleMembership;
 
 import com.example.clashofclans.Membership;
 import com.example.clashofclans.enums.ClanRole;
+import com.example.clashofclans.exceptions.membership.InvalidClanRoleException;
+import com.example.clashofclans.exceptions.membership.InvalidEndDateException;
+import com.example.clashofclans.exceptions.membership.InvalidJoinDateException;
 import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Field;
@@ -34,13 +37,14 @@ public class MembershipTest {
     @Test
     void testNullClanRoleThrowsException() {
         LocalDate join = LocalDate.now();
-        assertThrows(IllegalArgumentException.class,
+
+        assertThrows(InvalidClanRoleException.class,
                 () -> new Membership(null, join));
     }
 
     @Test
     void testNullJoinDateThrowsException() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidJoinDateException.class,
                 () -> new Membership(ClanRole.LEADER, null));
     }
 
@@ -51,7 +55,7 @@ public class MembershipTest {
 
         Membership m = new Membership(ClanRole.MEMBER, join);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidEndDateException.class,
                 () -> m.setDateEnd(end));
     }
 
@@ -75,9 +79,7 @@ public class MembershipTest {
 
         List<Membership> extent = Membership.getExtent();
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            extent.clear();
-        });
+        assertThrows(UnsupportedOperationException.class, extent::clear);
     }
 
     @Test
@@ -93,7 +95,6 @@ public class MembershipTest {
         assertFalse(m.getIsBanned());
     }
 
-
     @Test
     void testLeaveMethod() {
         Membership m = new Membership(ClanRole.ELDER, LocalDate.now());
@@ -102,7 +103,6 @@ public class MembershipTest {
 
         assertEquals(LocalDate.now(), m.getDateEnd());
     }
-
 
     @Test
     void testDateEndSetterValid() {

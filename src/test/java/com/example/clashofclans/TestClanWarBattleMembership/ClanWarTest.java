@@ -1,6 +1,10 @@
 package com.example.clashofclans.TestClanWarBattleMembership;
 
 import com.example.clashofclans.ClanWar;
+import com.example.clashofclans.exceptions.clanwar.InvalidDurationException;
+import com.example.clashofclans.exceptions.clanwar.InvalidResultException;
+import com.example.clashofclans.exceptions.clanwar.InvalidRewardException;
+import com.example.clashofclans.exceptions.clanwar.InvalidTimestampException;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
@@ -33,7 +37,7 @@ public class ClanWarTest {
     void testInvalidDurationThrowsException() {
         LocalDateTime now = LocalDateTime.now();
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidDurationException.class,
                 () -> new ClanWar(0, 500, 1, now));
     }
 
@@ -41,7 +45,7 @@ public class ClanWarTest {
     void testInvalidRewardThrowsException() {
         LocalDateTime now = LocalDateTime.now();
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidRewardException.class,
                 () -> new ClanWar(30, -10, 1, now));
     }
 
@@ -49,13 +53,13 @@ public class ClanWarTest {
     void testInvalidResultThrowsException() {
         LocalDateTime now = LocalDateTime.now();
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidResultException.class,
                 () -> new ClanWar(30, 500, 7, now));
     }
 
     @Test
     void testNullTimestampThrowsException() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidTimestampException.class,
                 () -> new ClanWar(30, 500, 1, null));
     }
 
@@ -80,37 +84,38 @@ public class ClanWarTest {
 
         List<ClanWar> extent = ClanWar.getExtent();
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            extent.clear();
-        });
+        assertThrows(UnsupportedOperationException.class, extent::clear);
     }
-
 
     @Test
     void testSetInvalidDuration() {
         ClanWar war = new ClanWar(30, 200, 0, LocalDateTime.now());
 
-        assertThrows(IllegalArgumentException.class, () -> war.setDuration(0));
+        assertThrows(InvalidDurationException.class,
+                () -> war.setDuration(0));
     }
 
     @Test
     void testSetInvalidReward() {
         ClanWar war = new ClanWar(30, 200, 0, LocalDateTime.now());
 
-        assertThrows(IllegalArgumentException.class, () -> war.setReward(-5));
+        assertThrows(InvalidRewardException.class,
+                () -> war.setReward(-5));
     }
 
     @Test
     void testSetInvalidResult() {
         ClanWar war = new ClanWar(30, 200, 0, LocalDateTime.now());
 
-        assertThrows(IllegalArgumentException.class, () -> war.setResult(9));
+        assertThrows(InvalidResultException.class,
+                () -> war.setResult(9));
     }
 
     @Test
     void testSetNullTimestamp() {
         ClanWar war = new ClanWar(30, 200, 0, LocalDateTime.now());
 
-        assertThrows(IllegalArgumentException.class, () -> war.setTimestamp(null));
+        assertThrows(InvalidTimestampException.class,
+                () -> war.setTimestamp(null));
     }
 }
