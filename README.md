@@ -53,6 +53,11 @@ Resource calculated by total of resources created and gained during battles
 
 ![Clash of Clans Screenshot](src/readme_assets/%20designDiagram.png)
 
+Use Case Diagram 
+![Use Case Diagram](readme_assets/UCDiagramClashOfClans.png)
+
+----
+
 ![Clash of Clans Screenshot](src/readme_assets/Train1.png)
 ![Clash of Clans Screenshot](src/readme_assets/Train2.png)
 
