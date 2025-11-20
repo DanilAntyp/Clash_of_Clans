@@ -4,9 +4,12 @@ package com.example.clashofclans;
 import com.example.clashofclans.enums.AttackDomain;
 import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.UnitType;
+import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
+import com.example.clashofclans.exceptions.unitExceptions.UnitPersistencyException;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -32,12 +35,12 @@ public abstract class Unit implements Serializable {
     protected Unit(int hitPoint,int damage,int housingSpace,
                    AttackDomain attackDomain, ResourceKind resourceKind, UnitType unitType) {
 
-        if (hitPoint<=0) throw new IllegalArgumentException("hitPoint must be > 0");
-        if(damage<=0) throw new IllegalArgumentException("damage must be > 0");
-        if(housingSpace<=0) throw new IllegalArgumentException("housingSpace must be > 0");
-        if (attackDomain == null) throw new NullPointerException("attack domain cannot be null");
-        if (resourceKind == null) throw new NullPointerException("resource kind cannot be null");
-        if (unitType == null) throw new NullPointerException("unit type cannot be null");
+        if (hitPoint<=0) throw new InvalidUnitArgumentException ("hitPoint must be > 0");
+        if(damage<=0) throw new InvalidUnitArgumentException ("damage must be > 0");
+        if(housingSpace<=0) throw new InvalidUnitArgumentException("housingSpace must be > 0");
+        if (attackDomain == null) throw new InvalidUnitArgumentException("attack domain cannot be null");
+        if (resourceKind == null) throw new InvalidUnitArgumentException("resource kind cannot be null");
+        if (unitType == null) throw new InvalidUnitArgumentException("unit type cannot be null");
         validateResourceCompatibility(resourceKind, attackDomain, unitType);
 
         this.hitPoint=hitPoint; this.damage=damage; this.housingSpace=housingSpace;
@@ -52,28 +55,32 @@ public abstract class Unit implements Serializable {
 
         if (resourceKind==ResourceKind.ELIXIR && !ELIXIR_USER_TYPES.contains(unitType)
                 || resourceKind==ResourceKind.DARK_ELIXIR && !DARK_ELIXIR_USER_TYPES.contains(unitType))
-            throw new IllegalArgumentException("type/resourceKind mismatch");
+            throw new InvalidUnitArgumentException("type/resourceKind mismatch");
 
         if (attackDomain==AttackDomain.GROUND && !GROUND_TYPES.contains(unitType)
                 || attackDomain==AttackDomain.AIR && !AIR_TYPES.contains(unitType))
-            throw new IllegalArgumentException("type/attackDomain mismatch");
+            throw new InvalidUnitArgumentException("type/attackDomain mismatch");
     }
 
     public static List<Unit> getExtent(){ return Collections.unmodifiableList(EXTENT); }
 
-    public static void saveExtent(Path file) throws IOException {
-        try (var out = new java.io.ObjectOutputStream(java.nio.file.Files.newOutputStream(file))) {
+    public static void saveExtent(Path file) throws UnitPersistencyException {
+        try (var out = new java.io.ObjectOutputStream(Files.newOutputStream(file))) {
             out.writeObject(new ArrayList<>(EXTENT));
+        } catch (IOException e) {
+            throw new UnitPersistencyException("Failed to save extent to " + file, e);
         }
     }
 
     @SuppressWarnings("unchecked")
-    public static void loadExtent(Path file) throws IOException, ClassNotFoundException {
+    public static void loadExtent(Path file) throws UnitPersistencyException {
         EXTENT.clear();
-        if (!java.nio.file.Files.exists(file)) return;
-        try (var in = new java.io.ObjectInputStream(java.nio.file.Files.newInputStream(file))) {
+        if (!Files.exists(file)) return;
+        try (var in = new java.io.ObjectInputStream(Files.newInputStream(file))) {
             var list = (List<Unit>) in.readObject();
             EXTENT.addAll(list);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new UnitPersistencyException("Failed to load extent from " + file, e);
         }
     }
 
@@ -92,7 +99,7 @@ public abstract class Unit implements Serializable {
     }
 
     public void setHitPoint(int hitPoint) {
-        if (hitPoint<=0) throw new IllegalArgumentException("hitPoint must be > 0");
+        if (hitPoint<=0) throw new InvalidUnitArgumentException("hitPoint must be > 0");
         this.hitPoint = hitPoint;
     }
 
@@ -101,7 +108,7 @@ public abstract class Unit implements Serializable {
     }
 
     public void setDamage(int damage) {
-        if (damage<=0) throw new IllegalArgumentException("damage must be > 0");
+        if (damage<=0) throw new InvalidUnitArgumentException("damage must be > 0");
         this.damage = damage;
     }
 
@@ -110,7 +117,7 @@ public abstract class Unit implements Serializable {
     }
 
     public void setHousingSpace(int housingSpace) {
-        if (housingSpace<=0) throw new IllegalArgumentException("housingSpace must be > 0");
+        if (housingSpace<=0) throw new InvalidUnitArgumentException("housingSpace must be > 0");
         this.housingSpace = housingSpace;
     }
 

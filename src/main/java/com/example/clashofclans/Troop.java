@@ -5,6 +5,7 @@ import com.example.clashofclans.enums.AttackDomain;
 import com.example.clashofclans.enums.AttackStyle;
 import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.UnitType;
+import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
 
 import java.util.Objects;
 
@@ -20,13 +21,13 @@ public final class Troop extends Unit {
                  AttackDomain attackDomain, ResourceKind resourceKind, UnitType unitType,
                  AttackStyle attackStyle, Integer cost){
         super(hitPoint,damage,housingSpace,attackDomain,resourceKind,unitType);
-        if (!Unit.isTroopType(unitType)) throw new IllegalArgumentException("Troop type is not a troop");
+        if (!Unit.isTroopType(unitType)) throw new InvalidUnitArgumentException("Troop type is not a troop");
         this.attackStyle = Objects.requireNonNull(attackStyle);
         setCost(resourceKind, cost);
     }
 
     private void setCost(ResourceKind resourceKind, Integer cost){
-        if (cost==null || cost<0) throw new IllegalArgumentException("cost must be >=0");
+        if (cost==null || cost<0) throw new InvalidUnitArgumentException("cost must be >=0");
         if (resourceKind==ResourceKind.ELIXIR){ this.elixirCost=cost; this.darkElixirCost=null; }
         else { this.darkElixirCost=cost; this.elixirCost=null; }
     }
@@ -36,7 +37,7 @@ public final class Troop extends Unit {
     }
 
     public void setAttackStyle(AttackStyle attackStyle) {
-        if (attackStyle == null) { throw new NullPointerException("attack style cannot be null"); }
+        if (attackStyle == null) { throw new InvalidUnitArgumentException("attack style cannot be null"); }
         this.attackStyle = attackStyle;
     }
 
