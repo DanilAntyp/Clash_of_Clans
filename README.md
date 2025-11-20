@@ -73,14 +73,22 @@ Village
 ![Clash of Clans Screenshot](src/readme_assets/Train1.png)
 ![Clash of Clans Screenshot](src/readme_assets/Train2.png)
 
+---
+
 ![Clash of Clans Screenshot](src/readme_assets/attack.png)
 ![Clash of Clans Screenshot](src/readme_assets/attack2.png)
+
+---
 
 ![Clash of Clans Screenshot](src/readme_assets/building1.png)
 ![Clash of Clans Screenshot](src/readme_assets/building2.png)
 
+---
+
 ![Clash of Clans Screenshot](src/readme_assets/joinClan1.png)
 ![Clash of Clans Screenshot](src/readme_assets/joinClan2.png)
+
+---
 
 ![Clash of Clans Screenshot](src/readme_assets/analyticalD.png)   
 
