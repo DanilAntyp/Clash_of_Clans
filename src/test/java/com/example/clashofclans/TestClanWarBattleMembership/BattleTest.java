@@ -2,6 +2,10 @@ package com.example.clashofclans.TestClanWarBattleMembership;
 
 import com.example.clashofclans.Battle;
 import com.example.clashofclans.enums.BattleType;
+import com.example.clashofclans.exceptions.battle.InvalidBattleTimeException;
+import com.example.clashofclans.exceptions.battle.InvalidBattleTypeException;
+import com.example.clashofclans.exceptions.battle.InvalidLootException;
+import com.example.clashofclans.exceptions.battle.InvalidStarsException;
 import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Field;
@@ -19,7 +23,6 @@ public class BattleTest {
         ((List<?>) extentField.get(null)).clear();
     }
 
-
     @Test
     void testValidBattleCreation() {
         LocalDateTime now = LocalDateTime.now();
@@ -34,37 +37,36 @@ public class BattleTest {
     @Test
     void testNullTypeThrowsException() {
         LocalDateTime now = LocalDateTime.now();
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidBattleTypeException.class,
                 () -> new Battle(null, now, 1, 100));
     }
 
     @Test
     void testNullTimeThrowsException() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidBattleTimeException.class,
                 () -> new Battle(BattleType.CLAN, null, 1, 100));
     }
 
     @Test
     void testInvalidStarsLow() {
         LocalDateTime now = LocalDateTime.now();
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidStarsException.class,
                 () -> new Battle(BattleType.SINGLE, now, -1, 100));
     }
 
     @Test
     void testInvalidStarsHigh() {
         LocalDateTime now = LocalDateTime.now();
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidStarsException.class,
                 () -> new Battle(BattleType.SINGLE, now, 5, 100));
     }
 
     @Test
     void testInvalidLootThrowsException() {
         LocalDateTime now = LocalDateTime.now();
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidLootException.class,
                 () -> new Battle(BattleType.SINGLE, now, 1, -10));
     }
-
 
     @Test
     void testExtentContainsCreatedBattles() {
@@ -80,7 +82,6 @@ public class BattleTest {
         assertTrue(extent.contains(b2));
     }
 
-
     @Test
     void testExtentIsUnmodifiable() {
         LocalDateTime now = LocalDateTime.now();
@@ -88,9 +89,7 @@ public class BattleTest {
 
         List<Battle> extent = Battle.getExtent();
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            extent.clear();
-        });
+        assertThrows(UnsupportedOperationException.class, extent::clear);
     }
 
     @Test

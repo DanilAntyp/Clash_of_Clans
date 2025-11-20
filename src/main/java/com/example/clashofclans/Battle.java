@@ -1,5 +1,6 @@
 package com.example.clashofclans;
 import com.example.clashofclans.enums.BattleType;
+import com.example.clashofclans.exceptions.battle.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ public class Battle implements Serializable {
     }
 
     private static void addToExtent(Battle battle) {
-        if (battle == null) throw new IllegalArgumentException("Battle cannot be null");
+        if (battle == null) throw new BattleException("Battle cannot be null");
         extent.add(battle);
     }
 
@@ -45,25 +46,25 @@ public class Battle implements Serializable {
 
     public void setType(BattleType type) {
         if (type == null)
-            throw new IllegalArgumentException("type cannot be null");
+            throw new InvalidBattleTypeException("Battle type cannot be null");
         this.type = type;
     }
 
     public void setTime(LocalDateTime time) {
         if (time == null)
-            throw new IllegalArgumentException("Battle time cannot be null");
+            throw new InvalidBattleTimeException("Battle time cannot be null");
         this.time = time;
     }
 
     public void setStars(int stars) {
         if (stars < 0 || stars > 3)
-            throw new IllegalArgumentException("Stars must be between 0 and 3");
+            throw new InvalidStarsException("Stars must be between 0 and 3");
         this.stars = stars;
     }
 
     public void setLoot(int loot) {
         if (loot < 0)
-            throw new IllegalArgumentException("Loot must be 0 or positive");
+            throw new InvalidLootException("Loot cannot be negative");
         this.loot = loot;
     }
 
