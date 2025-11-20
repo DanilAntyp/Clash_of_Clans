@@ -4,6 +4,7 @@ package com.example.clashofclans;
 import com.example.clashofclans.enums.AttackDomain;
 import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.UnitType;
+import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
 
 import java.util.Objects;
 
@@ -18,9 +19,9 @@ public class Hero extends Unit {
                 AttackDomain attackDomain, ResourceKind resourceKind, UnitType unitType,
                 String uniqueAbility, Integer regenerationTime, String upgradeSystem){
         super(hitPoint,damage,housingSpace,attackDomain,resourceKind,unitType);
-        if (!Unit.isHeroType(unitType)) throw new IllegalArgumentException("Hero type is not a hero");
+        if (!Unit.isHeroType(unitType)) throw new InvalidUnitArgumentException("Hero type is not a hero");
         if (isBlank(uniqueAbility) || isBlank(upgradeSystem))
-            throw new IllegalArgumentException("strings cannot be empty");
+            throw new InvalidUnitArgumentException("strings cannot be empty");
 
         this.uniqueAbility=uniqueAbility.trim();
         this.regenerationTime= Objects.requireNonNull(regenerationTime);
@@ -33,7 +34,7 @@ public class Hero extends Unit {
     }
 
     public void setUniqueAbility(String uniqueAbility) {
-        if (isBlank(uniqueAbility)) throw new IllegalArgumentException("string cannot be empty");
+        if (isBlank(uniqueAbility)) throw new InvalidUnitArgumentException("string cannot be empty");
         this.uniqueAbility = uniqueAbility.trim();
     }
 
@@ -42,8 +43,8 @@ public class Hero extends Unit {
     }
 
     public void setRegenerationTime(Integer regenerationTime) {
-        if (regenerationTime == null) throw new IllegalArgumentException("regenerationTime cannot be null");
-        if (regenerationTime < 0) throw new IllegalArgumentException("regenerationTime must be >= 0");
+        if (regenerationTime == null) throw new InvalidUnitArgumentException("regenerationTime cannot be null");
+        if (regenerationTime < 0) throw new InvalidUnitArgumentException("regenerationTime must be >= 0");
         this.regenerationTime = regenerationTime;
     }
 
@@ -52,7 +53,7 @@ public class Hero extends Unit {
     }
 
     public void setUpgradeSystem(String upgradeSystem) {
-        if (isBlank(upgradeSystem)) throw new IllegalArgumentException("string cannot be empty");
+        if (isBlank(upgradeSystem)) throw new InvalidUnitArgumentException("string cannot be empty");
         this.upgradeSystem = upgradeSystem.trim();
     }
 }
