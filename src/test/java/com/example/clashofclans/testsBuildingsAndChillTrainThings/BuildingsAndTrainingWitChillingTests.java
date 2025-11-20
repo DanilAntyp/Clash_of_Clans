@@ -1,10 +1,7 @@
 package com.example.clashofclans.testsBuildingsAndChillTrainThings;
 
 import com.example.clashofclans.*;
-import com.example.clashofclans.enums.ArmyBuildingType;
-import com.example.clashofclans.enums.DefBuildingType;
-import com.example.clashofclans.enums.DefTargetType;
-import com.example.clashofclans.enums.ResourceBuildingTypes;
+import com.example.clashofclans.enums.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,8 +37,13 @@ class BuildingsAndTrainingWitChillingTests{
 
     @Test
     void testAddAndGetTroops() {
-        barracks.addTroop(1);
-        barracks.addTroop(2);
+        Unit testunit =  new Troop(
+                100, 20, 5,
+                AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.ARCHER,
+                AttackStyle.RANGED_TROOP, 50
+        );
+        barracks.addTroop(testunit);
+        barracks.addTroop(testunit);
         assertEquals(2, barracks.getCurrentTroops());
     }
 
@@ -77,16 +79,26 @@ class BuildingsAndTrainingWitChillingTests{
 
     @Test
     void testMoveTroopsToArmyCamp() {
-        barracks.addTroop(1);
-        buildingInstance.moveToArmyCamp(1, armyCamp);
-        assertEquals(0, armyCamp.getCurrentTroops());
+        Unit testunit =  new Troop(
+                100, 20, 5,
+                AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.ARCHER,
+                AttackStyle.RANGED_TROOP, 50
+        );
+        barracks.addTroop(testunit);
+        buildingInstance.moveToArmyCamp(testunit, armyCamp);
+        assertEquals(1, armyCamp.getCurrentTroops());
     }
 
     @Test
     void testQueueFull() {
         BuildingInstance barracksInstance = new BuildingInstance(barracks, 100, 1, LocalDateTime.now(), false);
         for(int i=0; i<10; i++) {
-            barracksInstance.moveToArmyCamp(i, armyCamp);
+            Unit testunit =  new Troop(
+                    100, 20, 5,
+                    AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.ARCHER,
+                    AttackStyle.RANGED_TROOP, 50
+            );
+            barracksInstance.moveToArmyCamp(testunit, armyCamp);
         }
         assertFalse(barracksInstance.isQueueFull());
     }
