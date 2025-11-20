@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 public class Clan implements Serializable {
     private String name;
-    private String badge; //also can be enum but idk the values
+    private String badge;
     private String description;
     private int totalTrophies;
-    private String league; //i think this should be enum unless we are treating it like infinate levels
+    private String league;
     private ArrayList<Membership> memberships;
     private ArrayList<Player> banList;
 
