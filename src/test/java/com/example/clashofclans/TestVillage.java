@@ -2,6 +2,8 @@ package com.example.clashofclans;
 
 import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.VillageType;
+import com.example.clashofclans.exceptions.player.villageLimitReachedException;
+import com.example.clashofclans.exceptions.village.notEnoughResourcesException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,19 +27,21 @@ public class TestVillage {
         Player owner = new Player("Bob");
         Village village = new Village(VillageType.regular, owner);
 
-        assertFalse(village.isEnoughResourcesToTrain(10));
+        assertThrows(notEnoughResourcesException.class, () -> {
+            village.isEnoughResourcesToTrain(10, ResourceKind.GOLD);
+        });
     }
 
     @Test
     void testCannotCreateMoreThanTwoVillages() {
         Player p = new Player("Alice");
 
+        Village v2 = new Village(VillageType.regular, p);
+        p.addVillageDirectForTest(v2);
 
-        Village v1 = new Village(VillageType.regular, p);
-        p.addVillageDirectForTest(v1);
-
-        assertThrows(IllegalStateException.class, () -> {
+        assertThrows(villageLimitReachedException.class, () -> {
             new Village(VillageType.regular, p);
         });
     }
+
 }

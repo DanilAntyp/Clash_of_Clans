@@ -1,6 +1,10 @@
 package com.example.clashofclans;
 
 import com.example.clashofclans.enums.VillageType;
+import com.example.clashofclans.exceptions.clan.clanBanException;
+import com.example.clashofclans.exceptions.player.missingPlayerException;
+import com.example.clashofclans.exceptions.player.playerNameException;
+import com.example.clashofclans.exceptions.player.villageLimitReachedException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,7 +21,10 @@ public class Player implements Serializable {
     private Village[]  villages;
 
      public Player(String username){
-        this.username = username;
+         if (username == null || username.trim().isEmpty()) {
+             throw new playerNameException("Username cannot be empty.");
+         }
+         this.username = username;
         this.level = 1;
         this.trophies = 0;
         this.achivements = new ArrayList<>();
@@ -29,11 +36,17 @@ public class Player implements Serializable {
     }
 
     public void visitFriendsVillage(Player p){
-        //idk the logic
+        if (p == null) {
+            throw new missingPlayerException("Cannot ban a null player.");
+        }
+         //idk the logic
     }
 
     public void challangeFriend(Player p){
-        //idk the logic
+        if (p == null) {
+            throw new missingPlayerException("Cannot ban a null player.");
+        }
+         //idk the logic
     }
 
     //setter-getters
@@ -41,7 +54,10 @@ public class Player implements Serializable {
         return username;
     }
     public void setUsername(String username) {
-        this.username = username;
+        if (username == null || username.trim().isEmpty()) {
+            throw new playerNameException("Username cannot be empty.");
+        }
+         this.username = username;
     }
     public int getLevel() {
         return level;
@@ -77,7 +93,10 @@ public class Player implements Serializable {
     }
 
     public void addVillageDirectForTest(Village v) {
-        if (villages[0] == null) villages[0] = v;
+        if (getVillagesCount() >= 2) {
+            throw new villageLimitReachedException("Player cannot have more than two villages.");
+        }
+         if (villages[0] == null) villages[0] = v;
         else villages[1] = v;
     }
 }

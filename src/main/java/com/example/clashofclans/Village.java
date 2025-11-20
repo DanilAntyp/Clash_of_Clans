@@ -2,6 +2,8 @@ package com.example.clashofclans;
 
 import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.VillageType;
+import com.example.clashofclans.exceptions.player.villageLimitReachedException;
+import com.example.clashofclans.exceptions.village.notEnoughResourcesException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,14 +23,14 @@ public class Village implements Serializable {
     public Village(VillageType type, Player owner) {
         try {
             if (owner.getVillagesCount() >= 2) {
-                throw new IllegalStateException("Player cannot have more than 2 villages.");
+                throw new villageLimitReachedException("Player cannot have more than 2 villages.");
             }
             this.type = type;
             for (ResourceKind kind : ResourceKind.values()) {
                 resources.put(kind, 0);
             }
-            //buildings=new ArrayList<>();
-            //units=new ArrayList<>();
+            buildings=new ArrayList<>();
+            units=new ArrayList<>();
             this.owner = owner;
 
         } catch (IllegalStateException e) {
@@ -57,13 +59,17 @@ public class Village implements Serializable {
         resources.put(kind, resources.get(kind) + res);
     }
     public void deductResources(int res, ResourceKind kind) {
+        if(resources.get(kind) < res) {
+            throw new notEnoughResourcesException("Not enough " + kind + ".");
+        }
         resources.put(kind, resources.get(kind) - res);
     }
-    public boolean isEnoughResourcesToTrain(int cost) {
-        if(resources.get(GOLD) >= cost) {
+    public boolean isEnoughResourcesToTrain(int cost, ResourceKind kind) {
+        if(resources.get(kind) >= cost) {
             return true;
         }
-        return false;
+        throw new notEnoughResourcesException("Not enough " + kind + ".");
+
     }
 
     //add adjustmennt methods
