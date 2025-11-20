@@ -1,6 +1,8 @@
 package com.example.clashofclans;
 
 import com.example.clashofclans.enums.ResourceBuildingTypes;
+import com.example.clashofclans.exceptions.building.InvalidBuildingArgumentException;
+import com.example.clashofclans.exceptions.building.InvalidBuildingStateException;
 
 import java.io.Serializable;
 
@@ -11,7 +13,19 @@ public class ResourceBuilding extends Building implements Serializable {
 
     public ResourceBuilding() {}
 
-    public ResourceBuilding(ResourceBuildingTypes type, double maxStorageCapacity, double productionRate) {
+    public ResourceBuilding(ResourceBuildingTypes type,
+                            double maxStorageCapacity,
+                            double productionRate) {
+
+        if (type == null)
+            throw new InvalidBuildingArgumentException("Resource building type cannot be null");
+
+        if (maxStorageCapacity < 0)
+            throw new InvalidBuildingArgumentException("Storage capacity cannot be negative");
+
+        if (productionRate < 0)
+            throw new InvalidBuildingArgumentException("Production rate cannot be negative");
+
         this.type = type;
         this.maxStorageCapacity = maxStorageCapacity;
         this.productionRate = productionRate;
@@ -33,7 +47,10 @@ public class ResourceBuilding extends Building implements Serializable {
 
     public void calculateMaxStorageCapacity(BuildingInstance instance) {
         int currentLevel = instance.getCurrentLevel();
+        if (instance == null)
+            throw new InvalidBuildingArgumentException("BuildingInstance cannot be null");
 
+        int lvl = instance.getCurrentLevel();
         switch (currentLevel) {
             case 1:
                 this.maxStorageCapacity = 500;
@@ -65,10 +82,8 @@ public class ResourceBuilding extends Building implements Serializable {
             case 10:
                 this.maxStorageCapacity = 300000;
                 break;
-            default:
-                this.maxStorageCapacity = 0;
-                System.out.println("Invalid or maximum level reached for storage building.");
-                break;
+            default :
+                throw new InvalidBuildingStateException("No storage defined for level " + lvl);
         }
     }
 }

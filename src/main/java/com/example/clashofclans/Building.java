@@ -1,5 +1,9 @@
 package com.example.clashofclans;
 
+import com.example.clashofclans.exceptions.building.InvalidBuildingArgumentException;
+import com.example.clashofclans.exceptions.building.InvalidBuildingStateException;
+
+
 import java.io.Serializable;
 
 public class Building implements Serializable {
@@ -13,14 +17,24 @@ public class Building implements Serializable {
     public Building() {}
 
     //first level building
-    public Building(double hitPoints, int maxLevel, double buildTime,
-                    double resourceCost) {
+    public Building(double hitPoints, int maxLevel, double buildTime, double resourceCost) {
+
+        if (hitPoints <= 0)
+            throw new InvalidBuildingArgumentException("hitPoints must be greater than zero");
+
+        if (maxLevel <= 0)
+            throw new InvalidBuildingArgumentException("maxLevel must be greater than zero");
+
+        if (buildTime < 0)
+            throw new InvalidBuildingArgumentException("buildTime cannot be negative");
+
+        if (resourceCost < 0)
+            throw new InvalidBuildingArgumentException("resourceCost cannot be negative");
+
         this.hitPoints = hitPoints;
         this.maxLevel = maxLevel;
         this.buildTime = buildTime;
         this.resourceCost = resourceCost;
-        this.upgradeCost = 1000;
-        this.upgradeConstructionTime = 0.25;
     }
 
     public BuildingInstance buildNewBuilding(int[] location) {
@@ -48,20 +62,35 @@ public class Building implements Serializable {
 
 
     public double getHitPoints() { return hitPoints; }
-    public void setHitPoints(double hitPoints) { this.hitPoints = hitPoints; }
+    public void setHitPoints(double hp) {
+        if (hp <= 0) throw new InvalidBuildingArgumentException("hitPoints must be > 0");
+        this.hitPoints = hp;
+    }
 
     public int getMaxLevel() { return maxLevel; }
-    public void setMaxLevel(int maxLevel) { this.maxLevel = maxLevel; }
+    public void setMaxLevel(int maxLevel) {
+        if (maxLevel <= 0) throw new InvalidBuildingArgumentException("maxLevel must be > 0");
+        this.maxLevel = maxLevel;
+    }
 
     public double getBuildTime() { return buildTime; }
-    public void setBuildTime(double buildTime) { this.buildTime = buildTime; }
-
+    public void setBuildTime(double time) {
+        if (time < 0) throw new InvalidBuildingStateException("buildTime cannot be negative");
+        this.buildTime = time;
+    }
     public double getResourceCost() { return resourceCost; }
-    public void setResourceCost(double resourceCost) { this.resourceCost = resourceCost; }
+    public void setResourceCost(double resourceCost) {
+        if (resourceCost < 0) throw new InvalidBuildingArgumentException("resourceCost cannot be negative");
+        this.resourceCost = resourceCost;
+    }
 
     //depends on the level of the building
     public void setUpgradeCost(BuildingInstance instance) {
+        if (instance == null) throw new InvalidBuildingArgumentException("instance cannot be null");
+        int lvl = instance.getCurrentLevel();
         int currentLevel = instance.getCurrentLevel();
+        if (lvl > maxLevel)
+            throw new InvalidBuildingStateException("Current level exceeds maxLevel");
         switch (currentLevel) {
             case 1:
                 this.upgradeCost = 1000;
@@ -91,14 +120,17 @@ public class Building implements Serializable {
                 this.upgradeCost = 1200000;
                 break;
             default:
-                this.upgradeCost = 0;
-                System.out.println("Max level reached or invalid level!");
-                break;
+                throw new InvalidBuildingStateException("Invalid or max level for upgrade cost");
         }
     }
     //depends on the level of the building
     public void setUpgradeConstructionTime(BuildingInstance instance) {
         int currentLevel = instance.getCurrentLevel();
+            if (instance == null) throw new InvalidBuildingArgumentException("instance cannot be null");
+            int lvl = instance.getCurrentLevel();
+
+            if (lvl > maxLevel)
+                throw new InvalidBuildingStateException("Current level exceeds maxLevel");
         switch (currentLevel) {
             case 2:
                 this.upgradeConstructionTime = 0.5; // 30 minutes
@@ -125,9 +157,7 @@ public class Building implements Serializable {
                 this.upgradeConstructionTime = 48; // 2 days
                 break;
             default:
-                this.upgradeConstructionTime = 0;
-                System.out.println("Max level reached or invalid level!");
-                break;
+                throw new InvalidBuildingStateException("Invalid or max level for upgrade time");
         }
     }
 

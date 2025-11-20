@@ -1,6 +1,10 @@
 package com.example.clashofclans;
 
 import com.example.clashofclans.enums.ArmyBuildingType;
+import com.example.clashofclans.exceptions.building.BuildingLevelException;
+import com.example.clashofclans.exceptions.building.InvalidBuildingArgumentException;
+import com.example.clashofclans.exceptions.building.InvalidBuildingStateException;
+import com.example.clashofclans.exceptions.unitExceptions.UnitCompatibilityException;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -65,21 +69,23 @@ public class BuildingInstance implements Serializable {
 
     //later change integer to unit (troop)
     public void moveToArmyCamp(Unit unit, ArmyBuilding armyCamp) {
-        if (!(buildingType instanceof ArmyBuilding) ||
-                ((ArmyBuilding) buildingType).getType() != ArmyBuildingType.barracks) {
-            System.out.println("Only Barracks can move units to Army Camp.");
-            return;
+        if (!Unit.isTroopType(unit.getType())){
+            throw new UnitCompatibilityException("Troop types do not match, must be Trop type");
         }
+        if (unit == null || armyCamp == null)
+            throw new InvalidBuildingArgumentException("unit and armyCamp must not be null");
 
-        long currentTroopsInCamp = armyCamp.getCurrentTroops(); // need to implement
-        if (armyCamp.isEnoughCapacity(currentTroopsInCamp + 1)) {
-            armyCamp.addTroop(unit); // need method in ArmyBuilding
-            trainingQueue.remove(unit);
-            System.out.println("Unit moved successfully to Army Camp!");
-        } else {
-            chillBuffer.add(unit);
-            System.out.println("Army Camp full! Holding unit in chill/ready buffer...");
-        }
+        if (!(buildingType instanceof ArmyBuilding armyBuilding)
+                || armyBuilding.getType() != ArmyBuildingType.barracks)
+            throw new InvalidBuildingStateException("Only a Barracks can train or send units");
+
+        long current = armyCamp.getCurrentTroops();
+
+        if (!armyCamp.isEnoughCapacity(current + unit.getHousingSpace()))
+            throw new InvalidBuildingStateException("Army camp is full");
+
+        armyCamp.addTroop(unit);
+        trainingQueue.remove(unit);
     }
 
 
@@ -91,10 +97,25 @@ public class BuildingInstance implements Serializable {
         System.out.println("Current level upgraded to: " + currentLevel);
     }
     public double getCurrentHp() { return currentHp; }
-    public void setCurrentHp(double currentHp) { this.currentHp = currentHp; }
+    public void setCurrentHp(double hp) {
+        if (hp <= 0)
+            throw new InvalidBuildingArgumentException("HP must be greater than zero");
+
+        this.currentHp = hp;
+    }
+
 
     public int getCurrentLevel() { return currentLevel; }
-    public void setCurrentLevel(int currentLevel) { this.currentLevel = currentLevel; }
+    public void setCurrentLevel(int lvl) {
+
+        if (lvl <= 0)
+            throw new InvalidBuildingArgumentException("Level must be positive");
+
+        if (lvl > buildingType.getMaxLevel())
+            throw new BuildingLevelException("Level exceeds building max level");
+
+        this.currentLevel = lvl;
+    }
 
     public LocalDateTime getTimeTillConstruction() { return timeTillConstruction; }
     public void setTimeTillConstruction(LocalDateTime timeTillConstruction) { this.timeTillConstruction = timeTillConstruction; }
