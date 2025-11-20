@@ -4,6 +4,7 @@ import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.VillageType;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.EnumMap;
 
 import static com.example.clashofclans.enums.ResourceKind.GOLD;
@@ -12,9 +13,9 @@ public class Village implements Serializable {
 
     private final VillageType type;
     private EnumMap<ResourceKind, Integer> resources = new EnumMap<>(ResourceKind.class);
-    //private ArrayList<Buildings> buildings;
+    private ArrayList<Building> buildings;
     private final Player owner;
-    //private ArrayList<Unit> units;
+    private ArrayList<Unit> units;
 
 
     public Village(VillageType type, Player owner) {
@@ -44,13 +45,12 @@ public class Village implements Serializable {
     public Player getOwner() {
         return owner;
     }
-    /*public ArrayList<Buildings> getBuildings(){
+    public ArrayList<Building> getBuildings(){
         return buildings;
-    }*/
-
-    /*public ArrayList<Unit> getUnits(){
+    }
+    public ArrayList<Unit> getUnits(){
         return units;
-    }*/
+    }
     //add new buildings and add units
 
     public void setMoreResources(int res, ResourceKind kind) {

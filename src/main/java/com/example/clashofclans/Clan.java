@@ -9,7 +9,7 @@ public class Clan implements Serializable {
     private String description;
     private int totalTrophies;
     private String league; //i think this should be enum unless we are treating it like infinate levels
-    //private ArrayList<Membership> memberships;
+    private ArrayList<Membership> memberships;
     private ArrayList<Player> banList;
 
     Clan(String name, String description){

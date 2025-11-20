@@ -11,7 +11,7 @@ public class Player implements Serializable {
     private int level;
     private int trophies;
     private String leauge; //assuming there are only few types of leauge we might make this one enum
-    //private Membership membership;
+    private Membership membership;
     private ArrayList<Achievement> achivements;
     private ArrayList<Spell> spells;
     private Village[]  villages;
@@ -68,14 +68,14 @@ public class Player implements Serializable {
         }
         return count;
     }
-    /*
+
     public Membership getMembership() {
         return membership;
     }
     public void setMembership(Membership membership) {
         this.membership = membership;
     }
-     */
+
     public void addVillageDirectForTest(Village v) {
         if (villages[0] == null) villages[0] = v;
         else villages[1] = v;
