@@ -43,6 +43,10 @@ Players can join Clans, forming social groups through the Membership relationshi
 
 The project is developed using  Java language with  an object-oriented programming approach that organizes the game world into clearly defined classes representing buildings, soldiers, resources, and game control mechanisms. The design diagram presents the structure of the system as it is defined for implementation in Java. Each class is shown with its attributes, including their specific Java data types and any enumeration values ​​used. It outlines elements such as players, clans, buildings, resources, soldiers, and units and how their information is represented at the code level. Combat and movement behavior is defined through structured logic that determines targeting, damage application, and positional updates. The algorithms controlling these actions ensure predictable and balanced results based on defined troop and building parameters. Object creation for troops and buildings is managed through organized constructors or factory-style methods, supporting scalability and adding new game elements with minimal structural changes.
 
+The method of saving data is implemented for now in one of the calasses (as methods save and load to binary file .dat ) and Java serializable, with the next step (when we impleemnt the logic) we want to have methods like save and load as interface to implement it in each necesarry for that reason class. 
+
+file format - .dat can be also saved in .ser, .txt wich gives as flexibility
+
 ### The derived attriubiutes in programing approach will be implemented by:   
 Player:  
  - Level is calculated by gamelogic   
