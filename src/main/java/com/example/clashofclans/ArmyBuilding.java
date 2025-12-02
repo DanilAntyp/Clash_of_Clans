@@ -13,7 +13,9 @@ public class ArmyBuilding extends Building implements Serializable {
     private ArmyBuildingType type;
     private int troopsCapacity;
 
-    private List<Unit> campTroops = new ArrayList<>();
+    private List<Unit> campTroops = new ArrayList<>(); //AGGREGATION ASSOCIATION
+
+    private static List<Building> EXTENT = new ArrayList<>();
 
     public ArmyBuilding() {}
 
@@ -27,6 +29,7 @@ public class ArmyBuilding extends Building implements Serializable {
 
         this.type = type;
         this.troopsCapacity = troopsCapacity;
+        EXTENT.add(this);
     }
 
 

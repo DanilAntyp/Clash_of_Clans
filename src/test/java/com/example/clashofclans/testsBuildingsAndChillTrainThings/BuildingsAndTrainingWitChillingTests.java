@@ -30,6 +30,17 @@ class BuildingsAndTrainingWitChillingTests{
     }
 
     @Test
+    public void testAddInstanceToBuilding() {
+        assertEquals(1, building.getInstances().size());
+    }
+
+    @Test
+    public void testRemoveInstanceFromBuilding() {
+        building.removeInstance(buildingInstance);
+        assertEquals(0, building.getInstances().size());
+    }
+
+    @Test
     void testArmyBuildingCapacity() {
         assertTrue(barracks.isEnoughCapacity(20));
         assertFalse(barracks.isEnoughCapacity(100));
@@ -67,7 +78,7 @@ class BuildingsAndTrainingWitChillingTests{
     void testUpgradeCostAndTime() {
         building.setUpgradeCost(buildingInstance);
         building.setUpgradeConstructionTime(buildingInstance);
-        assertEquals(1000, buildingInstance.getBuildingType().getUpgradeCost(), 0.01); // Original cost
+        assertEquals(1000, buildingInstance.getBuilding().getUpgradeCost(), 0.01); // Original cost
     }
 
     @Test
