@@ -62,7 +62,8 @@ public class Building implements Serializable {
                 1,
                 java.time.LocalDateTime.now().plusHours((long) this.getBuildTime()),
                 location,
-                false
+                false,
+                new QuantityMaxTroops(100)
         );
 
         System.out.println("New building constructed at location: " + location);
