@@ -2,6 +2,7 @@ package com.example.clashofclans;
 
 import com.example.clashofclans.enums.VillageType;
 import com.example.clashofclans.exceptions.clan.clanBanException;
+import com.example.clashofclans.exceptions.player.duplicateEntryExeption;
 import com.example.clashofclans.exceptions.player.missingPlayerException;
 import com.example.clashofclans.exceptions.player.playerNameException;
 import com.example.clashofclans.exceptions.player.villageLimitReachedException;
@@ -19,6 +20,7 @@ public class Player implements Serializable {
     private ArrayList<Achievement> achivements;
     private ArrayList<Spell> spells;
     private Village[]  villages;
+    //TODO idk how to connect this one with war
 
      public Player(String username){
          if (username == null || username.trim().isEmpty()) {
@@ -90,6 +92,21 @@ public class Player implements Serializable {
     }
     public void setMembership(Membership membership) {
         this.membership = membership;
+    }
+
+    public ArrayList<Achievement> getAchievements() {return achivements;}
+    public void addNewAchievement(Achievement achievement) {achivements.add(achievement);}
+    public ArrayList<Spell> getSpells() {return spells;}
+    public void addNewSpell(Spell spell) {
+         try {
+             if(this.spells.contains(spell)){
+                 throw new duplicateEntryExeption("Spell already exists in users inventory");
+             }
+             this.spells.add(spell);
+         }catch(duplicateEntryExeption e){
+             System.out.println(e.getMessage());
+             throw e;
+         }
     }
 
     public void addVillageDirectForTest(Village v) {
