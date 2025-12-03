@@ -1,6 +1,7 @@
 package com.example.clashofclans;
 
 import com.example.clashofclans.enums.ClanRole;
+import com.example.clashofclans.exceptions.clanwar.NullClanException;
 import com.example.clashofclans.exceptions.membership.InvalidClanRoleException;
 import com.example.clashofclans.exceptions.membership.InvalidEndDateException;
 import com.example.clashofclans.exceptions.membership.InvalidJoinDateException;
@@ -27,6 +28,9 @@ public class Membership implements Serializable {
         return Collections.unmodifiableList(extent);
     }
 
+    private Clan clan;
+    private Player player;
+
     private Long id;
 
     private ClanRole clanRole;
@@ -41,14 +45,22 @@ public class Membership implements Serializable {
 
 
 
-    public Membership(ClanRole role, LocalDate joinDate) {
+    public Membership(ClanRole role, LocalDate joinDate , Clan clan , Player player) {
+
+        if (clan == null || player == null)throw new NullClanException("Clan cannot be null");
+
         setClanRole(role);
         setJoinDate(joinDate);
 
         this.isBanned = false;
         this.dateEnd = null;
+        this.clan = clan;
+        this.player = player;
+
+        clan.addMembership(this);
 
         addToExtent(this);
+
     }
 
     public Membership() {}
@@ -109,5 +121,9 @@ public class Membership implements Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    public Clan getClan() {
+        return this.clan;
     }
 }

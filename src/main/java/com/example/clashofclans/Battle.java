@@ -4,9 +4,7 @@ import com.example.clashofclans.exceptions.battle.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 public class Battle implements Serializable {
@@ -16,6 +14,9 @@ public class Battle implements Serializable {
     public static List<Battle> getExtent() {
         return Collections.unmodifiableList(extent);
     }
+
+    private Village  villageAttacks ;
+    private Village  villageDefends ;
 
     private static void addToExtent(Battle battle) {
         if (battle == null) throw new BattleException("Battle cannot be null");
@@ -32,11 +33,16 @@ public class Battle implements Serializable {
     private int stars;
     private int loot;
 
-    public Battle(BattleType type, LocalDateTime time, int stars, int loot) {
+    public Battle(BattleType type, LocalDateTime time, int stars, int loot , Village villageAttacks , Village villageDefends) {
         setType(type);
         setTime(time);
         setStars(stars);
         setLoot(loot);
+
+        if(villageAttacks == null || villageDefends == null) throw new NullVillageException("Village cannot be null");
+
+        this.villageAttacks = villageAttacks;
+        this.villageDefends = villageDefends;
 
         addToExtent(this);
     }
