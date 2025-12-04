@@ -108,7 +108,6 @@ public class Clan implements Serializable {
 
             Membership m = new Membership(ClanRole.MEMBER, LocalDate.now(), this, p);
 
-            memberships.add(m);
             p.setMembership(m);
 
         } catch (memberAddingExeption e) {
@@ -116,6 +115,9 @@ public class Clan implements Serializable {
             throw e;
         }
     }
+
+    public void setMemberships(Membership m){memberships.add(m);}
+
 
 
     public void removeMembership(Membership membership){

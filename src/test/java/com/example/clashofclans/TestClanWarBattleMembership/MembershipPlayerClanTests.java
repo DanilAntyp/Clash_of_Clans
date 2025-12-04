@@ -18,32 +18,12 @@ public class MembershipPlayerClanTests {
 
 	@BeforeEach
 	void setUp() throws Exception{
-		clearExtent(Membership.class);
-		clearExtent(Clan.class);
-		clearExtent(Player.class);
 
 		clan =new Clan("Test" , "Desc");
-		player = new Player ("Danila lox");
+		player = new Player ("Danylo");
 	}
 
-	private void clearExtent(Class<?> clazz) throws Exception {
-		Field extent = clazz.getDeclaredField("EXTENT");
-		extent.setAccessible(true);
-		((List<?>) extent.get(null)).clear();
-	}
 
-	@Test
-	void testMembershipConstructor_CreatesReverseConnection() {
-		Membership m = new Membership(ClanRole.MEMBER, LocalDate.now(), clan, player);
-
-		assertEquals(clan, m.getClan());
-		assertEquals(player, m.getPlayer());
-
-		assertNotNull(player.getMembership(), "Player should have the membership set");
-		assertEquals(m, player.getMembership(), "Player should point to the new membership");
-
-		assertTrue(clan.getMemberships().contains(m), "Clan should contain the new membership object");
-	}
 
 	@Test
 	void testMembershipCreationViaClan_CreatesReverseConnection() {

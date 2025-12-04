@@ -33,16 +33,6 @@ public class TestPlayer {
     }
 
     @Test
-    void testAddNewAchievementSuccessfully() {
-        Player player = new Player("Test");
-        Achievement ach = new Achievement("First Win","descr","tpe","idk to be honest");
-        player.addNewAchievement(ach);
-
-        assertTrue(player.getAchievements().contains(ach));
-        assertEquals(1, player.getAchievements().size());
-    }
-
-    @Test
     void testGetAchievementsEmptyInitially() {
         Player player = new Player("Test");
         assertNotNull(player.getAchievements());

@@ -94,7 +94,7 @@ public class TestVillage {
         Player p= new Player("Alice");
         Village v2= new Village(VillageType.regular, p);
 
-        for(int i=0;i<5;i++){
+        for(int i=0;i<10;i++){
             v2.addBuildingInstance(new BuildingInstance());
         }
         assertThrows(fullCapacityExeption.class, () -> v2.addBuildingInstance(new BuildingInstance()));
@@ -105,7 +105,7 @@ public class TestVillage {
         Player p= new Player("Alice");
         Village v2= new Village(VillageType.regular, p);
 
-        for(int i=0;i<10;i++){
+        for(int i=0;i<5;i++){
             Troop t=new Troop(v2,70, 15, 3,
                     AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.MINION,
                     AttackStyle.RANGED_TROOP, 12);
@@ -161,6 +161,7 @@ public class TestVillage {
         Troop b=new Troop(v2,70, 15, 3,
                 AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.MINION,
                 AttackStyle.RANGED_TROOP, 12);
+        v2.removeUnit(b);
         assertThrows(IlligalVillageExeption.class, () -> v2.removeUnit(b));
     }
 

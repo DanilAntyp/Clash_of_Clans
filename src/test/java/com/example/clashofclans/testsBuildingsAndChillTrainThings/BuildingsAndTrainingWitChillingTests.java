@@ -240,13 +240,32 @@ class BuildingsAndTrainingWitChillingTests{
                 () -> barracksInstance.addToChillBuffer(unit1));
     }
 
-//    @Test
-//    void testAddToUnitsQuanity(){
-//
-//    }
-//
-//    @Test
-//    void testRemoveFromUnitsQunatity(){
-//
-//    }
+    @Test
+    void testAddToUnitsQuantity_fromBuildingInstance() {
+        QuantityMaxUnit qMax = new QuantityMaxUnit(2);
+        ArmyBuilding barracksBuilding = new ArmyBuilding(ArmyBuildingType.barracks, 50);
+        BuildingInstance barracksInstance = new BuildingInstance(
+                village, barracksBuilding, 100, 1,
+                LocalDateTime.now(), false, qMax
+        );
+
+        barracksInstance.addToTrainingQueue(unit1);
+
+        assertTrue(qMax.getUnits().contains(unit1));
+    }
+
+    @Test
+    void testRemoveFromUnitsQuantity_fromBuildingInstance() {
+        QuantityMaxUnit qMax = new QuantityMaxUnit(2);
+        ArmyBuilding barracksBuilding = new ArmyBuilding(ArmyBuildingType.barracks, 50);
+        BuildingInstance barracksInstance = new BuildingInstance(
+                village, barracksBuilding, 100, 1,
+                LocalDateTime.now(), false, qMax
+        );
+
+        barracksInstance.addToTrainingQueue(unit1);
+        barracksInstance.removeFromActiveQueue(unit1);
+
+        assertFalse(qMax.getUnits().contains(unit1));
+    }
 }

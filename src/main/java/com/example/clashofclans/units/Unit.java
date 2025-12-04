@@ -61,6 +61,7 @@ public abstract class Unit implements Serializable {
 
         this.village.addUnit(this);
 
+
         EXTENT.add(this);
     }
 
@@ -68,6 +69,7 @@ public abstract class Unit implements Serializable {
         if (this.village!=null){
             this.village.removeUnit(this);
             this.village=null;
+
         }
         EXTENT.remove(this);
     }
@@ -151,12 +153,11 @@ public abstract class Unit implements Serializable {
             throw new InvalidUnitArgumentException("QuantityMaxUnit cannot be null");
         }
         quantityMaxUnits.add(qmu);
-            qmu.addUnit(this); // this will add the assosiation bidirectinal
+             // this will add the assosiation bidirectinal
     }
 
     public void removeQuantityMaxUnit(QuantityMaxUnit qmu){
         quantityMaxUnits.remove(qmu);
-            qmu.removeUnit(this); // THIS WILL remove the assosiation from the perspective of quanitymax untis object
     }
 
     public Set<QuantityMaxUnit> getQuantityMaxUnits(){

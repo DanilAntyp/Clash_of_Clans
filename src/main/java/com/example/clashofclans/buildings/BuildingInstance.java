@@ -53,9 +53,9 @@ public class BuildingInstance implements Serializable {
         this.timeTillConstruction = timeTillConstruction;
         this.location = location;
         this.inBag = inBag;
-        this.quantityMaxUnit = quantityMaxUnit;
         quantityMaxUnit.addInstance(this);
         addVillage(vilage);
+        addQunatityMaxAss(quantityMaxUnit);
 
         EXTENT.add(this);
     }
@@ -63,7 +63,6 @@ public class BuildingInstance implements Serializable {
     public BuildingInstance(Village vilage, Building b, double currentHp, int currentLevel,
                             LocalDateTime timeTillConstruction,
                             boolean inBag, QuantityMaxUnit quantityMaxUnit) {
-        this.vilage = vilage;
         if (b == null)
             throw new InvalidBuildingArgumentException("Building must be associated");
         this.building = b;
@@ -74,7 +73,9 @@ public class BuildingInstance implements Serializable {
         this.timeTillConstruction = timeTillConstruction;
         this.location = null;
         this.inBag = inBag;
-        this.quantityMaxUnit = quantityMaxUnit;
+        quantityMaxUnit.addInstance(this);
+        addVillage(vilage);
+        addQunatityMaxAss(quantityMaxUnit);
 
         EXTENT.add(this);
     }
@@ -157,6 +158,7 @@ public class BuildingInstance implements Serializable {
 
     public void addToTrainingQueue(Unit unit) {
         if (!(building instanceof ArmyBuilding )){
+            System.out.println(building instanceof ArmyBuilding);
            throw new InvalidBuildingArgumentException("Building must be of type ArmyBuilding to call this method");
         }
         ArmyBuilding armyBuilding = (ArmyBuilding) building;
@@ -174,6 +176,8 @@ public class BuildingInstance implements Serializable {
             return;
         }
         activityQueue.add(unit);
+        quantityMaxUnit.addUnit(unit);
+        unit.addQuantityMaxUnit(quantityMaxUnit);
         System.out.println("Unit added to training queue");
     }
 
@@ -181,6 +185,8 @@ public class BuildingInstance implements Serializable {
         if (!activityQueue.contains(unit))
             throw new InvalidBuildingStateException("Unit doesn't exists in active queue");
         activityQueue.remove(unit);
+        quantityMaxUnit.removeUnit(unit);
+        unit.removeQuantityMaxUnit(quantityMaxUnit);
         System.out.println("Unit removed to active queue");
     }
     public void  addToChillBuffer(Unit unit) {
@@ -225,7 +231,7 @@ public class BuildingInstance implements Serializable {
         this.quantityMaxUnit = unitin;
     }
     public void removeQuantityMaxAss(QuantityMaxUnit  unitin){
-        if (quantityMaxUnit == unitin){
+        if (quantityMaxUnit != unitin){
             throw new QuanityUnitException("You cannot remove the assosiation of the Quanity max that is not assosiated");
         }
         this.quantityMaxUnit = null;
