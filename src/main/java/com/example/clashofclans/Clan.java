@@ -23,7 +23,7 @@ public class Clan implements Serializable {
     private ArrayList<Player> banList;
     private ArrayList<ClanWar> clanWars;
 
-    Clan(String name, String description){
+    public Clan(String name, String description){
 
         if (name == null || name.trim().isEmpty()) {
             throw new clanCreationException("Clan name cannot be null or empty.");
