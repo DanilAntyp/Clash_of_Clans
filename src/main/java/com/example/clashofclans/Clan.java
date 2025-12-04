@@ -32,6 +32,7 @@ public class Clan implements Serializable {
             throw new clanCreationException("Description cannot be null.");
         }
 
+     Clan(String name, String description){
         this.name = name;
         this.description = description;
         //entry level leauge and badge

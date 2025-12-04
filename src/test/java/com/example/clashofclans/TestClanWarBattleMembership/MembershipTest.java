@@ -1,6 +1,8 @@
 package com.example.clashofclans.TestClanWarBattleMembership;
 
+import com.example.clashofclans.Clan;
 import com.example.clashofclans.Membership;
+import com.example.clashofclans.Player;
 import com.example.clashofclans.enums.ClanRole;
 import com.example.clashofclans.exceptions.membership.InvalidClanRoleException;
 import com.example.clashofclans.exceptions.membership.InvalidEndDateException;
@@ -24,9 +26,13 @@ public class MembershipTest {
 
     @Test
     void testValidMembershipCreation() {
+
+        Player player = new Player("John Doe");
+        Clan clan = new Clan("name" ,"description");
+
         LocalDate join = LocalDate.of(2024, 5, 10);
 
-        Membership m = new Membership(ClanRole.ELDER, join);
+        Membership m = new Membership(ClanRole.ELDER, join, clan, player);
 
         assertEquals(ClanRole.ELDER, m.getClanRole());
         assertEquals(join, m.getJoinDate());
@@ -36,24 +42,30 @@ public class MembershipTest {
 
     @Test
     void testNullClanRoleThrowsException() {
+        Player player = new Player("John Doe");
+        Clan clan = new Clan("name" ,"description");
         LocalDate join = LocalDate.now();
 
         assertThrows(InvalidClanRoleException.class,
-                () -> new Membership(null, join));
+                () -> new Membership(null, join , clan, player));
     }
 
     @Test
     void testNullJoinDateThrowsException() {
+        Player player = new Player("John Doe");
+        Clan clan = new Clan("name" ,"description");
         assertThrows(InvalidJoinDateException.class,
-                () -> new Membership(ClanRole.LEADER, null));
+                () -> new Membership(ClanRole.LEADER, null , clan, player));
     }
 
     @Test
     void testEndDateBeforeJoinThrowsException() {
+        Player player = new Player("John Doe");
+        Clan clan = new Clan("name" ,"description");
         LocalDate join = LocalDate.of(2024, 5, 10);
         LocalDate end = LocalDate.of(2024, 5, 1);
 
-        Membership m = new Membership(ClanRole.MEMBER, join);
+        Membership m = new Membership(ClanRole.MEMBER, join , clan, player);
 
         assertThrows(InvalidEndDateException.class,
                 () -> m.setDateEnd(end));
@@ -61,10 +73,14 @@ public class MembershipTest {
 
     @Test
     void testExtentStoresObjects() {
+        Player player = new Player("John Doe");
+        Clan clan = new Clan("name" ,"description");
+        Player player1 = new Player("John Doe1");
+        Clan clan1 = new Clan("name" ,"description1");
         LocalDate d = LocalDate.now();
 
-        Membership m1 = new Membership(ClanRole.ELDER, d);
-        Membership m2 = new Membership(ClanRole.MEMBER, d);
+        Membership m1 = new Membership(ClanRole.ELDER, d , clan, player);
+        Membership m2 = new Membership(ClanRole.MEMBER, d , clan1, player1);
 
         List<Membership> extent = Membership.getExtent();
 
@@ -75,7 +91,9 @@ public class MembershipTest {
 
     @Test
     void testExtentIsUnmodifiable() {
-        Membership m = new Membership(ClanRole.LEADER, LocalDate.now());
+        Player player = new Player("John Doe");
+        Clan clan = new Clan("name" ,"description");
+        Membership m = new Membership(ClanRole.LEADER, LocalDate.now() , clan, player);
 
         List<Membership> extent = Membership.getExtent();
 
@@ -84,7 +102,9 @@ public class MembershipTest {
 
     @Test
     void testJoinMethod() {
-        Membership m = new Membership(ClanRole.MEMBER, LocalDate.of(2022, 1, 1));
+        Player player = new Player("John Doe");
+        Clan clan = new Clan("name" ,"description");
+        Membership m = new Membership(ClanRole.MEMBER, LocalDate.of(2022, 1, 1) , clan, player);
         m.setDateEnd(LocalDate.of(2023, 1, 1));
         m.setIsBanned(true);
 
@@ -97,7 +117,9 @@ public class MembershipTest {
 
     @Test
     void testLeaveMethod() {
-        Membership m = new Membership(ClanRole.ELDER, LocalDate.now());
+        Player player = new Player("John Doe");
+        Clan clan = new Clan("name" ,"description");
+        Membership m = new Membership(ClanRole.ELDER, LocalDate.now() , clan, player);
 
         m.Leave();
 
@@ -106,10 +128,12 @@ public class MembershipTest {
 
     @Test
     void testDateEndSetterValid() {
+        Player player = new Player("John Doe");
+        Clan clan = new Clan("name" ,"description");
         LocalDate join = LocalDate.of(2024, 5, 10);
         LocalDate end = LocalDate.of(2024, 5, 15);
 
-        Membership m = new Membership(ClanRole.MEMBER, join);
+        Membership m = new Membership(ClanRole.MEMBER, join , clan, player);
         m.setDateEnd(end);
 
         assertEquals(end, m.getDateEnd());
