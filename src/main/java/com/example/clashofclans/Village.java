@@ -136,6 +136,13 @@ public class Village implements Serializable {
 
     }
 
+    public void addUnit(Unit unit) {
+        units.add(unit);
+    }
+    public void removeUnit(Unit unit) {
+        units.remove(unit);
+    }
+
     //add adjustmennt methods
 
 }

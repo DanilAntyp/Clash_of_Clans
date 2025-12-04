@@ -17,13 +17,53 @@ public final class Troop extends Unit {
     private Integer elixirCost;
     private Integer darkElixirCost;
 
-    public Troop(int hitPoint, int damage, int housingSpace,
+    private BuildingInstance buildingInstance;
+
+    public Troop(Village village, int hitPoint, int damage, int housingSpace,
                  AttackDomain attackDomain, ResourceKind resourceKind, UnitType unitType,
                  AttackStyle attackStyle, Integer cost){
-        super(hitPoint,damage,housingSpace,attackDomain,resourceKind,unitType);
+        super(village, hitPoint,damage,housingSpace,attackDomain,resourceKind,unitType);
         if (!Unit.isTroopType(unitType)) throw new InvalidUnitArgumentException("Troop type is not a troop");
         this.attackStyle = Objects.requireNonNull(attackStyle);
         setCost(resourceKind, cost);
+    }
+
+    public BuildingInstance getBuildingInstance() {
+        return buildingInstance;
+    }
+
+    public void setBuildingInstance(BuildingInstance newBuildingInstance) {
+        if(this.buildingInstance==newBuildingInstance) return;
+
+        if (this.buildingInstance!=null){
+            BuildingInstance oldBuildingInstance = this.buildingInstance;
+
+            if(oldBuildingInstance.getActivityQueue().contains(this)) {
+                oldBuildingInstance.removeFromActiveQueue(this);
+            } else if (oldBuildingInstance.getChillBuffer().remove(this)){
+                oldBuildingInstance.getChillBuffer().remove(this);
+            }
+            //TODO: add method removeFromChillBuffer to BuildingInstance and use it here
+            this.buildingInstance = null;
+        }
+
+        this.buildingInstance = newBuildingInstance;
+
+        if (newBuildingInstance!=null){
+            boolean alreadyInActive = newBuildingInstance.getActivityQueue().contains(this);
+            boolean alreadyInChill = newBuildingInstance.getChillBuffer().contains(this);
+
+            if(!alreadyInActive && !alreadyInChill) {
+                try{
+                    newBuildingInstance.addToActivityQueue(this);
+                } catch (Exception ignored){}
+            }
+        }
+
+    }
+
+    public void removeBuildingInstance() {
+        setBuildingInstance(null);
     }
 
     private void setCost(ResourceKind resourceKind, Integer cost){
