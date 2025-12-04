@@ -15,10 +15,10 @@ public class Hero extends Unit {
     private Integer regenerationTime;
     private String upgradeSystem;
 
-    public Hero(int hitPoint, int damage, int housingSpace,
+    public Hero(Village village, int hitPoint, int damage, int housingSpace,
                 AttackDomain attackDomain, ResourceKind resourceKind, UnitType unitType,
                 String uniqueAbility, Integer regenerationTime, String upgradeSystem){
-        super(hitPoint,damage,housingSpace,attackDomain,resourceKind,unitType);
+        super(village, hitPoint,damage,housingSpace,attackDomain,resourceKind,unitType);
         if (!Unit.isHeroType(unitType)) throw new InvalidUnitArgumentException("Hero type is not a hero");
         if (isBlank(uniqueAbility) || isBlank(upgradeSystem))
             throw new InvalidUnitArgumentException("strings cannot be empty");

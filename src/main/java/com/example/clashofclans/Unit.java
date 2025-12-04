@@ -23,6 +23,8 @@ public abstract class Unit implements Serializable {
     private final ResourceKind resourceKind;
     private final UnitType type;
 
+    private Village village;
+
     private static final Set<UnitType> HERO_TYPES = EnumSet.of(UnitType.BARBARIAN_KING, UnitType.ARCHER_QUEEN, UnitType.GRAND_WARDEN);
     private static final Set<UnitType> ELIXIR_USER_TYPES = EnumSet.of(UnitType.BARBARIAN, UnitType.ARCHER, UnitType.GIANT, UnitType.GOBLIN, UnitType.DRAGON, UnitType.BARBARIAN_KING, UnitType.ARCHER_QUEEN, UnitType.GRAND_WARDEN);
     private static final Set<UnitType> DARK_ELIXIR_USER_TYPES = EnumSet.of(UnitType.HOG, UnitType.MINION, UnitType.WITCH, UnitType.VALKYRIE, UnitType.GOLEM, UnitType.MINION_KING);
@@ -32,8 +34,12 @@ public abstract class Unit implements Serializable {
     private static final List<Unit> EXTENT = new ArrayList<>();
 
 
-    protected Unit(int hitPoint,int damage,int housingSpace,
+    protected Unit(Village village, int hitPoint,int damage,int housingSpace,
                    AttackDomain attackDomain, ResourceKind resourceKind, UnitType unitType) {
+
+        if(village==null){
+            throw new InvalidUnitArgumentException("Unit must belong to a Village");
+        }
 
         if (hitPoint<=0) throw new InvalidUnitArgumentException ("hitPoint must be > 0");
         if(damage<=0) throw new InvalidUnitArgumentException ("damage must be > 0");
@@ -43,12 +49,29 @@ public abstract class Unit implements Serializable {
         if (unitType == null) throw new InvalidUnitArgumentException("unit type cannot be null");
         validateResourceCompatibility(resourceKind, attackDomain, unitType);
 
-        this.hitPoint=hitPoint; this.damage=damage; this.housingSpace=housingSpace;
+        this.village = village;
+        this.hitPoint=hitPoint;
+        this.damage=damage;
+        this.housingSpace=housingSpace;
         this.domain= Objects.requireNonNull(attackDomain);
         this.resourceKind=Objects.requireNonNull(resourceKind);
         this.type=Objects.requireNonNull(unitType);
 
+        this.village.addUnit(this);
+
         EXTENT.add(this);
+    }
+
+    public void deleteUnit(){
+        if (this.village!=null){
+            this.village.removeUnit(this);
+            this.village=null;
+        }
+        EXTENT.remove(this);
+    }
+
+    public Village getVillage() {
+        return village;
     }
 
     private static void validateResourceCompatibility(ResourceKind resourceKind, AttackDomain attackDomain, UnitType unitType){

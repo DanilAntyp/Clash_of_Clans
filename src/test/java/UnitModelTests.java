@@ -1,11 +1,6 @@
 
-import com.example.clashofclans.Hero;
-import com.example.clashofclans.Troop;
-import com.example.clashofclans.Unit;
-import com.example.clashofclans.enums.AttackDomain;
-import com.example.clashofclans.enums.AttackStyle;
-import com.example.clashofclans.enums.ResourceKind;
-import com.example.clashofclans.enums.UnitType;
+import com.example.clashofclans.*;
+import com.example.clashofclans.enums.*;
 import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
@@ -17,10 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UnitModelTests {
 
+    Village village = new Village(VillageType.regular, new Player("demo"));
+
     @Test
     void createValidTroop_elixirGround_ok() {
         int before = Unit.getExtent().size();
-        Troop troop = new Troop(
+        Troop troop = new Troop(village,
                 100, 20, 5,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN,
                 AttackStyle.GROUND_TROOP, 50
@@ -35,7 +32,7 @@ public class UnitModelTests {
 
     @Test
     void typeResourceMismatch_throws() {
-        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(village,
                 50, 10, 5,
                 AttackDomain.GROUND, ResourceKind.DARK_ELIXIR, UnitType.BARBARIAN,
                 AttackStyle.GROUND_TROOP, 30
@@ -44,7 +41,7 @@ public class UnitModelTests {
 
     @Test
     void typeDomainMismatch_throws() {
-        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(village,
                 120, 35, 20,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.DRAGON,
                 AttackStyle.RANGED_TROOP, 12000
@@ -53,17 +50,17 @@ public class UnitModelTests {
 
     @Test
     void negativeNumbers_throws() {
-        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(village,
                 -10, 10, 1,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.GOBLIN,
                 AttackStyle.GROUND_TROOP, 1
         ));
-        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(village,
                 10, -1, 1,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.GOBLIN,
                 AttackStyle.GROUND_TROOP, 1
         ));
-        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(village,
                 10, 1, -1,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.GOBLIN,
                 AttackStyle.GROUND_TROOP, 1
@@ -72,12 +69,12 @@ public class UnitModelTests {
 
     @Test
     void heroEmptyStrings_throws() {
-        assertThrows(InvalidUnitArgumentException.class, () -> new Hero(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Hero(village,
                 1000, 50, 25,
                 AttackDomain.GROUND, ResourceKind.DARK_ELIXIR, UnitType.MINION_KING,
                 "  ", 300, "upgrade"
         ));
-        assertThrows(InvalidUnitArgumentException.class, () -> new Hero(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Hero(village,
                 1000, 50, 25,
                 AttackDomain.GROUND, ResourceKind.DARK_ELIXIR, UnitType.BARBARIAN_KING,
                 "Rage", 300, " "
@@ -86,12 +83,12 @@ public class UnitModelTests {
 
     @Test
     void derivedRange_ok() {
-        Troop air = new Troop(
+        Troop air = new Troop(village,
                 60, 15, 2,
                 AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.MINION,
                 AttackStyle.RANGED_TROOP, 5
         );
-        Troop ground = new Troop(
+        Troop ground = new Troop(village,
                 100, 20, 5,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.ARCHER,
                 AttackStyle.RANGED_TROOP, 50
@@ -114,9 +111,9 @@ public class UnitModelTests {
 
     @Test
     void persistency_saveAndLoad_ok(@TempDir Path tmp) {
-        new Troop(100, 10, 5, AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN,
+        new Troop(village,100, 10, 5, AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN,
                 AttackStyle.GROUND_TROOP, 25);
-        new Troop(70, 18, 2, AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.MINION,
+        new Troop(village,70, 18, 2, AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.MINION,
                 AttackStyle.RANGED_TROOP, 15);
 
         int countBefore = Unit.getExtent().size();
@@ -132,7 +129,7 @@ public class UnitModelTests {
 
     @Test
     void troopWithHeroType_throws() {
-        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(village,
                 100, 20, 5,
                 AttackDomain.GROUND, ResourceKind.DARK_ELIXIR, UnitType.BARBARIAN_KING,
                 AttackStyle.GROUND_TROOP, 1
@@ -141,7 +138,7 @@ public class UnitModelTests {
 
     @Test
     void heroWithNonHeroType_throws() {
-        assertThrows(InvalidUnitArgumentException.class, () -> new Hero(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Hero(village,
                 1000, 50, 25,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN,
                 "Rage", 300, "upgrade"
@@ -150,18 +147,18 @@ public class UnitModelTests {
 
     @Test
     void barbarianKing_isElixirGround_only() {
-        new Hero(1200, 250, 25,
+        new Hero(village,1200, 250, 25,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN_KING,
                 "Rage", 300, "upgrade");
 
-        assertThrows(InvalidUnitArgumentException.class, () -> new Hero(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Hero(village,
                 1200, 250, 25,
                 AttackDomain.AIR, ResourceKind.ELIXIR, UnitType.BARBARIAN_KING,
                 "Rage", 300, "upgrade"
         ));
 
         assertThrows(InvalidUnitArgumentException.class, () -> new Hero(
-                1200, 250, 25,
+                village,1200, 250, 25,
                 AttackDomain.GROUND, ResourceKind.DARK_ELIXIR, UnitType.BARBARIAN_KING,
                 "Rage", 300, "upgrade"
         ));
@@ -169,17 +166,17 @@ public class UnitModelTests {
 
     @Test
     void grandWarden_isElixirAir_only() {
-        new Hero(1000, 200, 25,
+        new Hero(village,1000, 200, 25,
                 AttackDomain.AIR, ResourceKind.ELIXIR, UnitType.GRAND_WARDEN,
                 "Life Aura", 450, "upgrade");
 
         assertThrows(InvalidUnitArgumentException.class, () -> new Hero(
-                1000, 200, 25,
+                village,1000, 200, 25,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.GRAND_WARDEN,
                 "Life Aura", 450, "upgrade"
         ));
         assertThrows(InvalidUnitArgumentException.class, () -> new Hero(
-                1000, 200, 25,
+                village,1000, 200, 25,
                 AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.GRAND_WARDEN,
                 "Life Aura", 450, "upgrade"
         ));
@@ -187,17 +184,17 @@ public class UnitModelTests {
 
     @Test
     void nullAspects_throws() {
-        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(village,
                 50, 10, 1,
                 null, ResourceKind.ELIXIR, UnitType.BARBARIAN,
                 AttackStyle.GROUND_TROOP, 1
         ));
-        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(village,
                 50, 10, 1,
                 AttackDomain.GROUND, null, UnitType.BARBARIAN,
                 AttackStyle.GROUND_TROOP, 1
         ));
-        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(
+        assertThrows(InvalidUnitArgumentException.class, () -> new Troop(village,
                 50, 10, 1,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, null,
                 AttackStyle.GROUND_TROOP, 1
@@ -205,7 +202,7 @@ public class UnitModelTests {
     }
     @Test
     void setAttackStyle_null_throws() {
-        Troop t = new Troop(60, 12, 2,
+        Troop t = new Troop(village,60, 12, 2,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.ARCHER,
                 AttackStyle.RANGED_TROOP, 50);
         assertThrows(InvalidUnitArgumentException.class, () -> t.setAttackStyle(null));
@@ -213,7 +210,7 @@ public class UnitModelTests {
 
     @Test
     void elixirTroop_hasOnlyElixirCost() {
-        Troop t = new Troop(90, 22, 4,
+        Troop t = new Troop(village,90, 22, 4,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.GIANT,
                 AttackStyle.GROUND_TROOP, 250);
         assertEquals(250, t.getElixirCost());
@@ -222,7 +219,7 @@ public class UnitModelTests {
 
     @Test
     void darkTroop_hasOnlyDarkCost() {
-        Troop t = new Troop(70, 15, 3,
+        Troop t = new Troop(village,70, 15, 3,
                 AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.MINION,
                 AttackStyle.RANGED_TROOP, 12);
         assertNull(t.getElixirCost());
