@@ -1,7 +1,8 @@
-package com.example.clashofclans;
+package com.example.clashofclans.theRest;
 
+import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.clanRelated.Membership;
 import com.example.clashofclans.enums.VillageType;
-import com.example.clashofclans.exceptions.clan.clanBanException;
 import com.example.clashofclans.exceptions.player.*;
 
 import java.io.Serializable;
@@ -100,7 +101,8 @@ public class Player implements Serializable {
     }
 
     public ArrayList<Achievement> getAchievements() {return achivements;}
-    public void addNewAchievement(Achievement achievement) {achivements.add(achievement);}
+    public void addNewAchievement(Achievement achievement) {achivements.add(achievement); achievement.addPlayer(this);}
+    public void removeAchievement(Achievement achievement) {achivements.remove(achievement); achievement.removePlayer(this);}
     public ArrayList<Spell> getSpells() {return spells;}
     public void addNewSpell(Spell spell) {
          try {

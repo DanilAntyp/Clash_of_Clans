@@ -1,8 +1,7 @@
 package com.example.clashofclans.buildings;
 
 import com.example.clashofclans.ExtentPersistence;
-import com.example.clashofclans.QuantityMaxUnit;
-import com.example.clashofclans.Village;
+import com.example.clashofclans.theRest.Village;
 import com.example.clashofclans.exceptions.building.InvalidBuildingArgumentException;
 import com.example.clashofclans.exceptions.building.InvalidBuildingStateException;
 
@@ -68,7 +67,7 @@ public class Building implements Serializable {
                 java.time.LocalDateTime.now().plusHours((long) this.getBuildTime()),
                 location,
                 false,
-                new QuantityMaxUnit(100)
+                new QuantityMaxUnit(100 )
         );
 
         System.out.println("New building constructed at location: " + location);

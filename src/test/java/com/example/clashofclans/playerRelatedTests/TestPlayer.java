@@ -1,8 +1,8 @@
 package com.example.clashofclans.playerRelatedTests;
 
-import com.example.clashofclans.Achievement;
-import com.example.clashofclans.Player;
-import com.example.clashofclans.Spell;
+import com.example.clashofclans.theRest.Achievement;
+import com.example.clashofclans.theRest.Player;
+import com.example.clashofclans.theRest.Spell;
 import com.example.clashofclans.enums.SpellType;
 import com.example.clashofclans.exceptions.player.duplicateEntryExeption;
 import com.example.clashofclans.exceptions.player.wrongFriendAddingException;

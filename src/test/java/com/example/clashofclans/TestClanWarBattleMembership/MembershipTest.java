@@ -1,8 +1,8 @@
 package com.example.clashofclans.TestClanWarBattleMembership;
 
-import com.example.clashofclans.Clan;
-import com.example.clashofclans.Membership;
-import com.example.clashofclans.Player;
+import com.example.clashofclans.clanRelated.Clan;
+import com.example.clashofclans.clanRelated.Membership;
+import com.example.clashofclans.theRest.Player;
 import com.example.clashofclans.enums.ClanRole;
 import com.example.clashofclans.exceptions.membership.InvalidClanRoleException;
 import com.example.clashofclans.exceptions.membership.InvalidEndDateException;

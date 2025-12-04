@@ -1,9 +1,10 @@
 package com.example.clashofclans.buildings;
 
 import com.example.clashofclans.ExtentPersistence;
-import com.example.clashofclans.QuantityMaxUnit;
-import com.example.clashofclans.Unit;
-import com.example.clashofclans.Village;
+import com.example.clashofclans.exceptions.building.QuanityUnitException;
+import com.example.clashofclans.exceptions.village.IlligalVillageExeption;
+import com.example.clashofclans.units.Unit;
+import com.example.clashofclans.theRest.Village;
 import com.example.clashofclans.enums.ArmyBuildingType;
 import com.example.clashofclans.exceptions.building.BuildingLevelException;
 import com.example.clashofclans.exceptions.building.InvalidBuildingArgumentException;
@@ -42,7 +43,6 @@ public class BuildingInstance implements Serializable {
     public BuildingInstance(Village vilage, Building b, double currentHp, int currentLevel,
                             LocalDateTime timeTillConstruction,
                             int[] location, boolean inBag, QuantityMaxUnit quantityMaxUnit) {
-        this.vilage = vilage;
         if (b == null)
             throw new InvalidBuildingArgumentException("Building must be associated");
         this.building = b;
@@ -54,11 +54,13 @@ public class BuildingInstance implements Serializable {
         this.location = location;
         this.inBag = inBag;
         this.quantityMaxUnit = quantityMaxUnit;
+        quantityMaxUnit.addInstance(this);
+        addVillage(vilage);
 
         EXTENT.add(this);
     }
 
-    public BuildingInstance(Village vilage,Building b, double currentHp, int currentLevel,
+    public BuildingInstance(Village vilage, Building b, double currentHp, int currentLevel,
                             LocalDateTime timeTillConstruction,
                             boolean inBag, QuantityMaxUnit quantityMaxUnit) {
         this.vilage = vilage;
@@ -216,6 +218,19 @@ public class BuildingInstance implements Serializable {
         this.currentLevel = lvl;
     }
 
+    public void addQunatityMaxAss(QuantityMaxUnit  unitin){
+        if (unitin == null){
+            throw new QuanityUnitException("Qunaity unit cannot be null");
+        }
+        this.quantityMaxUnit = unitin;
+    }
+    public void removeQuantityMaxAss(QuantityMaxUnit  unitin){
+        if (quantityMaxUnit == unitin){
+            throw new QuanityUnitException("You cannot remove the assosiation of the Quanity max that is not assosiated");
+        }
+        this.quantityMaxUnit = null;
+    }
+
     public LocalDateTime getTimeTillConstruction() { return timeTillConstruction; }
     public void setTimeTillConstruction(LocalDateTime timeTillConstruction) { this.timeTillConstruction = timeTillConstruction; }
 
@@ -234,6 +249,18 @@ public class BuildingInstance implements Serializable {
             throw new InvalidBuildingArgumentException("QuantityMaxTroops cannot be null");
         this.quantityMaxUnit = q;
     }
+    public void addVillage(Village village){
+        if (village == null){
+            throw new IlligalVillageExeption("village cannot be null as assosiation");
+        }
+        this.vilage = village;
+    }
+    public void removeVillage(Village village){
+        if (!(this.vilage == village)){
+            throw new IlligalVillageExeption(" it needs to be the same assosiation vialge that you want to remove");
+        }
+        this.vilage = null;
+    }
 
     public List<Unit> getActivityQueue() {
         return activityQueue;
@@ -251,6 +278,7 @@ public class BuildingInstance implements Serializable {
         this.chillBuffer = chillBuffer;
     }
 
+
     public static void saveExtent(Path file) {
         ExtentPersistence.saveExtent(EXTENT, file);
     }
@@ -258,4 +286,5 @@ public class BuildingInstance implements Serializable {
     public static void loadExtent(Path file) {
         EXTENT = ExtentPersistence.loadExtent(file);
     }
+
 }

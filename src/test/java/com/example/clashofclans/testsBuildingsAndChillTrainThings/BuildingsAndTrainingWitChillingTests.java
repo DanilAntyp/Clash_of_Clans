@@ -1,10 +1,14 @@
 package com.example.clashofclans.testsBuildingsAndChillTrainThings;
 
-import com.example.clashofclans.*;
 import com.example.clashofclans.buildings.*;
 import com.example.clashofclans.enums.*;
 import com.example.clashofclans.exceptions.building.InvalidBuildingStateException;
 import com.example.clashofclans.exceptions.unitExceptions.UnitCompatibilityException;
+import com.example.clashofclans.theRest.Player;
+import com.example.clashofclans.theRest.Village;
+import com.example.clashofclans.units.Hero;
+import com.example.clashofclans.units.Troop;
+import com.example.clashofclans.units.Unit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -235,4 +239,14 @@ class BuildingsAndTrainingWitChillingTests{
         assertThrows(InvalidBuildingStateException.class,
                 () -> barracksInstance.addToChillBuffer(unit1));
     }
+
+//    @Test
+//    void testAddToUnitsQuanity(){
+//
+//    }
+//
+//    @Test
+//    void testRemoveFromUnitsQunatity(){
+//
+//    }
 }

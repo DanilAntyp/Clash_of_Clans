@@ -1,8 +1,8 @@
 package com.example.clashofclans.TestClanWarBattleMembership;
 
-import com.example.clashofclans.Battle;
-import com.example.clashofclans.Player;
-import com.example.clashofclans.Village;
+import com.example.clashofclans.theRest.Battle;
+import com.example.clashofclans.theRest.Player;
+import com.example.clashofclans.theRest.Village;
 import com.example.clashofclans.enums.BattleType;
 import com.example.clashofclans.enums.VillageType;
 import com.example.clashofclans.exceptions.battle.InvalidBattleTimeException;

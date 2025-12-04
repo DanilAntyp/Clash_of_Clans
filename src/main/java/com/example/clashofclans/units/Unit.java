@@ -1,15 +1,15 @@
-package com.example.clashofclans;
+package com.example.clashofclans.units;
 
 
+import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.buildings.QuantityMaxUnit;
+import com.example.clashofclans.theRest.Village;
 import com.example.clashofclans.enums.AttackDomain;
 import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.UnitType;
 import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
-import com.example.clashofclans.exceptions.unitExceptions.UnitPersistencyException;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -24,6 +24,8 @@ public abstract class Unit implements Serializable {
     private final UnitType type;
 
     private Village village;
+
+    private Set<QuantityMaxUnit> quantityMaxUnits = new HashSet<>();
 
     private static final Set<UnitType> HERO_TYPES = EnumSet.of(UnitType.BARBARIAN_KING, UnitType.ARCHER_QUEEN, UnitType.GRAND_WARDEN);
     private static final Set<UnitType> ELIXIR_USER_TYPES = EnumSet.of(UnitType.BARBARIAN, UnitType.ARCHER, UnitType.GIANT, UnitType.GOBLIN, UnitType.DRAGON, UnitType.BARBARIAN_KING, UnitType.ARCHER_QUEEN, UnitType.GRAND_WARDEN);
@@ -142,5 +144,26 @@ public abstract class Unit implements Serializable {
 
     public static void loadExtent(Path file) {
         EXTENT = ExtentPersistence.loadExtent(file);
+    }
+
+    public void addQuantityMaxUnit(QuantityMaxUnit qmu){
+        if (qmu == null){
+            throw new InvalidUnitArgumentException("QuantityMaxUnit cannot be null");
+        }
+        quantityMaxUnits.add(qmu);
+            qmu.addUnit(this); // this will add the assosiation bidirectinal
+    }
+
+    public void removeQuantityMaxUnit(QuantityMaxUnit qmu){
+        quantityMaxUnits.remove(qmu);
+            qmu.removeUnit(this); // THIS WILL remove the assosiation from the perspective of quanitymax untis object
+    }
+
+    public Set<QuantityMaxUnit> getQuantityMaxUnits(){
+        return quantityMaxUnits;
+    }
+
+    public void setQuantityMaxUnits(Set<QuantityMaxUnit> qmus){
+        quantityMaxUnits = qmus;
     }
 }

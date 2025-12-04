@@ -1,24 +1,41 @@
 package com.example.clashofclans.playerRelatedTests;
 
-import com.example.clashofclans.*;
 import com.example.clashofclans.buildings.BuildingInstance;
 import com.example.clashofclans.enums.*;
 import com.example.clashofclans.exceptions.player.villageLimitReachedException;
 import com.example.clashofclans.exceptions.village.fullCapacityExeption;
-import com.example.clashofclans.exceptions.village.illigalRemoveExeption;
+import com.example.clashofclans.exceptions.village.IlligalVillageExeption;
 import com.example.clashofclans.exceptions.village.notEnoughResourcesException;
+import com.example.clashofclans.theRest.Player;
+import com.example.clashofclans.theRest.Village;
+import com.example.clashofclans.units.Troop;
+import com.example.clashofclans.units.Unit;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import java.lang.reflect.Field;
+import java.util.List;
+
+
 
 public class TestVillage {
 
-    public Village village;
+    @BeforeEach
+    void resetExtent() throws NoSuchFieldException, IllegalAccessException {
+        Field f = Village.class.getDeclaredField("EXTENT");
+        f.setAccessible(true);
+        ((List<?>) f.get(null)).clear();
+    }
+
+
+
+
 
     @Test
     void testVillageConstructorAndGetters() {
         Player owner = new Player("Alice");
-        village = new Village(VillageType.regular, owner);
+        Village village = new Village(VillageType.regular, owner);
 
         assertEquals(VillageType.regular, village.getType());
         assertEquals(0, village.getResources(ResourceKind.GOLD));
@@ -77,7 +94,7 @@ public class TestVillage {
         Player p= new Player("Alice");
         Village v2= new Village(VillageType.regular, p);
 
-        for(int i=0;i<10;i++){
+        for(int i=0;i<5;i++){
             v2.addBuildingInstance(new BuildingInstance());
         }
         assertThrows(fullCapacityExeption.class, () -> v2.addBuildingInstance(new BuildingInstance()));
@@ -85,25 +102,22 @@ public class TestVillage {
 
     @Test
     void testAddUnitFullCapacityError() {
-        Player p = new Player("Alice");
-        Village v2 = new Village(VillageType.regular, p);
+        Player p= new Player("Alice");
+        Village v2= new Village(VillageType.regular, p);
 
-        int capacity = v2.getUnitCapacity();
-
-        for (int i = 0; i < capacity; i++) {
-            assertDoesNotThrow(() -> v2.addUnit(
-                    new Troop(v2, 70, 15, 3,
-                            AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.MINION,
-                            AttackStyle.RANGED_TROOP, 12)
-            ));
+        for(int i=0;i<10;i++){
+            Troop t=new Troop(v2,70, 15, 3,
+                    AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.MINION,
+                    AttackStyle.RANGED_TROOP, 12);
         }
 
-        assertThrows(fullCapacityExeption.class, () -> v2.addUnit(
-                new Troop(v2, 70, 15, 3,
-                        AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.MINION,
-                        AttackStyle.RANGED_TROOP, 12)
-        ));
+        assertThrows(fullCapacityExeption.class, () -> new Troop(v2,70, 15, 3,
+                AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.MINION,
+                AttackStyle.RANGED_TROOP, 12));
     }
+
+
+
 
     @Test
     void testRemoveBuildingSuccsessfully() {
@@ -121,11 +135,10 @@ public class TestVillage {
         Player p= new Player("Alice");
         Village v2= new Village(VillageType.regular, p);
 
-        Troop b = new Troop(village,70, 15, 3,
+        Troop b = new Troop(v2,70, 15, 3,
                 AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.MINION,
                 AttackStyle.RANGED_TROOP, 12);
 
-        v2.addUnit(b);
         v2.removeUnit(b);
         assertFalse(v2.getUnits().contains(b));
     }
@@ -137,7 +150,7 @@ public class TestVillage {
 
         BuildingInstance b= new BuildingInstance();
 
-        assertThrows(illigalRemoveExeption.class, () -> v2.removeBuilding(b));
+        assertThrows(IlligalVillageExeption.class, () -> v2.removeBuilding(b));
     }
 
     @Test
@@ -145,10 +158,10 @@ public class TestVillage {
         Player p= new Player("Alice");
         Village v2= new Village(VillageType.regular, p);
 
-        Troop b=new Troop(village,70, 15, 3,
+        Troop b=new Troop(v2,70, 15, 3,
                 AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.MINION,
                 AttackStyle.RANGED_TROOP, 12);
-        assertThrows(illigalRemoveExeption.class, () -> v2.removeUnit(b));
+        assertThrows(IlligalVillageExeption.class, () -> v2.removeUnit(b));
     }
 
 

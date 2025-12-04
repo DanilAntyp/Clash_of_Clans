@@ -1,6 +1,6 @@
-package com.example.clashofclans;
+package com.example.clashofclans.theRest;
 
-import com.example.clashofclans.buildings.BuildingInstance;
+import com.example.clashofclans.ExtentPersistence;
 import com.example.clashofclans.enums.SpellType;
 
 import java.io.Serializable;

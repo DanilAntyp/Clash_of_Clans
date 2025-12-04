@@ -1,4 +1,6 @@
-package com.example.clashofclans;
+package com.example.clashofclans.theRest;
+import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.clanRelated.ClanWar;
 import com.example.clashofclans.enums.BattleType;
 import com.example.clashofclans.exceptions.battle.*;
 import org.springframework.format.annotation.DateTimeFormat;

@@ -1,5 +1,7 @@
-package com.example.clashofclans;
+package com.example.clashofclans.clanRelated;
 
+import com.example.clashofclans.theRest.Battle;
+import com.example.clashofclans.ExtentPersistence;
 import com.example.clashofclans.exceptions.battle.InvalidBattleTimeException;
 import com.example.clashofclans.exceptions.battle.NullBattleException;
 import com.example.clashofclans.exceptions.clanwar.*;
@@ -7,7 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.nio.file.Path;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -122,23 +123,26 @@ public class ClanWar implements Serializable {
 
     }
 
-    public void addBattle(Battle battle) {
+	public void addBattle(Battle battle) {
 
-        if(battle == null) throw new NullBattleException("Battle cannot be null");
+		if(battle == null) throw new NullBattleException("Battle cannot be null");
 
-        LocalDateTime time  = battle.getTime();
+		LocalDateTime time = battle.getTime();
 
-        if(time == null) throw new InvalidBattleTimeException("Battle time cannot be null");
+		if(time == null) throw new InvalidBattleTimeException("Battle time cannot be null");
 
+		if(this.battlesInClanWar.containsKey(time)){
+			if (this.battlesInClanWar.get(time) == battle) {
+				return;
+			}
 
-        if(this.battlesInClanWar.containsKey(time)){
-            throw new RuntimeException("A battle is already scheduled at " + time.toString());
-        }
-        this.battlesInClanWar.put(time , battle);
+			throw new SheduleClanWarException("A battle is already scheduled");
+		}
 
-        battle.addClanWar(this);
+		this.battlesInClanWar.put(time , battle);
 
-    }
+		battle.addClanWar(this);
+	}
     public void removeBattle(Battle battle) {
 
         if(battle == null) throw new NullBattleException("Battle cannot be null");

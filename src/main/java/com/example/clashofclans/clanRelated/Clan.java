@@ -1,20 +1,19 @@
-package com.example.clashofclans;
+package com.example.clashofclans.clanRelated;
 
-import com.example.clashofclans.buildings.Building;
+import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.theRest.Player;
 import com.example.clashofclans.enums.ClanRole;
 import com.example.clashofclans.exceptions.clan.calnWarAddingExemption;
 import com.example.clashofclans.exceptions.clan.clanBanException;
 import com.example.clashofclans.exceptions.clan.clanCreationException;
 import com.example.clashofclans.exceptions.clan.memberAddingExeption;
-import com.example.clashofclans.exceptions.village.illigalRemoveExeption;
+import com.example.clashofclans.exceptions.village.IlligalVillageExeption;
 
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Clan implements Serializable {
     private String name;
@@ -125,9 +124,9 @@ public class Clan implements Serializable {
                 memberships.remove(membership);
             }
             else{
-                throw new illigalRemoveExeption("There is no such member in this clan");
+                throw new IlligalVillageExeption("There is no such member in this clan");
             }
-        }catch(illigalRemoveExeption e){
+        }catch(IlligalVillageExeption e){
             System.out.println(e.getMessage());
             throw e;
         }

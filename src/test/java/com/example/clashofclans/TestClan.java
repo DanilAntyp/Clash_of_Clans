@@ -1,8 +1,10 @@
 package com.example.clashofclans;
 
+import com.example.clashofclans.clanRelated.Clan;
 import com.example.clashofclans.exceptions.clan.clanBanException;
 import com.example.clashofclans.exceptions.clan.memberAddingExeption;
-import com.example.clashofclans.exceptions.village.illigalRemoveExeption;
+import com.example.clashofclans.exceptions.village.IlligalVillageExeption;
+import com.example.clashofclans.theRest.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,7 +68,7 @@ public class TestClan {
         Clan clan = new Clan("Warriors", "A strong clan");
         Player p= new Player("John");
 
-        assertThrows(illigalRemoveExeption.class,() -> clan.removeMembership(p.getMembership()));
+        assertThrows(IlligalVillageExeption.class,() -> clan.removeMembership(p.getMembership()));
     }
 
 

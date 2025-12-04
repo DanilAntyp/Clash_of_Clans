@@ -1,8 +1,12 @@
 package com.example.clashofclans.TestClanWarBattleMembership;
 
-import com.example.clashofclans.*;
+import com.example.clashofclans.clanRelated.Clan;
+import com.example.clashofclans.clanRelated.ClanWar;
 import com.example.clashofclans.enums.BattleType;
 import com.example.clashofclans.enums.VillageType;
+import com.example.clashofclans.theRest.Battle;
+import com.example.clashofclans.theRest.Player;
+import com.example.clashofclans.theRest.Village;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import java.time.LocalDateTime;
 
 public class BattleClanWarTests {
 	private ClanWar clanWar1;

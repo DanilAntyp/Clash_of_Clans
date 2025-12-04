@@ -1,7 +1,7 @@
-package com.example.clashofclans;
+package com.example.clashofclans.units;
 
 
-import com.example.clashofclans.buildings.Building;
+import com.example.clashofclans.theRest.Village;
 import com.example.clashofclans.enums.AttackDomain;
 import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.UnitType;

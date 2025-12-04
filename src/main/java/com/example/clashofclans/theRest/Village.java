@@ -1,13 +1,14 @@
-package com.example.clashofclans;
+package com.example.clashofclans.theRest;
 
-import com.example.clashofclans.buildings.Building;
+import com.example.clashofclans.ExtentPersistence;
 import com.example.clashofclans.buildings.BuildingInstance;
 import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.VillageType;
 import com.example.clashofclans.exceptions.player.villageLimitReachedException;
 import com.example.clashofclans.exceptions.village.fullCapacityExeption;
-import com.example.clashofclans.exceptions.village.illigalRemoveExeption;
+import com.example.clashofclans.exceptions.village.IlligalVillageExeption;
 import com.example.clashofclans.exceptions.village.notEnoughResourcesException;
+import com.example.clashofclans.units.Unit;
 
 import java.io.Serializable;
 import java.nio.file.Path;
@@ -20,12 +21,8 @@ public class Village implements Serializable {
     private final VillageType type;
     private EnumMap<ResourceKind, Integer> resources = new EnumMap<>(ResourceKind.class);
 
-
-
 //    private ArrayList<Building> buildings;
     private ArrayList<BuildingInstance> buildingInstances;
-
-
 
     private final Player owner;
     private ArrayList<Unit> units;
@@ -49,7 +46,7 @@ public class Village implements Serializable {
             buildingInstances=new ArrayList<>();
             units=new ArrayList<>();
             this.owner = owner;
-            this.unitCapacity = owner.getVillagesCount();
+
             this.unitCapacity = 5; //FIXME i need a start value here, does unit capacity grows with level or is it stable (or r there no capacity n we can have unlimited units?)
             this.buildingCapacity = 10; //FIXME same question here
 
@@ -110,9 +107,9 @@ public class Village implements Serializable {
                 units.remove(unit);
             }
             else{
-                throw new illigalRemoveExeption("There is no such unit in this village");
+                throw new IlligalVillageExeption("There is no such unit in this village");
             }
-        }catch(illigalRemoveExeption e){
+        }catch(IlligalVillageExeption e){
             System.out.println(e.getMessage());
             throw e;
         }
@@ -120,13 +117,15 @@ public class Village implements Serializable {
 
     public void  removeBuilding(BuildingInstance buildingInstance){
         try{
-            if(buildingInstances.contains(buildingInstance)){
-                buildingInstances.remove(buildingInstance);
+            if(this.buildingInstances.contains(buildingInstance)){
+                this.buildingInstances.remove(buildingInstance);
+                buildingInstance.setInBag(true);
+                buildingInstance.removeVillage(this);
             }
             else{
-                throw new illigalRemoveExeption("There is no such building in this village");
+                throw new IlligalVillageExeption("There is no such building in this village");
             }
-        }catch(illigalRemoveExeption e){
+        }catch(IlligalVillageExeption e){
             System.out.println(e.getMessage());
             throw e;
         }

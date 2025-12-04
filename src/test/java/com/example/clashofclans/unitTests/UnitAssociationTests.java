@@ -1,10 +1,14 @@
 package com.example.clashofclans.unitTests;
 
-import com.example.clashofclans.*;
 import com.example.clashofclans.buildings.ArmyBuilding;
 import com.example.clashofclans.buildings.BuildingInstance;
+import com.example.clashofclans.buildings.QuantityMaxUnit;
 import com.example.clashofclans.enums.*;
 import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
+import com.example.clashofclans.theRest.Player;
+import com.example.clashofclans.theRest.Village;
+import com.example.clashofclans.units.Hero;
+import com.example.clashofclans.units.Troop;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

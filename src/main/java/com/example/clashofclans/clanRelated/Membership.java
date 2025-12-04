@@ -1,5 +1,8 @@
-package com.example.clashofclans;
+package com.example.clashofclans.clanRelated;
 
+import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.exceptions.clan.clanBanException;
+import com.example.clashofclans.theRest.Player;
 import com.example.clashofclans.enums.ClanRole;
 import com.example.clashofclans.exceptions.clanwar.NullClanException;
 import com.example.clashofclans.exceptions.membership.InvalidClanRoleException;
@@ -58,9 +61,11 @@ public class Membership implements Serializable {
         this.clan = clan;
         this.player = player;
 
-        if(clan.checkIfBanned(player)) throw new RuntimeException("Player is banned from clan");
+        if(clan.checkIfBanned(player)) throw new clanBanException("Player is banned from clan");
 
         //clan.addMembership(player);
+
+        player.setMembership(this);
 
         addToExtent(this);
 

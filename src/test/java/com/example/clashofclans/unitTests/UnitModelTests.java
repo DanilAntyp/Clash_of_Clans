@@ -1,8 +1,12 @@
 package com.example.clashofclans.unitTests;
 
-import com.example.clashofclans.*;
 import com.example.clashofclans.enums.*;
 import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
+import com.example.clashofclans.theRest.Player;
+import com.example.clashofclans.theRest.Village;
+import com.example.clashofclans.units.Hero;
+import com.example.clashofclans.units.Troop;
+import com.example.clashofclans.units.Unit;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
 

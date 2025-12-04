@@ -1,7 +1,7 @@
 package com.example.clashofclans.TestClanWarBattleMembership;
 
-import com.example.clashofclans.Clan;
-import com.example.clashofclans.ClanWar;
+import com.example.clashofclans.clanRelated.Clan;
+import com.example.clashofclans.clanRelated.ClanWar;
 import com.example.clashofclans.exceptions.clanwar.InvalidDurationException;
 import com.example.clashofclans.exceptions.clanwar.InvalidResultException;
 import com.example.clashofclans.exceptions.clanwar.InvalidRewardException;
