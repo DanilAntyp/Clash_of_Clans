@@ -31,8 +31,6 @@ public class Clan implements Serializable {
         if (description == null) {
             throw new clanCreationException("Description cannot be null.");
         }
-
-     Clan(String name, String description){
         this.name = name;
         this.description = description;
         //entry level leauge and badge
@@ -40,7 +38,9 @@ public class Clan implements Serializable {
         banList = new ArrayList<>();
         this.league = "0";
         this.badge = "0";
+
     }
+
     public String getBadge() {
         return badge;
     }
@@ -87,19 +87,19 @@ public class Clan implements Serializable {
         banList.add(p);
     }
 
-    public void addMembership(Membership membership){
+    public void addMembership(Player p){
         try{
-            if (membership == null) {
+            if (p == null) {
                 throw new memberAddingExeption("Cannot ban a null player.");
             }
-            else if (banList.contains(membership)) {
+            else if (banList.contains(p)) {
                 throw new memberAddingExeption("This playyer is banned from the clan");
             }
-            else if (memberships.contains(membership)) {
+            else if (memberships.contains(p)) {
                 throw new memberAddingExeption("This playyer is already in the clan");
             }else {
-                Membership m=new Membership(ClanRole.MEMBER, LocalDate.now());
-                memberships.add(membership);
+                Membership m=new Membership(ClanRole.MEMBER, LocalDate.now(),this,p );
+                memberships.add(m);
             }
         }catch(memberAddingExeption e){
             System.out.println(e.getMessage());
@@ -137,7 +137,7 @@ public class Clan implements Serializable {
         }
     }
 
-    /*public void removeClanWar(ClanWar clanWar){
+    public void removeClanWar(ClanWar clanWar){
         try{
             if (clanWar == null) {
                 throw new calnWarAddingExemption("No such clan war exists");
@@ -152,7 +152,7 @@ public class Clan implements Serializable {
             System.out.println(e.getMessage());
             throw e;
         }
-    }*/
+    }
 
     //add adjustmennt methods
 

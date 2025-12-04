@@ -17,6 +17,8 @@ public class Battle implements Serializable {
 
     private Village  villageAttacks ;
     private Village  villageDefends ;
+    
+    private ClanWar clanWar;
 
     private static void addToExtent(Battle battle) {
         if (battle == null) throw new BattleException("Battle cannot be null");
@@ -96,5 +98,13 @@ public class Battle implements Serializable {
 
     public LocalDateTime getTime (){
         return time;
+    }
+
+    public void addClanWar(ClanWar clanWar){
+
+    }
+
+    public void removeClanWar(ClanWar clanWar){
+
     }
 }

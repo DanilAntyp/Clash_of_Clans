@@ -24,6 +24,8 @@ public class ClanWar implements Serializable {
         return Collections.unmodifiableList(extent);
     }
 
+    private Set<Battle> battles = new TreeSet<>();
+
     private static void addToExtent(ClanWar war) {
         if (war == null) throw new NullClanWarException("ClanWar cannot be null");
         extent.add(war);

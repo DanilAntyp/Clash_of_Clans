@@ -59,7 +59,7 @@ public class Membership implements Serializable {
 
         if(clan.checkIfBanned(player)) throw new RuntimeException("Player is banned from clan");
 
-        clan.addMembership(this);
+        clan.addMembership(player);
 
         addToExtent(this);
 
