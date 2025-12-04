@@ -1,9 +1,7 @@
-package com.example.clashofclans;
+package com.example.clashofclans.buildings;
 
 import com.example.clashofclans.enums.ArmyBuildingType;
 import com.example.clashofclans.exceptions.building.InvalidBuildingArgumentException;
-import com.example.clashofclans.exceptions.building.InvalidBuildingStateException;
-import com.example.clashofclans.exceptions.unitExceptions.UnitCompatibilityException;
 
 import java.io.Serializable;
 import java.util.ArrayList;

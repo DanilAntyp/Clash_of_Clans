@@ -1,6 +1,7 @@
 package com.example.clashofclans.testsBuildingsAndChillTrainThings;
 
 import com.example.clashofclans.*;
+import com.example.clashofclans.buildings.*;
 import com.example.clashofclans.enums.*;
 import com.example.clashofclans.exceptions.building.InvalidBuildingStateException;
 import com.example.clashofclans.exceptions.unitExceptions.UnitCompatibilityException;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BuildingsAndTrainingWitChillingTests{
 
+    private Village village;
     private ArmyBuilding barracks;
     private ArmyBuilding armyCamp;
     private Building building;
@@ -26,27 +28,28 @@ class BuildingsAndTrainingWitChillingTests{
 
     @BeforeEach
     void setUp() {
+        village = new Village(VillageType.regular, new Player("testPlayer"));
         barracks = new ArmyBuilding(ArmyBuildingType.barracks, 50);
         armyCamp = new ArmyBuilding(ArmyBuildingType.armyCamp, 100);
         building = new Building(100, 5, 2, 500);
-        buildingInstance = new BuildingInstance(building, 100, 1,
-                LocalDateTime.now().plusHours(2), new int[]{0,0}, false,new QuantityMaxTroops(100)
+        buildingInstance = new BuildingInstance(village, building, 100, 1,
+                LocalDateTime.now().plusHours(2), new int[]{0,0}, false,new QuantityMaxUnit(100)
         );
         cannon = new DefensiveBuilding(DefBuildingType.cannon, 50, 5, DefTargetType.ground);
         goldMine = new ResourceBuilding(ResourceBuildingTypes.goldMine, 500, 50);
 
-        barracksInstance = new BuildingInstance(barracks, 100, 1,
-                LocalDateTime.now().plusHours(1), false, new QuantityMaxTroops(2));
+        barracksInstance = new BuildingInstance(village,barracks, 100, 1,
+                LocalDateTime.now().plusHours(1), false, new QuantityMaxUnit(2));
 
-        armyCampInstance = new BuildingInstance(armyCamp, 100, 1,
-                LocalDateTime.now().plusHours(1), false, new QuantityMaxTroops(5));
+        armyCampInstance = new BuildingInstance(village,armyCamp, 100, 1,
+                LocalDateTime.now().plusHours(1), false, new QuantityMaxUnit(5));
 
-        unit1 = new Troop(
+        unit1 = new Troop(village,
                 100, 20, 5,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN,
                 AttackStyle.GROUND_TROOP, 50
         );
-        unit2 = new Troop(
+        unit2 = new Troop(village,
                 100, 20, 5,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN,
                 AttackStyle.GROUND_TROOP, 50
@@ -82,7 +85,7 @@ class BuildingsAndTrainingWitChillingTests{
 
     @Test
     void testBuildNewBuilding() {
-        BuildingInstance newBuilding = building.buildNewBuilding(new int[]{1,2});
+        BuildingInstance newBuilding = building.buildNewBuilding(new int[]{1,2}, village);
         assertNotNull(newBuilding);
         assertEquals(building.getHitPoints(), newBuilding.getCurrentHp());
         assertEquals(1, newBuilding.getCurrentLevel());
@@ -122,8 +125,8 @@ class BuildingsAndTrainingWitChillingTests{
 
     @Test
     void testCalculateMaxStorageCapacity() {
-        BuildingInstance instance = new BuildingInstance(goldMine, 100, 3, LocalDateTime.now(), false,
-                new QuantityMaxTroops(100)
+        BuildingInstance instance = new BuildingInstance(village, goldMine, 100, 3, LocalDateTime.now(), false,
+                new QuantityMaxUnit(100)
         );
         goldMine.calculateMaxStorageCapacity(instance);
         assertEquals(3000, goldMine.getMaxStorageCapacity());
@@ -137,7 +140,7 @@ class BuildingsAndTrainingWitChillingTests{
 
         // add unit2 → training queue limit is 2, should go to chill buffer
         barracksInstance.addToTrainingQueue(unit2);
-        Unit unit3 = new Troop(
+        Unit unit3 = new Troop(village,
                 100, 20, 5,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN,
                 AttackStyle.GROUND_TROOP, 50
@@ -172,7 +175,7 @@ class BuildingsAndTrainingWitChillingTests{
 
     @Test
     void testMoveToArmyCampFailWrongType() {
-        Unit invalidUnit =new Hero(1200, 250, 25,
+        Unit invalidUnit =new Hero(village, 1200, 250, 25,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN_KING,
                 "Rage", 300, "upgrade");
         assertThrows(UnitCompatibilityException.class,
@@ -192,7 +195,7 @@ class BuildingsAndTrainingWitChillingTests{
 
     @Test
     void testMoveToBarrackFailWrongType() {
-        Unit invalidUnit = new Hero(1200, 250, 25,
+        Unit invalidUnit = new Hero(village, 1200, 250, 25,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN_KING,
                 "Rage", 300, "upgrade");
         assertThrows(UnitCompatibilityException.class,
@@ -213,7 +216,7 @@ class BuildingsAndTrainingWitChillingTests{
         buildingInstance.setLocation(new int[]{5,5});
         assertArrayEquals(new int[]{5,5}, buildingInstance.getLocation());
 
-        QuantityMaxTroops q = new QuantityMaxTroops(50);
+        QuantityMaxUnit q = new QuantityMaxUnit(50);
         buildingInstance.setQuantityMaxTroops(q);
         assertEquals(50, buildingInstance.getQuantityMaxTroops().getMaxValue());
     }

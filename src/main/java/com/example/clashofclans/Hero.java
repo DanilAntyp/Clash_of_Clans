@@ -1,11 +1,14 @@
 package com.example.clashofclans;
 
 
+import com.example.clashofclans.buildings.Building;
 import com.example.clashofclans.enums.AttackDomain;
 import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.UnitType;
 import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Hero extends Unit {
@@ -14,6 +17,8 @@ public class Hero extends Unit {
     private String uniqueAbility;
     private Integer regenerationTime;
     private String upgradeSystem;
+
+    private static List<Unit> EXTENT = new ArrayList<>();
 
     public Hero(Village village, int hitPoint, int damage, int housingSpace,
                 AttackDomain attackDomain, ResourceKind resourceKind, UnitType unitType,
@@ -26,6 +31,8 @@ public class Hero extends Unit {
         this.uniqueAbility=uniqueAbility.trim();
         this.regenerationTime= Objects.requireNonNull(regenerationTime);
         this.upgradeSystem=upgradeSystem.trim();
+
+        EXTENT.add(this);
     }
     private static boolean isBlank(String s){ return s==null || s.trim().isEmpty(); }
 
@@ -56,4 +63,6 @@ public class Hero extends Unit {
         if (isBlank(upgradeSystem)) throw new InvalidUnitArgumentException("string cannot be empty");
         this.upgradeSystem = upgradeSystem.trim();
     }
+
+
 }

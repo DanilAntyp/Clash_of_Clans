@@ -9,6 +9,7 @@ import com.example.clashofclans.exceptions.membership.NullMembershipException;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +18,7 @@ import java.util.List;
 public class Membership implements Serializable {
 
 
-    private static final List<Membership> extent = new ArrayList<>();
+    private static List<Membership> extent = new ArrayList<>();
 
     private static void addToExtent(Membership m) {
         if (m == null) throw new NullMembershipException("Membership cannot be null");
@@ -59,7 +60,7 @@ public class Membership implements Serializable {
 
         if(clan.checkIfBanned(player)) throw new RuntimeException("Player is banned from clan");
 
-        clan.addMembership(player);
+        //clan.addMembership(player);
 
         addToExtent(this);
 
@@ -127,5 +128,14 @@ public class Membership implements Serializable {
 
     public Clan getClan() {
         return this.clan;
+    }
+
+    public Player getPlayer(){return this.player;}
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(extent, file);
+    }
+
+    public static void loadExtent(Path file) {
+        extent = ExtentPersistence.loadExtent(file);
     }
 }

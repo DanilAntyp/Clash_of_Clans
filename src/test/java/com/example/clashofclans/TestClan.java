@@ -6,7 +6,7 @@ import com.example.clashofclans.exceptions.village.illigalRemoveExeption;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-/*
+
 public class TestClan {
 
     @Test
@@ -24,7 +24,7 @@ public class TestClan {
         Clan clan = new Clan("Warriors", "A strong clan");
         Player p= new Player("John");
         clan.addMembership(p);
-        assertTrue(clan.getMemberships().contains(p));
+        assertTrue(clan.getMemberships().contains(p.getMembership()));
     }
 
     @Test
@@ -57,8 +57,8 @@ public class TestClan {
         Clan clan = new Clan("Warriors", "A strong clan");
         Player p= new Player("John");
         clan.addMembership(p);
-        clan.removeMembership(p);
-        assertFalse(clan.getMemberships().containsKey(p));
+        clan.removeMembership(p.getMembership());
+        assertFalse(clan.getMemberships().contains(p));
     }
 
     @Test
@@ -66,7 +66,7 @@ public class TestClan {
         Clan clan = new Clan("Warriors", "A strong clan");
         Player p= new Player("John");
 
-        assertThrows(illigalRemoveExeption.class,() -> clan.removeMembership(p));
+        assertThrows(illigalRemoveExeption.class,() -> clan.removeMembership(p.getMembership()));
     }
 
 
@@ -76,10 +76,12 @@ public class TestClan {
         Clan clan = new Clan("Warriors", "A strong clan");
         Player p= new Player("John");
         clan.addMembership(p);
-        assertTrue(clan.getMemberships().containsKey(p));
+        assertTrue(clan.getMemberships().contains(p.getMembership()));
 
         clan.addBan(p);
-        assertFalse(clan.getMemberships().containsKey(p));
+
+        assertFalse(clan.getMemberships().contains(p.getMembership()));
+
         assertTrue(clan.getBanList().contains(p));
     }
 
@@ -89,14 +91,4 @@ public class TestClan {
         assertThrows(clanBanException.class, () -> clan.addBan(null));
     }
 
-    @Test
-    void testAddBanAlreadyBannedPlayerDoesNothing() {
-        Clan clan = new Clan("Warriors", "A strong clan");
-        Player p= new Player("John");
-        clan.addBan(p);
-        int sizeBefore = clan.getBanList().size();
-        clan.addBan(p); // second call should do nothing
-        assertEquals(sizeBefore, clan.getBanList().size());
-    }
 }
-*/

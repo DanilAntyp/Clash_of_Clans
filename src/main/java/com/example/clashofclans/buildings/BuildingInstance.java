@@ -1,5 +1,9 @@
-package com.example.clashofclans;
+package com.example.clashofclans.buildings;
 
+import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.QuantityMaxUnit;
+import com.example.clashofclans.Unit;
+import com.example.clashofclans.Village;
 import com.example.clashofclans.enums.ArmyBuildingType;
 import com.example.clashofclans.exceptions.building.BuildingLevelException;
 import com.example.clashofclans.exceptions.building.InvalidBuildingArgumentException;
@@ -13,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.example.clashofclans.enums.ArmyBuildingType.barracks;
-
 public class BuildingInstance implements Serializable {
     private Building building;
     private double currentHp;
@@ -22,8 +24,9 @@ public class BuildingInstance implements Serializable {
     private LocalDateTime timeTillConstruction; //calculated by current time and build time
     private int[] location;//can be null
     private boolean inBag;
-    private QuantityMaxTroops quantityMaxTroops;
+    private QuantityMaxUnit quantityMaxUnit;
 
+    private Village vilage;
 
     private List<Unit> activityQueue = new ArrayList<>();
     private List<Unit> chillBuffer = new ArrayList<>();
@@ -36,9 +39,10 @@ public class BuildingInstance implements Serializable {
 
     public BuildingInstance() {}
 
-    public BuildingInstance(Building b, double currentHp, int currentLevel,
+    public BuildingInstance(Village vilage, Building b, double currentHp, int currentLevel,
                             LocalDateTime timeTillConstruction,
-                            int[] location, boolean inBag, QuantityMaxTroops quantityMaxTroops) {
+                            int[] location, boolean inBag, QuantityMaxUnit quantityMaxUnit) {
+        this.vilage = vilage;
         if (b == null)
             throw new InvalidBuildingArgumentException("Building must be associated");
         this.building = b;
@@ -49,14 +53,15 @@ public class BuildingInstance implements Serializable {
         this.timeTillConstruction = timeTillConstruction;
         this.location = location;
         this.inBag = inBag;
-        this.quantityMaxTroops = quantityMaxTroops;
+        this.quantityMaxUnit = quantityMaxUnit;
 
         EXTENT.add(this);
     }
 
-    public BuildingInstance(Building b, double currentHp, int currentLevel,
+    public BuildingInstance(Village vilage,Building b, double currentHp, int currentLevel,
                             LocalDateTime timeTillConstruction,
-                            boolean inBag, QuantityMaxTroops quantityMaxTroops) {
+                            boolean inBag, QuantityMaxUnit quantityMaxUnit) {
+        this.vilage = vilage;
         if (b == null)
             throw new InvalidBuildingArgumentException("Building must be associated");
         this.building = b;
@@ -67,7 +72,7 @@ public class BuildingInstance implements Serializable {
         this.timeTillConstruction = timeTillConstruction;
         this.location = null;
         this.inBag = inBag;
-        this.quantityMaxTroops = quantityMaxTroops;
+        this.quantityMaxUnit = quantityMaxUnit;
 
         EXTENT.add(this);
     }
@@ -78,6 +83,10 @@ public class BuildingInstance implements Serializable {
 
 
     public void moveToArmyCamp(Unit unit,  BuildingInstance armyCamp) {
+
+        if (unit == null || armyCamp == null)
+                    throw new InvalidBuildingArgumentException("unit and armyCamp must not be null");
+
         if (!(building instanceof ArmyBuilding)){
             throw new InvalidBuildingArgumentException("Building must be of type ArmyBuilding");
         }
@@ -88,8 +97,7 @@ public class BuildingInstance implements Serializable {
         if (!Unit.isTroopType(unit.getType())){
             throw new UnitCompatibilityException("Troop types do not match, must be Troop type");
         }
-        if (unit == null || armyCamp == null)
-            throw new InvalidBuildingArgumentException("unit and armyCamp must not be null");
+
 
         long current = armyCamp.getActivityQueue().size();
 
@@ -156,7 +164,7 @@ public class BuildingInstance implements Serializable {
         if (activityQueue.contains(unit))
             throw new InvalidBuildingStateException("Unit already exists in training queue");
 
-        int maxSize = quantityMaxTroops.getMaxValue();
+        int maxSize = quantityMaxUnit.getMaxValue();
 
         if (activityQueue.size() >= maxSize) {
             addToChillBuffer(unit);
@@ -217,14 +225,14 @@ public class BuildingInstance implements Serializable {
     public boolean isInBag() { return inBag; }
     public void setInBag(boolean inBag) { this.inBag = inBag; }
 
-    public QuantityMaxTroops getQuantityMaxTroops() {
-        return quantityMaxTroops;
+    public QuantityMaxUnit getQuantityMaxTroops() {
+        return quantityMaxUnit;
     }
 
-    public void setQuantityMaxTroops(QuantityMaxTroops q) {
+    public void setQuantityMaxTroops(QuantityMaxUnit q) {
         if (q == null)
             throw new InvalidBuildingArgumentException("QuantityMaxTroops cannot be null");
-        this.quantityMaxTroops = q;
+        this.quantityMaxUnit = q;
     }
 
     public List<Unit> getActivityQueue() {

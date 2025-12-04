@@ -1,5 +1,8 @@
-package com.example.clashofclans;
+package com.example.clashofclans.buildings;
 
+import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.QuantityMaxUnit;
+import com.example.clashofclans.Village;
 import com.example.clashofclans.exceptions.building.InvalidBuildingArgumentException;
 import com.example.clashofclans.exceptions.building.InvalidBuildingStateException;
 
@@ -18,9 +21,10 @@ public class Building implements Serializable {
     private double upgradeCost; //derived
     private double upgradeConstructionTime; //derived
 
-    private final List<BuildingInstance> instances = new ArrayList<>();
 
-    private static List<Building> EXTENT = new ArrayList<>(); //BASIC ASSOCIATIONS
+    private List<BuildingInstance> instances = new ArrayList<>();
+
+    private static List<Building> EXTENT = new ArrayList<>();
 
     public static List<Building> getExtent() {
         return Collections.unmodifiableList(EXTENT);
@@ -51,19 +55,20 @@ public class Building implements Serializable {
 
     }
 
-    public BuildingInstance buildNewBuilding(int[] location) {
+    public BuildingInstance buildNewBuilding(int[] location, Village village) {
         System.out.println("Building a new structure...");
         System.out.println("What type of building would you like to build?");
 
         // create the new building instance
         BuildingInstance newBuilding = new BuildingInstance(
+                village,
                 this,
                 this.getHitPoints(),
                 1,
                 java.time.LocalDateTime.now().plusHours((long) this.getBuildTime()),
                 location,
                 false,
-                new QuantityMaxTroops(100)
+                new QuantityMaxUnit(100)
         );
 
         System.out.println("New building constructed at location: " + location);

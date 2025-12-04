@@ -1,5 +1,6 @@
 package com.example.clashofclans;
 
+import com.example.clashofclans.buildings.Building;
 import com.example.clashofclans.enums.ClanRole;
 import com.example.clashofclans.exceptions.clan.calnWarAddingExemption;
 import com.example.clashofclans.exceptions.clan.clanBanException;
@@ -8,9 +9,11 @@ import com.example.clashofclans.exceptions.clan.memberAddingExeption;
 import com.example.clashofclans.exceptions.village.illigalRemoveExeption;
 
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Clan implements Serializable {
@@ -22,6 +25,8 @@ public class Clan implements Serializable {
     private ArrayList<Membership> memberships;
     private ArrayList<Player> banList;
     private ArrayList<ClanWar> clanWars;
+
+    private static List<Clan> EXTENT = new ArrayList<>();
 
     public Clan(String name, String description){
 
@@ -38,7 +43,10 @@ public class Clan implements Serializable {
         banList = new ArrayList<>();
         this.league = "0";
         this.badge = "0";
+        this.memberships=new ArrayList<>();
+        this.clanWars=new ArrayList<>();
 
+        EXTENT.add(this);
     }
 
     public String getBadge() {
@@ -87,25 +95,29 @@ public class Clan implements Serializable {
         banList.add(p);
     }
 
-    public void addMembership(Player p){
-        try{
+    public void addMembership(Player p) {
+        try {
             if (p == null) {
-                throw new memberAddingExeption("Cannot ban a null player.");
+                throw new memberAddingExeption("Cannot add a null player.");
             }
-            else if (banList.contains(p)) {
-                throw new memberAddingExeption("This playyer is banned from the clan");
+            if (banList.contains(p)) {
+                throw new memberAddingExeption("This player is banned from the clan");
             }
-            else if (memberships.contains(p)) {
-                throw new memberAddingExeption("This playyer is already in the clan");
-            }else {
-                Membership m=new Membership(ClanRole.MEMBER, LocalDate.now(),this,p );
-                memberships.add(m);
+            if (memberships.stream().anyMatch(m -> m.getPlayer().equals(p))) {
+                throw new memberAddingExeption("This player is already in the clan");
             }
-        }catch(memberAddingExeption e){
+
+            Membership m = new Membership(ClanRole.MEMBER, LocalDate.now(), this, p);
+
+            memberships.add(m);
+            p.setMembership(m);
+
+        } catch (memberAddingExeption e) {
             System.out.println(e.getMessage());
             throw e;
         }
     }
+
 
     public void removeMembership(Membership membership){
         try{
@@ -154,6 +166,12 @@ public class Clan implements Serializable {
         }
     }
 
-    //add adjustmennt methods
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(EXTENT, file);
+    }
+
+    public static void loadExtent(Path file) {
+        EXTENT = ExtentPersistence.loadExtent(file);
+    }
 
 }

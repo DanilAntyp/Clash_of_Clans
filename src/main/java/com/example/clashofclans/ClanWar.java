@@ -6,15 +6,16 @@ import com.example.clashofclans.exceptions.clanwar.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class ClanWar implements Serializable {
 
-    private static final List<ClanWar> extent = new ArrayList<>();
+    private static List<ClanWar> extent = new ArrayList<>();
 
-    private TreeSet<Clan> clans = new TreeSet<>();
+    private HashSet<Clan> clans = new HashSet<>();
 
 
     private final Map<LocalDateTime , Battle>  battlesInClanWar= new Hashtable<>();
@@ -23,8 +24,6 @@ public class ClanWar implements Serializable {
     public static List<ClanWar> getExtent() {
         return Collections.unmodifiableList(extent);
     }
-
-    private Set<Battle> battles = new TreeSet<>();
 
     private static void addToExtent(ClanWar war) {
         if (war == null) throw new NullClanWarException("ClanWar cannot be null");
@@ -154,6 +153,14 @@ public class ClanWar implements Serializable {
 
     public Battle getBattle(LocalDateTime time){
         return this.battlesInClanWar.get(time);
+    }
+
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(extent, file);
+    }
+
+    public static void loadExtent(Path file) {
+        extent = ExtentPersistence.loadExtent(file);
     }
 
 }

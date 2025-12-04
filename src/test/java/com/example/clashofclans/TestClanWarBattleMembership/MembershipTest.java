@@ -26,11 +26,11 @@ public class MembershipTest {
 
     @Test
     void testValidMembershipCreation() {
+        LocalDate join = LocalDate.of(2024, 5, 10);
 
         Player player = new Player("John Doe");
         Clan clan = new Clan("name" ,"description");
 
-        LocalDate join = LocalDate.of(2024, 5, 10);
 
         Membership m = new Membership(ClanRole.ELDER, join, clan, player);
 

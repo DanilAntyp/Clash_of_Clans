@@ -1,13 +1,11 @@
-package com.example.clashofclans;
+package com.example.clashofclans.buildings;
 
 import com.example.clashofclans.enums.ResourceBuildingTypes;
 import com.example.clashofclans.exceptions.building.InvalidBuildingArgumentException;
 import com.example.clashofclans.exceptions.building.InvalidBuildingStateException;
 
 import java.io.Serializable;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ResourceBuilding extends Building implements Serializable {

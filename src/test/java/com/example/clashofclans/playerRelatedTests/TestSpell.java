@@ -1,5 +1,6 @@
-package com.example.clashofclans;
+package com.example.clashofclans.playerRelatedTests;
 
+import com.example.clashofclans.Spell;
 import com.example.clashofclans.enums.SpellType;
 import org.junit.jupiter.api.Test;
 

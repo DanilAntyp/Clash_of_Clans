@@ -1,20 +1,26 @@
 package com.example.clashofclans;
 
+import com.example.clashofclans.buildings.Building;
+import com.example.clashofclans.buildings.BuildingInstance;
 import com.example.clashofclans.exceptions.building.InvalidBuildingArgumentException;
 
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuantityMaxTroops implements Serializable {
+public class QuantityMaxUnit implements Serializable {
     private int maxValue;
 
     private List<BuildingInstance>  instances  = new ArrayList<>();
 
-    public QuantityMaxTroops() {}
+    private static List<QuantityMaxUnit> EXTENT = new ArrayList<>();
 
-    public QuantityMaxTroops(int maxValue) {
+
+    public QuantityMaxUnit(int maxValue) {
+
         this.maxValue = maxValue;
+        EXTENT.add(this);
     }
 
     public int getMaxValue() { return maxValue; }
@@ -34,4 +40,12 @@ public class QuantityMaxTroops implements Serializable {
             throw new InvalidBuildingArgumentException("Instance cannot be null");
         instances.remove(instance);
     }
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(EXTENT, file);
+    }
+
+    public static void loadExtent(Path file) {
+        EXTENT = ExtentPersistence.loadExtent(file);
+    }
+
 }

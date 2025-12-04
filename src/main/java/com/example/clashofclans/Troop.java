@@ -1,23 +1,29 @@
 package com.example.clashofclans;
 
 
+import com.example.clashofclans.buildings.Building;
+import com.example.clashofclans.buildings.BuildingInstance;
 import com.example.clashofclans.enums.AttackDomain;
 import com.example.clashofclans.enums.AttackStyle;
 import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.UnitType;
 import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public final class Troop extends Unit {
 
     public static final boolean availableOncePerPlayer = false;
     private AttackStyle attackStyle;
-
     private Integer elixirCost;
     private Integer darkElixirCost;
 
     private BuildingInstance buildingInstance;
+
+    private static List<Unit> EXTENT = new ArrayList<>();
 
     public Troop(Village village, int hitPoint, int damage, int housingSpace,
                  AttackDomain attackDomain, ResourceKind resourceKind, UnitType unitType,
@@ -26,6 +32,8 @@ public final class Troop extends Unit {
         if (!Unit.isTroopType(unitType)) throw new InvalidUnitArgumentException("Troop type is not a troop");
         this.attackStyle = Objects.requireNonNull(attackStyle);
         setCost(resourceKind, cost);
+
+        EXTENT.add(this);
     }
 
     public BuildingInstance getBuildingInstance() {
@@ -87,5 +95,13 @@ public final class Troop extends Unit {
 
     public Integer getDarkElixirCost() {
         return darkElixirCost;
+    }
+
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(EXTENT, file);
+    }
+
+    public static void loadExtent(Path file) {
+        EXTENT = ExtentPersistence.loadExtent(file);
     }
 }

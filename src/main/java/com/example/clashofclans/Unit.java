@@ -31,7 +31,7 @@ public abstract class Unit implements Serializable {
     private static final Set<UnitType> GROUND_TYPES = EnumSet.of(UnitType.BARBARIAN, UnitType.GIANT, UnitType.ARCHER, UnitType.GOBLIN, UnitType.VALKYRIE, UnitType.HOG, UnitType.WITCH, UnitType.BARBARIAN_KING, UnitType.ARCHER_QUEEN);
     private static final Set<UnitType> AIR_TYPES = EnumSet.of(UnitType.MINION, UnitType.DRAGON, UnitType.GRAND_WARDEN, UnitType.MINION_KING);
 
-    private static final List<Unit> EXTENT = new ArrayList<>();
+    private static List<Unit> EXTENT = new ArrayList<>();
 
 
     protected Unit(Village village, int hitPoint,int damage,int housingSpace,
@@ -87,26 +87,6 @@ public abstract class Unit implements Serializable {
 
     public static List<Unit> getExtent(){ return Collections.unmodifiableList(EXTENT); }
 
-    public static void saveExtent(Path file) throws UnitPersistencyException {
-        try (var out = new java.io.ObjectOutputStream(Files.newOutputStream(file))) {
-            out.writeObject(new ArrayList<>(EXTENT));
-        } catch (IOException e) {
-            throw new UnitPersistencyException("Failed to save extent to " + file, e);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public static void loadExtent(Path file) throws UnitPersistencyException {
-        EXTENT.clear();
-        if (!Files.exists(file)) return;
-        try (var in = new java.io.ObjectInputStream(Files.newInputStream(file))) {
-            var list = (List<Unit>) in.readObject();
-            EXTENT.addAll(list);
-        } catch (IOException | ClassNotFoundException e) {
-            throw new UnitPersistencyException("Failed to load extent from " + file, e);
-        }
-    }
-
     public static boolean isHeroType(UnitType t) {
         return HERO_TYPES.contains(t);
     }
@@ -154,5 +134,13 @@ public abstract class Unit implements Serializable {
 
     public UnitType getType() {
         return type;
+    }
+
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(EXTENT, file);
+    }
+
+    public static void loadExtent(Path file) {
+        EXTENT = ExtentPersistence.loadExtent(file);
     }
 }

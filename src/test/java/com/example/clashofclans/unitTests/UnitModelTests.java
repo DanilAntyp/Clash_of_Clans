@@ -1,3 +1,4 @@
+package com.example.clashofclans.unitTests;
 
 import com.example.clashofclans.*;
 import com.example.clashofclans.enums.*;

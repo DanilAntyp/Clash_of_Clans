@@ -1,4 +1,4 @@
-package com.example.clashofclans;
+package com.example.clashofclans.buildings;
 
 import com.example.clashofclans.enums.DefBuildingType;
 import com.example.clashofclans.enums.DefTargetType;

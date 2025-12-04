@@ -5,7 +5,9 @@ import com.example.clashofclans.exceptions.clan.clanBanException;
 import com.example.clashofclans.exceptions.player.*;
 
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player implements Serializable {
 
@@ -18,7 +20,8 @@ public class Player implements Serializable {
     private ArrayList<Spell> spells;
     private Village[]  villages;
     private ArrayList<Player> friends;
-    //TODO idk how to connect this one with war
+
+    private static List<Player> EXTENT = new ArrayList<>();
 
      public Player(String username){
          if (username == null || username.trim().isEmpty()) {
@@ -35,6 +38,8 @@ public class Player implements Serializable {
 
          Village village=new Village(VillageType.regular,this);//when new user created they get their village
         this.villages[0]=village;
+
+         EXTENT.add(this);
     }
 
     public void visitFriendsVillage(Player p){
@@ -147,6 +152,27 @@ public class Player implements Serializable {
         }
          if (villages[0] == null) villages[0] = v;
         else villages[1] = v;
+    }
+
+    //THIS ONE IS FOR AGREGATION
+    public void delete() {
+        for (Player friend : new ArrayList<>(friends)) {
+            friend.getFriends().remove(this);
+        }
+        friends.clear();
+
+        for (int i = 0; i < villages.length; i++) {
+            villages[i] = null;
+        }
+        membership = null;
+    }
+
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(EXTENT, file);
+    }
+
+    public static void loadExtent(Path file) {
+        EXTENT = ExtentPersistence.loadExtent(file);
     }
 }
 //league is gonna be enum

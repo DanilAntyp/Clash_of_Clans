@@ -1,4 +1,8 @@
+package com.example.clashofclans.unitTests;
+
 import com.example.clashofclans.*;
+import com.example.clashofclans.buildings.ArmyBuilding;
+import com.example.clashofclans.buildings.BuildingInstance;
 import com.example.clashofclans.enums.*;
 import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,13 +27,13 @@ class UnitAssociationTests {
 
         ArmyBuilding armyCampType = new ArmyBuilding(ArmyBuildingType.armyCamp, 20);
 
-        QuantityMaxTroops qty = new QuantityMaxTroops(10);
+        QuantityMaxUnit qty = new QuantityMaxUnit(10);
 
-        campInstance1 = new BuildingInstance(armyCampType, 1000, 1, LocalDateTime.now(), false, qty);
+        campInstance1 = new BuildingInstance(village, armyCampType, 1000, 1, LocalDateTime.now(), false, qty);
         campInstance1.setActivityQueue(new ArrayList<>());
         campInstance1.setChillBuffer(new ArrayList<>());
 
-        campInstance2 = new BuildingInstance(armyCampType, 1000, 1, LocalDateTime.now(), false, qty);
+        campInstance2 = new BuildingInstance(village, armyCampType, 1000, 1, LocalDateTime.now(), false, qty);
         campInstance2.setActivityQueue(new ArrayList<>());
         campInstance2.setChillBuffer(new ArrayList<>());
     }

@@ -1,5 +1,6 @@
-package com.example.clashofclans;
+package com.example.clashofclans.playerRelatedTests;
 
+import com.example.clashofclans.Achievement;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

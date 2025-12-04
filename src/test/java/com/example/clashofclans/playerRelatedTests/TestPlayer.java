@@ -1,9 +1,11 @@
-package com.example.clashofclans;
+package com.example.clashofclans.playerRelatedTests;
 
+import com.example.clashofclans.Achievement;
+import com.example.clashofclans.Player;
+import com.example.clashofclans.Spell;
 import com.example.clashofclans.enums.SpellType;
 import com.example.clashofclans.exceptions.player.duplicateEntryExeption;
 import com.example.clashofclans.exceptions.player.wrongFriendAddingException;
-import com.example.clashofclans.exceptions.village.illigalRemoveExeption;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

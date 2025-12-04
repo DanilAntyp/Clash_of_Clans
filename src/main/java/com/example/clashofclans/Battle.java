@@ -3,13 +3,14 @@ import com.example.clashofclans.enums.BattleType;
 import com.example.clashofclans.exceptions.battle.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.*;
 
 
 public class Battle implements Serializable {
 
-    private static final List<Battle> extent = new ArrayList<>();
+    private static  List<Battle> extent = new ArrayList<>();
 
     public static List<Battle> getExtent() {
         return Collections.unmodifiableList(extent);
@@ -100,11 +101,38 @@ public class Battle implements Serializable {
         return time;
     }
 
-    public void addClanWar(ClanWar clanWar){
+    public void addClanWar(ClanWar newClanWar){
+        if(this.clanWar == newClanWar){
+            return;
+        }
 
+        if (this.clanWar != null){
+            ClanWar oldWar = this.clanWar;
+            this.clanWar=null;
+            oldWar.removeBattle(this);
+        }
+
+        this.clanWar= newClanWar;
+
+        if(newClanWar != null){
+        newClanWar.addBattle(this);
+        }
     }
 
-    public void removeClanWar(ClanWar clanWar){
+    public void removeClanWar(ClanWar toRemoveClanWar){
+        if(this.clanWar == toRemoveClanWar && this.clanWar!=null){
+            this.clanWar =null;
 
+            toRemoveClanWar.removeBattle(this);
+        }
     }
+
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(extent, file);
+    }
+
+    public static void loadExtent(Path file) {
+        extent = ExtentPersistence.loadExtent(file);
+    }
+
 }
