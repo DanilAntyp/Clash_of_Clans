@@ -1,10 +1,10 @@
 package com.example.clashofclans;
 
 import com.example.clashofclans.enums.ClanRole;
+import com.example.clashofclans.exceptions.clan.calnWarAddingExemption;
 import com.example.clashofclans.exceptions.clan.clanBanException;
 import com.example.clashofclans.exceptions.clan.clanCreationException;
 import com.example.clashofclans.exceptions.clan.memberAddingExeption;
-import com.example.clashofclans.exceptions.village.fullCapacityExeption;
 import com.example.clashofclans.exceptions.village.illigalRemoveExeption;
 
 import java.io.Serializable;
@@ -19,9 +19,9 @@ public class Clan implements Serializable {
     private String description;
     private int totalTrophies;
     private String league;
-    private Map<Player ,Membership> memberships;
+    private ArrayList<Membership> memberships;
     private ArrayList<Player> banList;
-    //TODO idk how to connect this one with clan wars
+    private ArrayList<ClanWar> clanWars;
 
     Clan(String name, String description){
 
@@ -39,7 +39,6 @@ public class Clan implements Serializable {
         banList = new ArrayList<>();
         this.league = "0";
         this.badge = "0";
-        this.memberships = new HashMap<>();
     }
     public String getBadge() {
         return badge;
@@ -57,7 +56,7 @@ public class Clan implements Serializable {
         return league;
     }
 
-    public Map getMemberships() {
+    public ArrayList getMemberships() {
         return memberships;
     }
 
@@ -83,23 +82,23 @@ public class Clan implements Serializable {
         if (banList.contains(p)) {
             return;
         }
-        removeMember(p);
+        removeMembership(p.getMembership());
         banList.add(p);
     }
 
-    public void  addMember(Player player){
+    public void addMembership(Membership membership){
         try{
-            if (player == null) {
+            if (membership == null) {
                 throw new memberAddingExeption("Cannot ban a null player.");
             }
-            else if (banList.contains(player)) {
+            else if (banList.contains(membership)) {
                 throw new memberAddingExeption("This playyer is banned from the clan");
             }
-            else if (memberships.containsKey(player)) {
+            else if (memberships.contains(membership)) {
                 throw new memberAddingExeption("This playyer is already in the clan");
             }else {
                 Membership m=new Membership(ClanRole.MEMBER, LocalDate.now());
-                memberships.put(player,m);
+                memberships.add(membership);
             }
         }catch(memberAddingExeption e){
             System.out.println(e.getMessage());
@@ -107,10 +106,10 @@ public class Clan implements Serializable {
         }
     }
 
-    public void  removeMember(Player player){
+    public void removeMembership(Membership membership){
         try{
-            if(memberships.containsKey(player)){
-                memberships.remove(player);
+            if(memberships.contains(membership)){
+                memberships.remove(membership);
             }
             else{
                 throw new illigalRemoveExeption("There is no such member in this clan");
@@ -120,6 +119,39 @@ public class Clan implements Serializable {
             throw e;
         }
     }
+
+    public void addClanWar(ClanWar clanWar){
+        try{
+            if (clanWar == null) {
+                throw new calnWarAddingExemption("No such clan war exists");
+            }
+            else if (clanWars.contains(clanWar)) {
+                throw new calnWarAddingExemption("Clan war is already in the clan");
+            }
+            this.clanWars.add(clanWar);
+
+        }catch(calnWarAddingExemption e){
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+
+    /*public void removeClanWar(ClanWar clanWar){
+        try{
+            if (clanWar == null) {
+                throw new calnWarAddingExemption("No such clan war exists");
+            }
+            else if (!clanWars.contains(clanWar)) {
+                throw new calnWarAddingExemption("Clan war is not in the clan");
+            }
+            this.clanWars.remove(clanWar);
+            clanWar.removeClan(this);
+
+        }catch(calnWarAddingExemption e){
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }*/
 
     //add adjustmennt methods
 

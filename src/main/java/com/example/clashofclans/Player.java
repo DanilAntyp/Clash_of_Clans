@@ -2,10 +2,7 @@ package com.example.clashofclans;
 
 import com.example.clashofclans.enums.VillageType;
 import com.example.clashofclans.exceptions.clan.clanBanException;
-import com.example.clashofclans.exceptions.player.duplicateEntryExeption;
-import com.example.clashofclans.exceptions.player.missingPlayerException;
-import com.example.clashofclans.exceptions.player.playerNameException;
-import com.example.clashofclans.exceptions.player.villageLimitReachedException;
+import com.example.clashofclans.exceptions.player.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,6 +17,7 @@ public class Player implements Serializable {
     private ArrayList<Achievement> achivements;
     private ArrayList<Spell> spells;
     private Village[]  villages;
+    private ArrayList<Player> friends;
     //TODO idk how to connect this one with war
 
      public Player(String username){
@@ -32,8 +30,10 @@ public class Player implements Serializable {
         this.achivements = new ArrayList<>();
         this.spells=new ArrayList<>();
         this.villages=new Village[2];
+        this.friends = new ArrayList<>();
 
-        Village village=new Village(VillageType.regular,this);//when new user created they get their village
+
+         Village village=new Village(VillageType.regular,this);//when new user created they get their village
         this.villages[0]=village;
     }
 
@@ -107,6 +107,38 @@ public class Player implements Serializable {
              System.out.println(e.getMessage());
              throw e;
          }
+    }
+
+    public void addFriend(Player player) {
+        try {
+            if(this==player){
+                throw new wrongFriendAddingException("You cannot befriend with yourself");
+            } else if (!this.friends.contains(player)) {
+                this.friends.add(player);
+                player.addFriend(this);
+            }
+
+        }catch(wrongFriendAddingException e){
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+
+    public ArrayList getFriends() {return friends;}
+
+    public void removeFriend(Player player) {
+        try {
+            if(this==player){
+                throw new wrongFriendAddingException("You cannot remove yourself");
+            } else if (this.friends.contains(player)) {
+                this.friends.remove(player);
+                player.removeFriend(this);
+            }
+
+        }catch(wrongFriendAddingException e){
+            System.out.println(e.getMessage());
+            throw e;
+        }
     }
 
     public void addVillageDirectForTest(Village v) {

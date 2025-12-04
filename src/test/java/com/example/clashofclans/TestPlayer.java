@@ -2,6 +2,8 @@ package com.example.clashofclans;
 
 import com.example.clashofclans.enums.SpellType;
 import com.example.clashofclans.exceptions.player.duplicateEntryExeption;
+import com.example.clashofclans.exceptions.player.wrongFriendAddingException;
+import com.example.clashofclans.exceptions.village.illigalRemoveExeption;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,7 +47,7 @@ public class TestPlayer {
         assertEquals(0, player.getAchievements().size());
     }
 
-    // ---------------- Spells ----------------
+
     @Test
     void testAddNewSpellSuccessfully() {
         Player player = new Player("Test");
@@ -76,6 +78,37 @@ public class TestPlayer {
         Player player = new Player("Test");
         assertNotNull(player.getSpells());
         assertEquals(0, player.getSpells().size());
+    }
+
+    @Test
+    void testFriendAddingSuccessfully() {
+        Player player = new Player("Test");
+        Player player2 = new Player("Test2");
+        player2.addFriend(player);
+        assertTrue(player2.getFriends().contains(player));
+    }
+
+    @Test
+    void testFriendAddingSelfError() {
+        Player player = new Player("Test");
+        assertThrows(wrongFriendAddingException.class,() -> player.addFriend(player));
+    }
+
+
+
+    @Test
+    void testFriendRemoveSuccessfully() {
+        Player player = new Player("Test");
+        Player player2 = new Player("Test2");
+        player2.addFriend(player);
+        player2.removeFriend(player);
+        assertFalse(player.getFriends().contains(player2));
+    }
+
+    @Test
+    void testFriendRemoveSelfError() {
+        Player player = new Player("Test");
+        assertThrows(wrongFriendAddingException.class,() -> player.removeFriend(player));
     }
 
 
