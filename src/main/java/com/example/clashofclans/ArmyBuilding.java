@@ -13,7 +13,7 @@ public class ArmyBuilding extends Building implements Serializable {
     private ArmyBuildingType type;
     private int troopsCapacity;
 
-    private List<Unit> campTroops = new ArrayList<>();
+    private static List<Building> EXTENT = new ArrayList<>();
 
     public ArmyBuilding() {}
 
@@ -27,30 +27,13 @@ public class ArmyBuilding extends Building implements Serializable {
 
         this.type = type;
         this.troopsCapacity = troopsCapacity;
+        EXTENT.add(this);
     }
 
 
 
     public boolean isEnoughCapacity(long currentTroops) {
         return currentTroops <= troopsCapacity;
-    }
-
-    public void addTroop(Unit unit) {
-        if (!Unit.isTroopType(unit.getType())){
-            throw new UnitCompatibilityException("Troop types do not match, must be Trop type");
-        }
-        if (unit == null)
-            throw new InvalidBuildingArgumentException("Cannot add null unit");
-
-        if (!isEnoughCapacity(getCurrentTroops() + unit.getHousingSpace()))
-            throw new InvalidBuildingStateException("Not enough capacity to add troop");
-
-        campTroops.add(unit);
-    }
-
-
-    public long getCurrentTroops() {
-        return campTroops.stream().count();
     }
 
 

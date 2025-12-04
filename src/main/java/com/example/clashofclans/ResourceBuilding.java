@@ -5,11 +5,17 @@ import com.example.clashofclans.exceptions.building.InvalidBuildingArgumentExcep
 import com.example.clashofclans.exceptions.building.InvalidBuildingStateException;
 
 import java.io.Serializable;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ResourceBuilding extends Building implements Serializable {
     private ResourceBuildingTypes type;
     private double maxStorageCapacity; // derived
     private double productionRate; //expressed in resource per hour
+
+    private static List<ResourceBuilding> EXTENT = new ArrayList<>();
 
     public ResourceBuilding() {}
 
@@ -29,6 +35,7 @@ public class ResourceBuilding extends Building implements Serializable {
         this.type = type;
         this.maxStorageCapacity = maxStorageCapacity;
         this.productionRate = productionRate;
+        EXTENT.add(this);
     }
 
     public void addResources() {
@@ -86,4 +93,5 @@ public class ResourceBuilding extends Building implements Serializable {
                 throw new InvalidBuildingStateException("No storage defined for level " + lvl);
         }
     }
+
 }

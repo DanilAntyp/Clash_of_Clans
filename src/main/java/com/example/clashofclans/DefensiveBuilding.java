@@ -4,6 +4,8 @@ import com.example.clashofclans.enums.DefBuildingType;
 import com.example.clashofclans.enums.DefTargetType;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DefensiveBuilding extends Building implements Serializable {
     private DefBuildingType type;
@@ -13,11 +15,14 @@ public class DefensiveBuilding extends Building implements Serializable {
 
     public DefensiveBuilding() {}
 
+    private static List<Building> EXTENT = new ArrayList<>();
+
     public DefensiveBuilding(DefBuildingType type, double damagePerSecond, double range, DefTargetType target) {
         this.type = type;
         this.damagePerSecond = damagePerSecond;
         this.range = range;
         this.target = target;
+        EXTENT.add(this);
     }
 
 

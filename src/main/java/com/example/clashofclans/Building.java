@@ -5,6 +5,10 @@ import com.example.clashofclans.exceptions.building.InvalidBuildingStateExceptio
 
 
 import java.io.Serializable;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Building implements Serializable {
     private double hitPoints;
@@ -13,6 +17,14 @@ public class Building implements Serializable {
     private double resourceCost;
     private double upgradeCost; //derived
     private double upgradeConstructionTime; //derived
+
+    private final List<BuildingInstance> instances = new ArrayList<>();
+
+    private static List<Building> EXTENT = new ArrayList<>(); //BASIC ASSOCIATIONS
+
+    public static List<Building> getExtent() {
+        return Collections.unmodifiableList(EXTENT);
+    }
 
     public Building() {}
 
@@ -35,6 +47,8 @@ public class Building implements Serializable {
         this.maxLevel = maxLevel;
         this.buildTime = buildTime;
         this.resourceCost = resourceCost;
+        EXTENT.add(this);
+
     }
 
     public BuildingInstance buildNewBuilding(int[] location) {
@@ -48,7 +62,8 @@ public class Building implements Serializable {
                 1,
                 java.time.LocalDateTime.now().plusHours((long) this.getBuildTime()),
                 location,
-                false
+                false,
+                new QuantityMaxTroops(100)
         );
 
         System.out.println("New building constructed at location: " + location);
@@ -168,5 +183,34 @@ public class Building implements Serializable {
     public double getUpgradeConstructionTime() {
         return upgradeConstructionTime;
     }
+
+
+    public void addInstance(BuildingInstance instance) {
+        if (instance == null)
+            throw new InvalidBuildingArgumentException("Instance cannot be null");
+        if (instances.contains(instance))
+            throw new InvalidBuildingArgumentException("Duplicate BuildingInstance");
+
+        instances.add(instance);
+    }
+    public void removeInstance(BuildingInstance instance) {
+        if (instance == null)
+            throw new InvalidBuildingArgumentException("Instance cannot be null");
+        instances.remove(instance);
+    }
+
+    public List<BuildingInstance> getInstances() {
+        return instances;
+    }
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(EXTENT, file);
+    }
+
+    public static void loadExtent(Path file) {
+        EXTENT = ExtentPersistence.loadExtent(file);
+    }
+
+
+
 }
 
