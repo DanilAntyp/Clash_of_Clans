@@ -1,5 +1,6 @@
 package com.example.clashofclans.TestClanWarBattleMembership;
 
+import com.example.clashofclans.Clan;
 import com.example.clashofclans.ClanWar;
 import com.example.clashofclans.exceptions.clanwar.InvalidDurationException;
 import com.example.clashofclans.exceptions.clanwar.InvalidResultException;
@@ -23,9 +24,11 @@ public class ClanWarTest {
 
     @Test
     void testValidClanWarCreation() {
+        Clan clan = new Clan("Warriors", "A strong clan");
+        Clan clan1 = new Clan("hello world", "A weak clan");
         LocalDateTime now = LocalDateTime.now();
 
-        ClanWar war = new ClanWar(30, 500, 1, now);
+        ClanWar war = new ClanWar(30, 500, 1, now ,clan , clan1);
 
         assertEquals(30, war.getDuration());
         assertEquals(500, war.getReward());
@@ -35,40 +38,57 @@ public class ClanWarTest {
 
     @Test
     void testInvalidDurationThrowsException() {
+        Clan clan = new Clan("Warriors", "A strong clan");
+        Clan clan1 = new Clan("hello world", "A weak clan");
+
         LocalDateTime now = LocalDateTime.now();
 
         assertThrows(InvalidDurationException.class,
-                () -> new ClanWar(0, 500, 1, now));
+                () -> new ClanWar(0, 500, 1, now ,clan , clan1));
     }
 
     @Test
     void testInvalidRewardThrowsException() {
+        Clan clan = new Clan("Warriors", "A strong clan");
+        Clan clan1 = new Clan("hello world", "A weak clan");
+
         LocalDateTime now = LocalDateTime.now();
 
         assertThrows(InvalidRewardException.class,
-                () -> new ClanWar(30, -10, 1, now));
+                () -> new ClanWar(30, -10, 1, now ,clan , clan1));
     }
 
     @Test
     void testInvalidResultThrowsException() {
+        Clan clan = new Clan("Warriors", "A strong clan");
+        Clan clan1 = new Clan("hello world", "A weak clan");
+
         LocalDateTime now = LocalDateTime.now();
 
         assertThrows(InvalidResultException.class,
-                () -> new ClanWar(30, 500, 7, now));
+                () -> new ClanWar(30, 500, 7, now ,clan , clan1));
     }
 
     @Test
     void testNullTimestampThrowsException() {
+        Clan clan = new Clan("Warriors", "A strong clan");
+        Clan clan1 = new Clan("hello world", "A weak clan");
+
         assertThrows(InvalidTimestampException.class,
-                () -> new ClanWar(30, 500, 1, null));
+                () -> new ClanWar(30, 500, 1, null ,clan , clan1));
     }
 
     @Test
     void testExtentStoresCreatedObjects() {
+        Clan clan = new Clan("Warriors", "A strong clan");
+        Clan clan1 = new Clan("hello world", "A weak clan");
+
+        Clan clan2 = new Clan("addssas", "A strong clan");
+        Clan clan3 = new Clan("sadasd", "A weak clan");
         LocalDateTime now = LocalDateTime.now();
 
-        ClanWar war1 = new ClanWar(30, 500, 1, now);
-        ClanWar war2 = new ClanWar(40, 700, 0, now.plusDays(1));
+        ClanWar war1 = new ClanWar(30, 500, 1, now ,clan , clan1);
+        ClanWar war2 = new ClanWar(40, 700, 0, now.plusDays(1) , clan2 , clan3);
 
         List<ClanWar> extent = ClanWar.getExtent();
 
@@ -79,8 +99,11 @@ public class ClanWarTest {
 
     @Test
     void testExtentIsUnmodifiable() {
+        Clan clan = new Clan("Warriors", "A strong clan");
+        Clan clan1 = new Clan("hello world", "A weak clan");
+
         LocalDateTime now = LocalDateTime.now();
-        new ClanWar(30, 400, 1, now);
+        new ClanWar(30, 400, 1, now ,clan , clan1);
 
         List<ClanWar> extent = ClanWar.getExtent();
 
@@ -89,7 +112,10 @@ public class ClanWarTest {
 
     @Test
     void testSetInvalidDuration() {
-        ClanWar war = new ClanWar(30, 200, 0, LocalDateTime.now());
+        Clan clan = new Clan("Warriors", "A strong clan");
+        Clan clan1 = new Clan("hello world", "A weak clan");
+
+        ClanWar war = new ClanWar(30, 200, 0, LocalDateTime.now() ,clan , clan1);
 
         assertThrows(InvalidDurationException.class,
                 () -> war.setDuration(0));
@@ -97,7 +123,9 @@ public class ClanWarTest {
 
     @Test
     void testSetInvalidReward() {
-        ClanWar war = new ClanWar(30, 200, 0, LocalDateTime.now());
+        Clan clan = new Clan("Warriors", "A strong clan");
+        Clan clan1 = new Clan("hello world", "A weak clan");
+        ClanWar war = new ClanWar(30, 200, 0, LocalDateTime.now() ,clan , clan1);
 
         assertThrows(InvalidRewardException.class,
                 () -> war.setReward(-5));
@@ -105,7 +133,9 @@ public class ClanWarTest {
 
     @Test
     void testSetInvalidResult() {
-        ClanWar war = new ClanWar(30, 200, 0, LocalDateTime.now());
+        Clan clan = new Clan("Warriors", "A strong clan");
+        Clan clan1 = new Clan("hello world", "A weak clan");
+        ClanWar war = new ClanWar(30, 200, 0, LocalDateTime.now() ,clan , clan1);
 
         assertThrows(InvalidResultException.class,
                 () -> war.setResult(9));
@@ -113,7 +143,9 @@ public class ClanWarTest {
 
     @Test
     void testSetNullTimestamp() {
-        ClanWar war = new ClanWar(30, 200, 0, LocalDateTime.now());
+        Clan clan = new Clan("Warriors", "A strong clan");
+        Clan clan1 = new Clan("hello world", "A weak clan");
+        ClanWar war = new ClanWar(30, 200, 0, LocalDateTime.now() ,clan , clan1);
 
         assertThrows(InvalidTimestampException.class,
                 () -> war.setTimestamp(null));

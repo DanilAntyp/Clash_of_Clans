@@ -16,7 +16,8 @@ public class ClanWar implements Serializable {
 
     private TreeSet<Clan> clans = new TreeSet<>();
 
-    private Map<LocalDateTime , Battle>  battlesInClanWar= new Hashtable<>();
+
+    private final Map<LocalDateTime , Battle>  battlesInClanWar= new Hashtable<>();
 
 
     public static List<ClanWar> getExtent() {

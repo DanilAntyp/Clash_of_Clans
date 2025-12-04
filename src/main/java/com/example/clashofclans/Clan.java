@@ -12,7 +12,7 @@ public class Clan implements Serializable {
     //private ArrayList<Membership> memberships;
     private ArrayList<Player> banList;
 
-    Clan(String name, String description){
+    public Clan(String name, String description){
         this.name = name;
         this.description = description;
         //entry level leauge and badge
