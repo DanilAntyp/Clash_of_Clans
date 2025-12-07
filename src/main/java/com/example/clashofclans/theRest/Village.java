@@ -13,6 +13,7 @@ import com.example.clashofclans.units.Unit;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class Village implements Serializable {
             buildingInstances=new ArrayList<>();
             units=new ArrayList<>();
             this.owner = owner;
+            owner.addVillage(this);
 
             this.unitCapacity = 5; //FIXME i need a start value here, does unit capacity grows with level or is it stable (or r there no capacity n we can have unlimited units?)
             this.buildingCapacity = 10; //FIXME same question here
@@ -79,6 +81,7 @@ public class Village implements Serializable {
         try{
             if (buildingInstances.size() < buildingCapacity) {
                 buildingInstances.add(buildingInstance);
+                buildingInstance.addVillage(this);
             } else {
                 throw new fullCapacityExeption("This village cant have more buildings");
             }
@@ -159,5 +162,19 @@ public class Village implements Serializable {
 
     public static void loadExtent(Path file) {
         EXTENT = ExtentPersistence.loadExtent(file);
+    }
+
+    public void delete(){
+        for (BuildingInstance b : new ArrayList<>(buildingInstances)) {
+            b.removeVillage(this);
+        }
+        buildingInstances.clear();
+
+        units.clear(); //idk do we wanna kill em also?
+
+        EXTENT.remove(this);
+    }
+    public static List<Village> getExtent() {
+        return Collections.unmodifiableList(EXTENT);
     }
 }
