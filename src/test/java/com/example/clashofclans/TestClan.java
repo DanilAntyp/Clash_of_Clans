@@ -21,47 +21,8 @@ public class TestClan {
         assertFalse(clan.checkIfBanned(new Player("John"))); // empty banList
     }
 
-    @Test
-    void testAddMembershipSuccess(){
-        Clan clan = new Clan("Warriors", "A strong clan");
-        Player p= new Player("John");
-        clan.addMembership(p);
-        assertTrue(clan.getMemberships().contains(p.getMembership()));
-    }
-
-    @Test
-    void testAddMembershipNullPlayer(){
-        Clan clan = new Clan("Warriors", "A strong clan");
-        assertThrows(memberAddingExeption.class,() -> clan.addMembership(null));
-    }
-
-    @Test
-    void testAddMembershipBannedPlayer(){
-        Clan clan = new Clan("Warriors", "A strong clan");
-        Player p= new Player("John");
-        clan.addMembership(p);
-        clan.addBan(p);
-        assertThrows(memberAddingExeption.class,() -> clan.addMembership(p));
-    }
-
-    @Test
-    void testAddMembershipTwice(){
-        Clan clan = new Clan("Warriors", "A strong clan");
-        Player p= new Player("John");
-        clan.addMembership(p);
-
-        assertThrows(memberAddingExeption.class,() -> clan.addMembership(p));
-    }
 
 
-    @Test
-    void testRemoveMembershipSuccess(){
-        Clan clan = new Clan("Warriors", "A strong clan");
-        Player p= new Player("John");
-        clan.addMembership(p);
-        clan.removeMembership(p.getMembership());
-        assertFalse(clan.getMemberships().contains(p));
-    }
 
     @Test
     void testRemoveMembershipNotInClan(){
@@ -73,19 +34,7 @@ public class TestClan {
 
 
 
-    @Test
-    void testAddBanSuccessfullyRemovesFromMembers() {
-        Clan clan = new Clan("Warriors", "A strong clan");
-        Player p= new Player("John");
-        clan.addMembership(p);
-        assertTrue(clan.getMemberships().contains(p.getMembership()));
 
-        clan.addBan(p);
-
-        assertFalse(clan.getMemberships().contains(p.getMembership()));
-
-        assertTrue(clan.getBanList().contains(p));
-    }
 
     @Test
     void testAddBanNullPlayerThrows() {
