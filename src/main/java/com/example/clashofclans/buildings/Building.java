@@ -200,6 +200,8 @@ public class Building implements Serializable {
     public void removeInstance(BuildingInstance instance) {
         if (instance == null)
             throw new InvalidBuildingArgumentException("Instance cannot be null");
+        if (!instances.contains(instance))
+            throw new InvalidBuildingArgumentException("Instance not part of this building");
         instances.remove(instance);
     }
 
@@ -214,7 +216,15 @@ public class Building implements Serializable {
         EXTENT = ExtentPersistence.loadExtent(file);
     }
 
-
-
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        EXTENT.clear();
+    }
+    public static Building find(java.util.function.Predicate<Building> filter) {
+        return EXTENT.stream()
+                .filter(filter)
+                .findFirst()
+                .orElse(null);
+    }
 }
 

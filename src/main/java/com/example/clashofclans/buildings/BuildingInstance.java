@@ -79,6 +79,7 @@ public class BuildingInstance implements Serializable {
         EXTENT.add(this);
     }
 
+
     public Building getBuilding() {
         return building;
     }
@@ -167,7 +168,7 @@ public class BuildingInstance implements Serializable {
         if (activityQueue.contains(unit))
             throw new InvalidBuildingStateException("Unit already exists in training queue");
 
-        int maxSize = armyBuilding.getMaxUnits();
+        int maxSize = armyBuilding.getTroopsCapacity();
 
         if (activityQueue.size() >= maxSize) {
             addToChillBuffer(unit);
@@ -229,15 +230,21 @@ public class BuildingInstance implements Serializable {
     public void setInBag(boolean inBag) { this.inBag = inBag; }
 
     public void addVillage(Village village){
-        if (village == null){
-            throw new IlligalVillageExeption("village cannot be null as assosiation");
-        }
+        if (village == null)
+            throw new IlligalVillageExeption("Village cannot be null");
+
+        if (this.vilage != null)
+            throw new IlligalVillageExeption("BuildingInstance already assigned to a village");
+
         this.vilage = village;
     }
     public void removeVillage(Village village){
-        if (!(this.vilage == village)){
-            throw new IlligalVillageExeption(" it needs to be the same assosiation vialge that you want to remove");
-        }
+        if (village == null)
+            throw new IlligalVillageExeption("Village cannot be null");
+
+        if (this.vilage != village)
+            throw new IlligalVillageExeption("Cannot remove: instance not assigned to this village");
+
         this.vilage = null;
     }
 
@@ -264,6 +271,17 @@ public class BuildingInstance implements Serializable {
 
     public static void loadExtent(Path file) {
         EXTENT = ExtentPersistence.loadExtent(file);
+    }
+
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        EXTENT.clear();
+    }
+    public static BuildingInstance find(java.util.function.Predicate<BuildingInstance> filter) {
+        return EXTENT.stream()
+                .filter(filter)
+                .findFirst()
+                .orElse(null);
     }
 
 }

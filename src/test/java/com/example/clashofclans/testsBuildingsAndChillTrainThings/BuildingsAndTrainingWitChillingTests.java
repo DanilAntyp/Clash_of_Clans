@@ -13,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,8 +33,8 @@ class BuildingsAndTrainingWitChillingTests{
     @BeforeEach
     void setUp() {
         village = new Village(VillageType.regular, new Player("testPlayer"));
-        barracks = new ArmyBuilding(ArmyBuildingType.barracks, 50,100);
-        armyCamp = new ArmyBuilding(ArmyBuildingType.armyCamp, 100,100);
+        barracks = new ArmyBuilding(ArmyBuildingType.barracks, 50);
+        armyCamp = new ArmyBuilding(ArmyBuildingType.armyCamp, 100);
         building = new Building(100, 5, 2, 500);
         buildingInstance = new BuildingInstance(village, building, 100, 1,
                 LocalDateTime.now().plusHours(2), new int[]{0,0}, false
@@ -149,10 +148,10 @@ class BuildingsAndTrainingWitChillingTests{
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN,
                 AttackStyle.GROUND_TROOP, 50
         );
-        barracks.setMaxUnits(2);
+        barracks.setTroopsCapacity(2);
         barracksInstance.addToTrainingQueue(unit3);
         assertTrue(barracksInstance.getChillBuffer().contains(unit3));
-        barracks.setMaxUnits(50);
+        barracks.setTroopsCapacity(50);
     }
 
     @Test
@@ -241,7 +240,7 @@ class BuildingsAndTrainingWitChillingTests{
 
     @Test
     void testAddToUnits_fromBuildingInstance() {
-        ArmyBuilding barracksBuilding = new ArmyBuilding(ArmyBuildingType.barracks, 50,100);
+        ArmyBuilding barracksBuilding = new ArmyBuilding(ArmyBuildingType.barracks, 100);
         BuildingInstance barracksInstance = new BuildingInstance(
                 village, barracksBuilding, 100, 1,
                 LocalDateTime.now(), false
@@ -254,7 +253,7 @@ class BuildingsAndTrainingWitChillingTests{
 
     @Test
     void testRemoveFromUnitsQuantity_fromBuildingInstance() {
-        ArmyBuilding barracksBuilding = new ArmyBuilding(ArmyBuildingType.barracks, 50,2);
+        ArmyBuilding barracksBuilding = new ArmyBuilding(ArmyBuildingType.barracks, 2);
         BuildingInstance barracksInstance = new BuildingInstance(
                 village, barracksBuilding, 100, 1,
                 LocalDateTime.now(), false

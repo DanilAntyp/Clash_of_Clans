@@ -17,7 +17,7 @@ public final class ExtentPersistence {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+
 	public static <T extends Serializable> List<T> loadExtent(Path file) {
 		if (!Files.exists(file)) return new java.util.ArrayList<>();
 
@@ -25,6 +25,15 @@ public final class ExtentPersistence {
 			return (List<T>) in.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			throw new RuntimeException("Could not load extent from file: " + file, e);
+		}
+	}
+	public static void deleteExtent(Path file) {
+		try {
+			if (Files.exists(file)) {
+				Files.delete(file);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Could not delete extent file: " + file, e);
 		}
 	}
 }

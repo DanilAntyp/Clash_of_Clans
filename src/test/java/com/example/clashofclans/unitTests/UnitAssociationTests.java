@@ -28,7 +28,7 @@ class UnitAssociationTests {
 
         village = new Village(VillageType.regular, player);
 
-        ArmyBuilding armyCampType = new ArmyBuilding(ArmyBuildingType.armyCamp, 20,10);
+        ArmyBuilding armyCampType = new ArmyBuilding(ArmyBuildingType.armyCamp, 20);
 
 
         campInstance1 = new BuildingInstance(village, armyCampType, 1000, 1, LocalDateTime.now(), false);
