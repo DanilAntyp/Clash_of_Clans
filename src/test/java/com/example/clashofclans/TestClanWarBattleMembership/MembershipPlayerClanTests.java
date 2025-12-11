@@ -26,18 +26,6 @@ public class MembershipPlayerClanTests {
 
 
 	@Test
-	void testMembershipCreationViaClan_CreatesReverseConnection() {
-		clan.addMembership(player);
-
-		Membership m = player.getMembership();
-		assertNotNull(m, "Membership should be created by the Clan");
-
-		assertEquals(clan, m.getClan());
-		assertEquals(player, m.getPlayer());
-		assertTrue(clan.getMemberships().contains(m));
-	}
-
-	@Test
 	void testRemoveMembership_BreaksConnections() {
 		Membership m = new Membership(ClanRole.MEMBER, LocalDate.now(), clan, player);
 

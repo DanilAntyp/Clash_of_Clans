@@ -3,11 +3,13 @@ package com.example.clashofclans.theRest;
 import com.example.clashofclans.ExtentPersistence;
 import com.example.clashofclans.clanRelated.Membership;
 import com.example.clashofclans.enums.VillageType;
+import com.example.clashofclans.exceptions.battle.BattleException;
 import com.example.clashofclans.exceptions.player.*;
 
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Player implements Serializable {
@@ -37,8 +39,7 @@ public class Player implements Serializable {
         this.friends = new ArrayList<>();
 
 
-         Village village=new Village(VillageType.regular,this);//when new user created they get their village
-        this.villages[0]=village;
+        Village village=new Village(VillageType.regular,this);//when new user created they get their village
 
          EXTENT.add(this);
     }
@@ -116,6 +117,10 @@ public class Player implements Serializable {
          }
     }
 
+    public void addVillage(Village village) {
+         villages[1]=village;
+    }
+
     public void addFriend(Player player) {
         try {
             if(this==player){
@@ -156,7 +161,11 @@ public class Player implements Serializable {
         else villages[1] = v;
     }
 
-    //THIS ONE IS FOR AGREGATION
+    public static List<Player> getExtent() {
+        return Collections.unmodifiableList(EXTENT);
+    }
+
+    //THIS ONE IS FOR opposite of AGREGATION
     public void delete() {
         for (Player friend : new ArrayList<>(friends)) {
             friend.getFriends().remove(this);
@@ -164,9 +173,14 @@ public class Player implements Serializable {
         friends.clear();
 
         for (int i = 0; i < villages.length; i++) {
-            villages[i] = null;
+            if (villages[i] != null) {
+                villages[i].delete();
+                villages[i] = null;
+            }
         }
-        membership = null;
+        membership = null; //maybe also deleete the membership obj also but idk?
+
+        EXTENT.remove(this);
     }
 
     public static void saveExtent(Path file) {
@@ -176,5 +190,7 @@ public class Player implements Serializable {
     public static void loadExtent(Path file) {
         EXTENT = ExtentPersistence.loadExtent(file);
     }
+
+    public Village[] getVillages() {return villages;}
 }
 //league is gonna be enum
