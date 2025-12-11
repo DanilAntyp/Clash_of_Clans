@@ -21,6 +21,7 @@ public class Building implements Serializable {
     private double upgradeConstructionTime; //derived
 
 
+
     private List<BuildingInstance> instances = new ArrayList<>();
 
     private static List<Building> EXTENT = new ArrayList<>();
@@ -50,6 +51,7 @@ public class Building implements Serializable {
         this.maxLevel = maxLevel;
         this.buildTime = buildTime;
         this.resourceCost = resourceCost;
+
         EXTENT.add(this);
 
     }
@@ -66,8 +68,7 @@ public class Building implements Serializable {
                 1,
                 java.time.LocalDateTime.now().plusHours((long) this.getBuildTime()),
                 location,
-                false,
-                new QuantityMaxUnit(100 )
+                false
         );
 
         System.out.println("New building constructed at location: " + location);
@@ -187,7 +188,6 @@ public class Building implements Serializable {
     public double getUpgradeConstructionTime() {
         return upgradeConstructionTime;
     }
-
 
     public void addInstance(BuildingInstance instance) {
         if (instance == null)

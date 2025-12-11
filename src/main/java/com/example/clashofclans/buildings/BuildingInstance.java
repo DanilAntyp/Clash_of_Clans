@@ -1,7 +1,6 @@
 package com.example.clashofclans.buildings;
 
 import com.example.clashofclans.ExtentPersistence;
-import com.example.clashofclans.exceptions.building.QuanityUnitException;
 import com.example.clashofclans.exceptions.village.IlligalVillageExeption;
 import com.example.clashofclans.units.Unit;
 import com.example.clashofclans.theRest.Village;
@@ -25,12 +24,16 @@ public class BuildingInstance implements Serializable {
     private LocalDateTime timeTillConstruction; //calculated by current time and build time
     private int[] location;//can be null
     private boolean inBag;
-    private QuantityMaxUnit quantityMaxUnit;
+
 
     private Village vilage;
 
     private List<Unit> activityQueue = new ArrayList<>();
     private List<Unit> chillBuffer = new ArrayList<>();
+
+    public int getCurrentUnitsSize(){
+        return activityQueue.size() + chillBuffer.size();
+    }
 
     private static List<BuildingInstance> EXTENT = new ArrayList<>();
 
@@ -42,7 +45,7 @@ public class BuildingInstance implements Serializable {
 
     public BuildingInstance(Village vilage, Building b, double currentHp, int currentLevel,
                             LocalDateTime timeTillConstruction,
-                            int[] location, boolean inBag, QuantityMaxUnit quantityMaxUnit) {
+                            int[] location, boolean inBag) {
         if (b == null)
             throw new InvalidBuildingArgumentException("Building must be associated");
         this.building = b;
@@ -53,16 +56,14 @@ public class BuildingInstance implements Serializable {
         this.timeTillConstruction = timeTillConstruction;
         this.location = location;
         this.inBag = inBag;
-        quantityMaxUnit.addInstance(this);
         addVillage(vilage);
-        addQunatityMaxAss(quantityMaxUnit);
 
         EXTENT.add(this);
     }
 
     public BuildingInstance(Village vilage, Building b, double currentHp, int currentLevel,
                             LocalDateTime timeTillConstruction,
-                            boolean inBag, QuantityMaxUnit quantityMaxUnit) {
+                            boolean inBag) {
         if (b == null)
             throw new InvalidBuildingArgumentException("Building must be associated");
         this.building = b;
@@ -73,9 +74,7 @@ public class BuildingInstance implements Serializable {
         this.timeTillConstruction = timeTillConstruction;
         this.location = null;
         this.inBag = inBag;
-        quantityMaxUnit.addInstance(this);
         addVillage(vilage);
-        addQunatityMaxAss(quantityMaxUnit);
 
         EXTENT.add(this);
     }
@@ -168,7 +167,7 @@ public class BuildingInstance implements Serializable {
         if (activityQueue.contains(unit))
             throw new InvalidBuildingStateException("Unit already exists in training queue");
 
-        int maxSize = quantityMaxUnit.getMaxValue();
+        int maxSize = armyBuilding.getMaxUnits();
 
         if (activityQueue.size() >= maxSize) {
             addToChillBuffer(unit);
@@ -176,8 +175,6 @@ public class BuildingInstance implements Serializable {
             return;
         }
         activityQueue.add(unit);
-        quantityMaxUnit.addUnit(unit);
-        unit.addQuantityMaxUnit(quantityMaxUnit);
         System.out.println("Unit added to training queue");
     }
 
@@ -185,8 +182,6 @@ public class BuildingInstance implements Serializable {
         if (!activityQueue.contains(unit))
             throw new InvalidBuildingStateException("Unit doesn't exists in active queue");
         activityQueue.remove(unit);
-        quantityMaxUnit.removeUnit(unit);
-        unit.removeQuantityMaxUnit(quantityMaxUnit);
         System.out.println("Unit removed to active queue");
     }
     public void  addToChillBuffer(Unit unit) {
@@ -224,19 +219,6 @@ public class BuildingInstance implements Serializable {
         this.currentLevel = lvl;
     }
 
-    public void addQunatityMaxAss(QuantityMaxUnit  unitin){
-        if (unitin == null){
-            throw new QuanityUnitException("Qunaity unit cannot be null");
-        }
-        this.quantityMaxUnit = unitin;
-    }
-    public void removeQuantityMaxAss(QuantityMaxUnit  unitin){
-        if (quantityMaxUnit != unitin){
-            throw new QuanityUnitException("You cannot remove the assosiation of the Quanity max that is not assosiated");
-        }
-        this.quantityMaxUnit = null;
-    }
-
     public LocalDateTime getTimeTillConstruction() { return timeTillConstruction; }
     public void setTimeTillConstruction(LocalDateTime timeTillConstruction) { this.timeTillConstruction = timeTillConstruction; }
 
@@ -246,15 +228,6 @@ public class BuildingInstance implements Serializable {
     public boolean isInBag() { return inBag; }
     public void setInBag(boolean inBag) { this.inBag = inBag; }
 
-    public QuantityMaxUnit getQuantityMaxTroops() {
-        return quantityMaxUnit;
-    }
-
-    public void setQuantityMaxTroops(QuantityMaxUnit q) {
-        if (q == null)
-            throw new InvalidBuildingArgumentException("QuantityMaxTroops cannot be null");
-        this.quantityMaxUnit = q;
-    }
     public void addVillage(Village village){
         if (village == null){
             throw new IlligalVillageExeption("village cannot be null as assosiation");

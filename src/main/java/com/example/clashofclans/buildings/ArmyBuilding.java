@@ -10,18 +10,20 @@ import java.util.List;
 public class ArmyBuilding extends Building implements Serializable {
     private ArmyBuildingType type;
     private int troopsCapacity;
+    private int maxUnits;
 
     private static List<Building> EXTENT = new ArrayList<>();
 
     public ArmyBuilding() {}
 
-    public ArmyBuilding(ArmyBuildingType type, int troopsCapacity) {
+    public ArmyBuilding(ArmyBuildingType type, int troopsCapacity, int maxUnits) {
 
         if (type == null)
             throw new InvalidBuildingArgumentException("Army building type cannot be null");
 
         if (troopsCapacity <= 0)
             throw new InvalidBuildingArgumentException("Troop capacity must be > 0");
+        this.maxUnits = maxUnits;
 
         this.type = type;
         this.troopsCapacity = troopsCapacity;
@@ -29,6 +31,13 @@ public class ArmyBuilding extends Building implements Serializable {
     }
 
 
+    public int getMaxUnits() {
+        return maxUnits;
+    }
+
+    public void setMaxUnits(int maxUnits) {
+        this.maxUnits = maxUnits;
+    }
 
     public boolean isEnoughCapacity(long currentTroops) {
         return currentTroops <= troopsCapacity;

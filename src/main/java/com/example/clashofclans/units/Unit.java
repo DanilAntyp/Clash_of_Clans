@@ -2,7 +2,6 @@ package com.example.clashofclans.units;
 
 
 import com.example.clashofclans.ExtentPersistence;
-import com.example.clashofclans.buildings.QuantityMaxUnit;
 import com.example.clashofclans.theRest.Village;
 import com.example.clashofclans.enums.AttackDomain;
 import com.example.clashofclans.enums.ResourceKind;
@@ -25,7 +24,7 @@ public abstract class Unit implements Serializable {
 
     private Village village;
 
-    private Set<QuantityMaxUnit> quantityMaxUnits = new HashSet<>();
+    private Set<Unit> units = new HashSet<>();
 
     private static final Set<UnitType> HERO_TYPES = EnumSet.of(UnitType.BARBARIAN_KING, UnitType.ARCHER_QUEEN, UnitType.GRAND_WARDEN);
     private static final Set<UnitType> ELIXIR_USER_TYPES = EnumSet.of(UnitType.BARBARIAN, UnitType.ARCHER, UnitType.GIANT, UnitType.GOBLIN, UnitType.DRAGON, UnitType.BARBARIAN_KING, UnitType.ARCHER_QUEEN, UnitType.GRAND_WARDEN);
@@ -148,23 +147,23 @@ public abstract class Unit implements Serializable {
         EXTENT = ExtentPersistence.loadExtent(file);
     }
 
-    public void addQuantityMaxUnit(QuantityMaxUnit qmu){
+    public void addQuantityMaxUnit(Unit qmu){
         if (qmu == null){
             throw new InvalidUnitArgumentException("QuantityMaxUnit cannot be null");
         }
-        quantityMaxUnits.add(qmu);
+        units.add(qmu);
              // this will add the assosiation bidirectinal
     }
 
-    public void removeQuantityMaxUnit(QuantityMaxUnit qmu){
-        quantityMaxUnits.remove(qmu);
+    public void removeQuantityMaxUnit(Unit qmu){
+        units.remove(qmu);
     }
 
-    public Set<QuantityMaxUnit> getQuantityMaxUnits(){
-        return quantityMaxUnits;
+    public Set<Unit> getQuantityMaxUnits(){
+        return units;
     }
 
-    public void setQuantityMaxUnits(Set<QuantityMaxUnit> qmus){
-        quantityMaxUnits = qmus;
+    public void setQuantityMaxUnits(Set<Unit> qmus){
+        units = qmus;
     }
 }
