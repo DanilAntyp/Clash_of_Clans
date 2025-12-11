@@ -2,7 +2,6 @@ package com.example.clashofclans.unitTests;
 
 import com.example.clashofclans.buildings.ArmyBuilding;
 import com.example.clashofclans.buildings.BuildingInstance;
-import com.example.clashofclans.buildings.QuantityMaxUnit;
 import com.example.clashofclans.enums.*;
 import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
 import com.example.clashofclans.theRest.Player;
@@ -31,13 +30,14 @@ class UnitAssociationTests {
 
         ArmyBuilding armyCampType = new ArmyBuilding(ArmyBuildingType.armyCamp, 20);
 
-        QuantityMaxUnit qty = new QuantityMaxUnit(10);
+//        QuantityMaxUnit qty = new QuantityMaxUnit(10); delete this
 
-        campInstance1 = new BuildingInstance(village, armyCampType, 1000, 1, LocalDateTime.now(), false, qty);
+
+        campInstance1 = new BuildingInstance(village, armyCampType, 1000, 1, LocalDateTime.now(), false); //here quantity as int instead of obj
         campInstance1.setActivityQueue(new ArrayList<>());
         campInstance1.setChillBuffer(new ArrayList<>());
 
-        campInstance2 = new BuildingInstance(village, armyCampType, 1000, 1, LocalDateTime.now(), false, qty);
+        campInstance2 = new BuildingInstance(village, armyCampType, 1000, 1, LocalDateTime.now(), false);//here quantity as int instead of obj
         campInstance2.setActivityQueue(new ArrayList<>());
         campInstance2.setChillBuffer(new ArrayList<>());
     }
@@ -148,5 +148,34 @@ class UnitAssociationTests {
                 UnitType.BARBARIAN_KING, "Iron Fist", 60, "Levels");
 
         assertTrue(village.getUnits().contains(king), "Hero should be added to Village units");
+    }
+
+    @Test
+    void testDeletion_RemovesFromBuildingAndVillage() {
+        Troop barb = new Troop(village, 100, 10, 1, AttackDomain.GROUND, ResourceKind.ELIXIR,
+                UnitType.BARBARIAN, AttackStyle.GROUND_TROOP, 100);
+
+        barb.setBuildingInstance(campInstance1);
+
+        assertTrue(campInstance1.getActivityQueue().contains(barb));
+        assertTrue(village.getUnits().contains(barb));
+
+        barb.deleteUnit();
+
+        assertFalse(village.getUnits().contains(barb), "Should be removed from Village");
+        assertFalse(campInstance1.getActivityQueue().contains(barb), "Should be removed from Building Queue");
+        assertNull(barb.getBuildingInstance(), "Reference should be null");
+        assertNull(barb.getVillage(), "Reference should be null");
+    }
+
+    @Test
+    void testSetters_Validation() {
+        Troop t = new Troop(village, 100, 20, 5, AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN, AttackStyle.GROUND_TROOP, 50);
+
+        t.setHitPoint(200);
+        assertEquals(200, t.getHitPoint());
+
+        assertThrows(InvalidUnitArgumentException.class, () -> t.setHitPoint(-1));
+        assertThrows(InvalidUnitArgumentException.class, () -> t.setDamage(0));
     }
 }
