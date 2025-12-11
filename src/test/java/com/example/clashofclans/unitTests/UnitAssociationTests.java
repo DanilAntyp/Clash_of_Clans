@@ -147,4 +147,33 @@ class UnitAssociationTests {
 
         assertTrue(village.getUnits().contains(king), "Hero should be added to Village units");
     }
+
+    @Test
+    void testDeletion_RemovesFromBuildingAndVillage() {
+        Troop barb = new Troop(village, 100, 10, 1, AttackDomain.GROUND, ResourceKind.ELIXIR,
+                UnitType.BARBARIAN, AttackStyle.GROUND_TROOP, 100);
+
+        barb.setBuildingInstance(campInstance1);
+
+        assertTrue(campInstance1.getActivityQueue().contains(barb));
+        assertTrue(village.getUnits().contains(barb));
+
+        barb.deleteUnit();
+
+        assertFalse(village.getUnits().contains(barb), "Should be removed from Village");
+        assertFalse(campInstance1.getActivityQueue().contains(barb), "Should be removed from Building Queue");
+        assertNull(barb.getBuildingInstance(), "Reference should be null");
+        assertNull(barb.getVillage(), "Reference should be null");
+    }
+
+    @Test
+    void testSetters_Validation() {
+        Troop t = new Troop(village, 100, 20, 5, AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN, AttackStyle.GROUND_TROOP, 50);
+
+        t.setHitPoint(200);
+        assertEquals(200, t.getHitPoint());
+
+        assertThrows(InvalidUnitArgumentException.class, () -> t.setHitPoint(-1));
+        assertThrows(InvalidUnitArgumentException.class, () -> t.setDamage(0));
+    }
 }

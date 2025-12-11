@@ -64,6 +64,8 @@ public class Membership implements Serializable {
         if(clan.checkIfBanned(player)) throw new clanBanException("Player is banned from clan");
         clan.setMemberships(this);
 
+        player.setMembership(this);
+
         addToExtent(this);
 
     }
@@ -133,6 +135,7 @@ public class Membership implements Serializable {
     }
 
     public Player getPlayer(){return this.player;}
+
     public static void saveExtent(Path file) {
         ExtentPersistence.saveExtent(extent, file);
     }
