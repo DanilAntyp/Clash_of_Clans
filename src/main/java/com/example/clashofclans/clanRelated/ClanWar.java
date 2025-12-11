@@ -18,7 +18,6 @@ public class ClanWar implements Serializable {
 
     private HashSet<Clan> clans = new HashSet<>();
 
-
     private final Map<LocalDateTime , Battle>  battlesInClanWar= new Hashtable<>();
 
 

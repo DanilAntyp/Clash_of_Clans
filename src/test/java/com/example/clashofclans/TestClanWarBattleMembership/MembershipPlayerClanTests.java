@@ -23,7 +23,16 @@ public class MembershipPlayerClanTests {
 		player = new Player ("Danylo");
 	}
 
+	@Test
+	void testMembershipCreationViaConstructor_CreatesReverseConnection() {
+		Membership m = new Membership(ClanRole.MEMBER, LocalDate.now(), clan, player);
+		assertEquals(m, player.getMembership(), "The Membership object should be set on the Player object during creation.");
 
+		assertEquals(clan, m.getClan(), "The Membership object should correctly reference the Clan.");
+		assertEquals(player, m.getPlayer(), "The Membership object should correctly reference the Player.");
+
+		assertTrue(clan.getMemberships().contains(m), "The Clan's list of memberships should contain the newly created Membership object.");
+	}
 
 	@Test
 	void testRemoveMembership_BreaksConnections() {
@@ -36,5 +45,33 @@ public class MembershipPlayerClanTests {
 		assertFalse(clan.getMemberships().contains(m));
 
 
+	}
+	@Test
+	void testMembershipLeave_SetsEndDate() {
+		LocalDate joinDate = LocalDate.of(2025, 1, 1);
+		Membership m = new Membership(ClanRole.MEMBER, joinDate, clan, player);
+
+		assertNull(m.getDateEnd(), "End date should be null initially.");
+		assertEquals(joinDate, m.getJoinDate(), "Join date should be correct.");
+
+		m.Leave();
+
+		assertEquals(LocalDate.now(), m.getDateEnd(), "End date should be set to the current date when Leave() is called.");
+
+		assertEquals(clan, m.getClan(), "Clan connection should remain.");
+		assertEquals(m, player.getMembership(), "Player connection should remain.");
+	}
+	@Test
+	void testAddMembership_BannedPlayerThrowsException() {
+		clan.addBan(player);
+
+		assertNull(player.getMembership(), "Player should have no membership after being banned.");
+
+		assertThrows(com.example.clashofclans.exceptions.clan.memberAddingExeption.class, () -> {
+			clan.addMembership(player);
+		}, "Attempting to add a banned player should throw a memberAddingExeption.");
+
+		assertNull(player.getMembership(), "Membership should not be created after failed attempt.");
+		assertTrue(clan.getBanList().contains(player), "Player should remain on the ban list.");
 	}
 }
