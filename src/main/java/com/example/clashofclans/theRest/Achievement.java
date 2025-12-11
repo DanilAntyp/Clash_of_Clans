@@ -1,9 +1,13 @@
 package com.example.clashofclans.theRest;
 
+import com.example.clashofclans.ExtentPersistence;
 import com.example.clashofclans.exceptions.player.InvalidPlayerForAchievementException;
 import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
 
 import java.io.Serializable;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class Achievement implements Serializable {
@@ -13,11 +17,14 @@ public class Achievement implements Serializable {
     private String reward;
     private Set<Player> players;
 
+    private static List<Player> EXTENT = new ArrayList<>();
+
     public Achievement(String name, String description, String type, String reward) {
         this.name = name;
         this.description = description;
         this.type = type;
         this.reward = reward;
+
     }
 
     public Set<Player> players(){
@@ -53,5 +60,10 @@ public class Achievement implements Serializable {
     }
     public String getReward() {
         return reward;
+    }
+
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        EXTENT.clear();
     }
 }

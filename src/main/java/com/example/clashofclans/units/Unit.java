@@ -2,6 +2,7 @@ package com.example.clashofclans.units;
 
 
 import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.buildings.Building;
 import com.example.clashofclans.theRest.Village;
 import com.example.clashofclans.enums.AttackDomain;
 import com.example.clashofclans.enums.ResourceKind;
@@ -13,7 +14,7 @@ import java.nio.file.Path;
 import java.util.*;
 /*
 Composition (Unit - Village):
- * Type: Composition (Whole-Part relationship, 1..1 to 0..*).
+ * Type: Composition (Whole-Part relationship, 1 to 0..*).
  * Implementation: Implemented strictly within the Unit class constructor. A Unit cannot be
  * instantiated without a Village reference (enforced by constructor validation).
  * Reverse Connection: Upon creation, the Unit automatically adds itself to the Village's unit list
@@ -128,17 +129,6 @@ public abstract class Unit implements Serializable {
     public ResourceKind getResourceKind() { return resourceKind; }
     public UnitType getType() { return type; }
 
-    public UnitType getType() {
-        return type;
-    }
-
-    public static void saveExtent(Path file) {
-        ExtentPersistence.saveExtent(EXTENT, file);
-    }
-
-    public static void loadExtent(Path file) {
-        EXTENT = ExtentPersistence.loadExtent(file);
-    }
 
     public void addQuantityMaxUnit(Unit qmu){
         if (qmu == null){
@@ -158,5 +148,24 @@ public abstract class Unit implements Serializable {
 
     public void setQuantityMaxUnits(Set<Unit> qmus){
         units = qmus;
+    }
+
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(EXTENT, file);
+    }
+
+    public static void loadExtent(Path file) {
+        EXTENT = ExtentPersistence.loadExtent(file);
+    }
+
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        EXTENT.clear();
+    }
+    public static Unit find(java.util.function.Predicate<Unit> filter) {
+        return EXTENT.stream()
+                .filter(filter)
+                .findFirst()
+                .orElse(null);
     }
 }

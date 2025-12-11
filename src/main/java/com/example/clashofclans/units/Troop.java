@@ -16,7 +16,7 @@ import java.util.Objects;
 
 /*
 Association (Troop - BuildingInstance):
- * Type: Basic Association (0..1 to 0..*). A Troop can reside in one BuildingInstance (Army Camp/Barracks).
+ * Type: Basic Association (1 to 0..*). A Troop can reside in one BuildingInstance (Army Camp/Barracks).
  * Implementation: Managed via the setBuildingInstance(BuildingInstance) method in the Troop class.
  * Reverse Connection: The setter handles the bidirectional consistency:
  * 1. It removes the troop from the oldBuildingInstance (checking both the activityQueue and chillBuffer).

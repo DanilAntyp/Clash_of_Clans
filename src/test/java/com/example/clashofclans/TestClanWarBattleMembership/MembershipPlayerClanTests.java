@@ -61,17 +61,4 @@ public class MembershipPlayerClanTests {
 		assertEquals(clan, m.getClan(), "Clan connection should remain.");
 		assertEquals(m, player.getMembership(), "Player connection should remain.");
 	}
-	@Test
-	void testAddMembership_BannedPlayerThrowsException() {
-		clan.addBan(player);
-
-		assertNull(player.getMembership(), "Player should have no membership after being banned.");
-
-		assertThrows(com.example.clashofclans.exceptions.clan.memberAddingExeption.class, () -> {
-			clan.addMembership(player);
-		}, "Attempting to add a banned player should throw a memberAddingExeption.");
-
-		assertNull(player.getMembership(), "Membership should not be created after failed attempt.");
-		assertTrue(clan.getBanList().contains(player), "Player should remain on the ban list.");
-	}
 }

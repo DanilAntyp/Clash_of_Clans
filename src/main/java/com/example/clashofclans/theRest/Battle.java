@@ -137,4 +137,8 @@ public class Battle implements Serializable {
         extent = ExtentPersistence.loadExtent(file);
     }
 
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        extent.clear();
+    }
 }

@@ -143,4 +143,9 @@ public class Membership implements Serializable {
     public static void loadExtent(Path file) {
         extent = ExtentPersistence.loadExtent(file);
     }
+
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        extent.clear();
+    }
 }

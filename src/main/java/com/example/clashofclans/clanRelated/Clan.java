@@ -178,4 +178,9 @@ public class Clan implements Serializable {
         EXTENT = ExtentPersistence.loadExtent(file);
     }
 
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        EXTENT.clear();
+    }
+
 }
