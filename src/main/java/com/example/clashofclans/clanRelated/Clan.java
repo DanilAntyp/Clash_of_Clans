@@ -94,7 +94,7 @@ public class Clan implements Serializable {
         banList.add(p);
     }
 
-    public void addMembership(Player p) {
+    /*public void addMembership(Player p) {
         try {
             if (p == null) {
                 throw new memberAddingExeption("Cannot add a null player.");
@@ -114,7 +114,7 @@ public class Clan implements Serializable {
             System.out.println(e.getMessage());
             throw e;
         }
-    }
+    }*/
 
     public void setMemberships(Membership m){memberships.add(m);}
 
