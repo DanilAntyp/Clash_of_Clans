@@ -8,7 +8,7 @@ S29778 Konrad Markiewicz
 S30917 Danila Novik  
 ---
 
-### User Requirements---
+### User Requirements
  
 The Clash of Clans system is designed to support both players and clan leaders in managing their villages, armies, clans, and battles. The system allows players to build and upgrade their villages, train troops, join clans, and participate in wars. Clan leaders and co-leaders are given special permissions to manage the clan, including recruitment, war strategies.  
 
@@ -28,17 +28,19 @@ Achievements are awarded to players when they reach specific milestones . Each a
 
 The system includes Friendship between players. A player can add another player as a friend, enabling friendly challenges and visits to their villages.  
 
+### Class Diagram
 
-
+![class diagram ss](src/readme_assets/ClashOfClans%20-%20Page%201%20(12).png)
 ### Analytical Class Diagram Description 
 
 The main entity is the Player, who owns a Village/Villages (max 2) made up of different Buildings, including resource buildings (like gold mines), defensive buildings (such as cannons or archer towers), and army buildings (like barracks and army camps). Players can train Units, which include Troops and Heroes, each with attributes such as hit points, damage, and housing space. Troops may be ground or air attackers and use different resources like elixir or dark elixir.
 It's worth showcasing that the Troop can either train or rest in the building.
 Players can join Clans, forming social groups through the Membership relationship, which defines roles, levels, and join dates. We need to store information of the player’s membership to not add the player that is banned in a given clan. Clans compete in Clan Wars, earning rewards and trophies based on their performance. Players can also engage in Solo Battles with other villages to gain loot, trophies, and experience. The diagram includes Spells that influence battles and Achievements that track player progress and offer rewards.
 
-![class diagram ss](src/readme_assets/ClashOfClans%20-%20Page%201%20(12).png)
 
 
+### Design Diagram
+![Clash of Clans Screenshot](src/readme_assets/%20designDiagram.png)
 ### Design Diagram Description 
 
 The project is developed using Java language with an object-oriented programming approach that organizes the game world into clearly defined classes representing buildings, soldiers, resources, and game control mechanisms. The design diagram presents the structure of the system as it is defined for implementation in Java. Each class is shown with its attributes, including their specific Java data types and any enumeration values ​​used. It outlines elements such as players, clans, buildings, resources, soldiers, and units and how their information is represented at the code level. Combat and movement behavior is defined through structured logic that determines targeting, damage application, and positional updates. The algorithms controlling these actions ensure predictable and balanced results based on defined troop and building parameters. Object creation for troops and buildings is managed through organized constructors or factory-style methods, supporting scalability and adding new game elements with minimal structural changes.
@@ -68,7 +70,7 @@ Instance of the Building
 Village   
  - Resource calculated by total of resources created and gained during battles  
 
-![Clash of Clans Screenshot](src/readme_assets/%20designDiagram.png)
+
 
 ### Use Case Diagram 
 ![Use Case Diagram](src/readme_assets/UCDiagramClashOfClans.png)
@@ -122,4 +124,55 @@ The newely addded aprach of the  connection BuildingInstance to Unit hepls us to
 - /League
 - /TotalTrophies
 - /MaxStorageCapacity (for buildings)
+
+### Assosiations
+
+**Unit - Village:**
+Type: Composition (Whole-Part relationship, 1 to 0..*).     
+Implementation: Implemented strictly within the Unit class constructor. A Unit cannot be    
+instantiated without a Village reference (enforced by constructor validation).    
+Reverse Connection: Upon creation, the Unit automatically adds itself to the Village's unit list     
+(village.addUnit(this)).     
+Deletion: The overridden deleteUnit() method in Troop ensures integrity by first removing    
+the unit from any associated BuildingInstance, and then calling the super method to remove    
+the unit from the Village list and destroy the object references.     
+
+**Troop - BuildingInstance:**
+Type: Basic Association (1 to 0..*). A Troop can reside in one BuildingInstance (Army Camp/Barracks).     
+Implementation: Managed via the setBuildingInstance(BuildingInstance) method in the Troop class.     
+Reverse Connection: The setter handles the bidirectional consistency:    
+1. It removes the troop from the oldBuildingInstance (checking both the activityQueue and chillBuffer).    
+2. It adds the troop to the newBuildingInstance's active queue using its public method (addToActivityQueue).    
+Error Handling: The implementation relies on the BuildingInstance's internal logic to throw exceptions    
+if capacities are exceeded, ensuring no invalid states are created during assignment.    
+ 
+**Building  - Vilage and in bettwen there is BuildingInstance**
+Type: Associations with attribute  A Building can have multiple BuildingInstances; each instance tracks its own HP, level, construction time, and location.      
+Since Building has assosiated with BuilidngInstance, BuildingInstance - Resource/Defensive/Army     
+Building  BuildingInstance specializes into different building types (Resource, Defensive, Army) through a disjoint, completegeneralization.   
+
+**Achivement - Player**
+A player can have many achivements and each achievement can be gained by many player.  
+
+**Spell - Player**
+A player can have many spells and each spell can be gained by many player.  
+
+**Clan - Membership - Player**
+A player be a member of one clan, a clan can have multiple players  
+
+**Player - Player**
+Each player can have many players as their friends.  
+
+**Player - Village**
+Each player can have 2 villages maximum, all villages has one player as owner  
+
+Quantity associations  Quantity elements represent how many units or troops are currently in training or idle (“chilling”).  
+
+**Membership association:**
+The Membership class is an association class that resolves the many-to-many relationship between Player and Clan.   
+It stores relationship-specific data like the player's ClanRole and joinDate. 
+Each Membership object holds a 1-to-1 reference to its specific Player and Clan.  
+
+**ClanWar Battle association:**
+The ClanWar and Battle classes form a Qualified Association where one war contains many individual battles, managed by the battle's LocalDateTime as the unique key.
 
