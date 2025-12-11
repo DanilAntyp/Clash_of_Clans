@@ -37,16 +37,16 @@ class BuildingsAndTrainingWitChillingTests{
         armyCamp = new ArmyBuilding(ArmyBuildingType.armyCamp, 100);
         building = new Building(100, 5, 2, 500);
         buildingInstance = new BuildingInstance(village, building, 100, 1,
-                LocalDateTime.now().plusHours(2), new int[]{0,0}, false,new QuantityMaxUnit(100)
+                LocalDateTime.now().plusHours(2), new int[]{0,0}, false
         );
         cannon = new DefensiveBuilding(DefBuildingType.cannon, 50, 5, DefTargetType.ground);
         goldMine = new ResourceBuilding(ResourceBuildingTypes.goldMine, 500, 50);
 
         barracksInstance = new BuildingInstance(village,barracks, 100, 1,
-                LocalDateTime.now().plusHours(1), false, new QuantityMaxUnit(2));
+                LocalDateTime.now().plusHours(1), false);
 
         armyCampInstance = new BuildingInstance(village,armyCamp, 100, 1,
-                LocalDateTime.now().plusHours(1), false, new QuantityMaxUnit(5));
+                LocalDateTime.now().plusHours(1), false);
 
         unit1 = new Troop(village,
                 100, 20, 5,
@@ -129,8 +129,7 @@ class BuildingsAndTrainingWitChillingTests{
 
     @Test
     void testCalculateMaxStorageCapacity() {
-        BuildingInstance instance = new BuildingInstance(village, goldMine, 100, 3, LocalDateTime.now(), false,
-                new QuantityMaxUnit(100)
+        BuildingInstance instance = new BuildingInstance(village, goldMine, 100, 3, LocalDateTime.now(), false
         );
         goldMine.calculateMaxStorageCapacity(instance);
         assertEquals(3000, goldMine.getMaxStorageCapacity());
@@ -149,8 +148,10 @@ class BuildingsAndTrainingWitChillingTests{
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN,
                 AttackStyle.GROUND_TROOP, 50
         );
+        barracks.setTroopsCapacity(2);
         barracksInstance.addToTrainingQueue(unit3);
         assertTrue(barracksInstance.getChillBuffer().contains(unit3));
+        barracks.setTroopsCapacity(50);
     }
 
     @Test
@@ -220,9 +221,6 @@ class BuildingsAndTrainingWitChillingTests{
         buildingInstance.setLocation(new int[]{5,5});
         assertArrayEquals(new int[]{5,5}, buildingInstance.getLocation());
 
-        QuantityMaxUnit q = new QuantityMaxUnit(50);
-        buildingInstance.setQuantityMaxTroops(q);
-        assertEquals(50, buildingInstance.getQuantityMaxTroops().getMaxValue());
     }
 
     @Test
@@ -241,31 +239,29 @@ class BuildingsAndTrainingWitChillingTests{
     }
 
     @Test
-    void testAddToUnitsQuantity_fromBuildingInstance() {
-        QuantityMaxUnit qMax = new QuantityMaxUnit(2);
-        ArmyBuilding barracksBuilding = new ArmyBuilding(ArmyBuildingType.barracks, 50);
+    void testAddToUnits_fromBuildingInstance() {
+        ArmyBuilding barracksBuilding = new ArmyBuilding(ArmyBuildingType.barracks, 100);
         BuildingInstance barracksInstance = new BuildingInstance(
                 village, barracksBuilding, 100, 1,
-                LocalDateTime.now(), false, qMax
+                LocalDateTime.now(), false
         );
 
         barracksInstance.addToTrainingQueue(unit1);
 
-        assertTrue(qMax.getUnits().contains(unit1));
+        assertTrue(barracksInstance.getActivityQueue().contains(unit1));
     }
 
     @Test
     void testRemoveFromUnitsQuantity_fromBuildingInstance() {
-        QuantityMaxUnit qMax = new QuantityMaxUnit(2);
-        ArmyBuilding barracksBuilding = new ArmyBuilding(ArmyBuildingType.barracks, 50);
+        ArmyBuilding barracksBuilding = new ArmyBuilding(ArmyBuildingType.barracks, 2);
         BuildingInstance barracksInstance = new BuildingInstance(
                 village, barracksBuilding, 100, 1,
-                LocalDateTime.now(), false, qMax
+                LocalDateTime.now(), false
         );
 
         barracksInstance.addToTrainingQueue(unit1);
         barracksInstance.removeFromActiveQueue(unit1);
 
-        assertFalse(qMax.getUnits().contains(unit1));
+        assertFalse(barracksInstance.getActivityQueue().contains(unit1));
     }
 }

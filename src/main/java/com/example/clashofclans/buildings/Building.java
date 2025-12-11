@@ -21,6 +21,7 @@ public class Building implements Serializable {
     private double upgradeConstructionTime; //derived
 
 
+
     private List<BuildingInstance> instances = new ArrayList<>();
 
     private static List<Building> EXTENT = new ArrayList<>();
@@ -50,6 +51,7 @@ public class Building implements Serializable {
         this.maxLevel = maxLevel;
         this.buildTime = buildTime;
         this.resourceCost = resourceCost;
+
         EXTENT.add(this);
 
     }
@@ -66,8 +68,7 @@ public class Building implements Serializable {
                 1,
                 java.time.LocalDateTime.now().plusHours((long) this.getBuildTime()),
                 location,
-                false,
-                new QuantityMaxUnit(100 )
+                false
         );
 
         System.out.println("New building constructed at location: " + location);
@@ -188,7 +189,6 @@ public class Building implements Serializable {
         return upgradeConstructionTime;
     }
 
-
     public void addInstance(BuildingInstance instance) {
         if (instance == null)
             throw new InvalidBuildingArgumentException("Instance cannot be null");
@@ -200,6 +200,8 @@ public class Building implements Serializable {
     public void removeInstance(BuildingInstance instance) {
         if (instance == null)
             throw new InvalidBuildingArgumentException("Instance cannot be null");
+        if (!instances.contains(instance))
+            throw new InvalidBuildingArgumentException("Instance not part of this building");
         instances.remove(instance);
     }
 
@@ -214,7 +216,15 @@ public class Building implements Serializable {
         EXTENT = ExtentPersistence.loadExtent(file);
     }
 
-
-
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        EXTENT.clear();
+    }
+    public static Building find(java.util.function.Predicate<Building> filter) {
+        return EXTENT.stream()
+                .filter(filter)
+                .findFirst()
+                .orElse(null);
+    }
 }
 

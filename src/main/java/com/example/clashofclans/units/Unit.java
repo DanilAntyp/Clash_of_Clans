@@ -34,6 +34,8 @@ public abstract class Unit implements Serializable {
 
     private Village village;
 
+    private Set<Unit> units = new HashSet<>();
+
     private static final Set<UnitType> HERO_TYPES = EnumSet.of(UnitType.BARBARIAN_KING, UnitType.ARCHER_QUEEN, UnitType.GRAND_WARDEN);
     private static final Set<UnitType> ELIXIR_USER_TYPES = EnumSet.of(UnitType.BARBARIAN, UnitType.ARCHER, UnitType.GIANT, UnitType.GOBLIN, UnitType.DRAGON, UnitType.BARBARIAN_KING, UnitType.ARCHER_QUEEN, UnitType.GRAND_WARDEN);
     private static final Set<UnitType> DARK_ELIXIR_USER_TYPES = EnumSet.of(UnitType.HOG, UnitType.MINION, UnitType.WITCH, UnitType.VALKYRIE, UnitType.GOLEM, UnitType.MINION_KING);
@@ -126,6 +128,35 @@ public abstract class Unit implements Serializable {
     public ResourceKind getResourceKind() { return resourceKind; }
     public UnitType getType() { return type; }
 
-    public static void saveExtent(Path file) { ExtentPersistence.saveExtent(EXTENT, file); }
-    public static void loadExtent(Path file) { EXTENT = ExtentPersistence.loadExtent(file); }
+    public UnitType getType() {
+        return type;
+    }
+
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(EXTENT, file);
+    }
+
+    public static void loadExtent(Path file) {
+        EXTENT = ExtentPersistence.loadExtent(file);
+    }
+
+    public void addQuantityMaxUnit(Unit qmu){
+        if (qmu == null){
+            throw new InvalidUnitArgumentException("QuantityMaxUnit cannot be null");
+        }
+        units.add(qmu);
+             // this will add the assosiation bidirectinal
+    }
+
+    public void removeQuantityMaxUnit(Unit qmu){
+        units.remove(qmu);
+    }
+
+    public Set<Unit> getQuantityMaxUnits(){
+        return units;
+    }
+
+    public void setQuantityMaxUnits(Set<Unit> qmus){
+        units = qmus;
+    }
 }

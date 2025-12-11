@@ -11,6 +11,7 @@ public class ArmyBuilding extends Building implements Serializable {
     private ArmyBuildingType type;
     private int troopsCapacity;
 
+
     private static List<Building> EXTENT = new ArrayList<>();
 
     public ArmyBuilding() {}
@@ -27,7 +28,6 @@ public class ArmyBuilding extends Building implements Serializable {
         this.troopsCapacity = troopsCapacity;
         EXTENT.add(this);
     }
-
 
 
     public boolean isEnoughCapacity(long currentTroops) {

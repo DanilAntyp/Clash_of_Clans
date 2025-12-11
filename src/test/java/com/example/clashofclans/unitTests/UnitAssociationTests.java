@@ -30,14 +30,12 @@ class UnitAssociationTests {
 
         ArmyBuilding armyCampType = new ArmyBuilding(ArmyBuildingType.armyCamp, 20);
 
-//        QuantityMaxUnit qty = new QuantityMaxUnit(10); delete this
 
-
-        campInstance1 = new BuildingInstance(village, armyCampType, 1000, 1, LocalDateTime.now(), false); //here quantity as int instead of obj
+        campInstance1 = new BuildingInstance(village, armyCampType, 1000, 1, LocalDateTime.now(), false);
         campInstance1.setActivityQueue(new ArrayList<>());
         campInstance1.setChillBuffer(new ArrayList<>());
 
-        campInstance2 = new BuildingInstance(village, armyCampType, 1000, 1, LocalDateTime.now(), false);//here quantity as int instead of obj
+        campInstance2 = new BuildingInstance(village, armyCampType, 1000, 1, LocalDateTime.now(), false);
         campInstance2.setActivityQueue(new ArrayList<>());
         campInstance2.setChillBuffer(new ArrayList<>());
     }
