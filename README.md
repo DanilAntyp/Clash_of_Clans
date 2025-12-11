@@ -8,7 +8,7 @@ S29778 Konrad Markiewicz
 S30917 Danila Novik  
 ---
 
-### User Requirements
+### User Requirements---
  
 The Clash of Clans system is designed to support both players and clan leaders in managing their villages, armies, clans, and battles. The system allows players to build and upgrade their villages, train troops, join clans, and participate in wars. Clan leaders and co-leaders are given special permissions to manage the clan, including recruitment, war strategies.  
 
