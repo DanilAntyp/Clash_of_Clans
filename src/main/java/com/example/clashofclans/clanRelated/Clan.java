@@ -90,7 +90,10 @@ public class Clan implements Serializable {
         if (banList.contains(p)) {
             return;
         }
-        removeMembership(p.getMembership());
+        if (p.getMembership() != null) {
+            removeMembership(p.getMembership());
+        }
+        //removeMembership(p.getMembership());
         banList.add(p);
     }
 
