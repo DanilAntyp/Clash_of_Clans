@@ -127,7 +127,7 @@ public class TestClan {
         Clan clan = new Clan("Warriors", "desc");
         Clan enemy = new Clan("Enemies", "desc");
 
-        // ClanWar automatically registers itself to both clans
+
         ClanWar cw = new ClanWar(
                 5, 100, 1, LocalDateTime.now(), clan, enemy
         );
