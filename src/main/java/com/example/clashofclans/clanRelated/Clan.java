@@ -76,6 +76,10 @@ public class Clan implements Serializable {
         return banList;
     }
 
+    public ArrayList getClanWars() {
+        return clanWars;
+    }
+
     public boolean checkIfBanned(Player p) {
         if (p == null) {
             throw new clanBanException("Cannot ban a null player.");
@@ -127,6 +131,7 @@ public class Clan implements Serializable {
         try{
             if(memberships.contains(membership)){
                 memberships.remove(membership);
+                membership.getPlayer().setMembership(null);
             }
             else{
                 throw new IlligalVillageExeption("There is no such member in this clan");
