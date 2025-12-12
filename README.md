@@ -41,6 +41,7 @@ Players can join Clans, forming social groups through the Membership relationshi
 
 ### Design Diagram
 ![Clash of Clans Screenshot](src/readme_assets/%20designDiagram.png)
+
 ### Design Diagram Description 
 
 The project is developed using Java language with an object-oriented programming approach that organizes the game world into clearly defined classes representing buildings, soldiers, resources, and game control mechanisms. The design diagram presents the structure of the system as it is defined for implementation in Java. Each class is shown with its attributes, including their specific Java data types and any enumeration values ​​used. It outlines elements such as players, clans, buildings, resources, soldiers, and units and how their information is represented at the code level. Combat and movement behavior is defined through structured logic that determines targeting, damage application, and positional updates. The algorithms controlling these actions ensure predictable and balanced results based on defined troop and building parameters. Object creation for troops and buildings is managed through organized constructors or factory-style methods, supporting scalability and adding new game elements with minimal structural changes.
@@ -176,3 +177,5 @@ Each Membership object holds a 1-to-1 reference to its specific Player and Clan.
 **ClanWar Battle association:**
 The ClanWar and Battle classes form a Qualified Association where one war contains many individual battles, managed by the battle's LocalDateTime as the unique key.
 
+
+![Clash of Clans Screenshot](src/readme_assets/ClashOfClans%20-%20Page%201.png)
