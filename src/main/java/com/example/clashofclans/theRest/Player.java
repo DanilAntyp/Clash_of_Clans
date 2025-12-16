@@ -103,7 +103,7 @@ public class Player implements Serializable {
             if (achivement==null) {
                 throw new NullEntryExeption("achivement cannot be null");
             }if(this.achivements.contains(achivement)){
-                throw new duplicateEntryExeption("achivement already exists in users inventory");
+                return;
             }
             this.achivements.add(achivement);
             achivement.addPlayer(this);
@@ -133,7 +133,7 @@ public class Player implements Serializable {
             if (spell==null) {
                 throw new NullEntryExeption("Spell cannot be null");
             }if(this.spells.contains(spell)){
-                throw new duplicateEntryExeption("Spell already exists in users inventory");
+                return;
             }
             this.spells.add(spell);
             spell.addPlayer(this);

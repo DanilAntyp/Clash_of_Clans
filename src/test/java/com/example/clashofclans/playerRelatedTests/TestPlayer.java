@@ -74,8 +74,8 @@ public class TestPlayer {
 
         Spell spell = new Spell(SpellType.healing, 10, 5.0);
         player.addNewSpell(spell);
-        assertThrows(duplicateEntryExeption.class,
-                () -> player.addNewSpell(spell));
+        player.addNewSpell(spell);
+        assertTrue(player.getSpells().size() == 1);
     }
 
     @Test
@@ -129,8 +129,8 @@ public class TestPlayer {
         Achievement achivement = new Achievement("s","a","a","a");
 
         player.addNewAchivement(achivement);
-        assertThrows(duplicateEntryExeption.class,
-                () -> player.addNewAchivement(achivement));
+        player.addNewAchivement(achivement);
+        assertTrue(player.getAchievements().size() == 1);
     }
 
     @Test

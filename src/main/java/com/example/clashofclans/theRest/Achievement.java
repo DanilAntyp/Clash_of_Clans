@@ -35,7 +35,7 @@ public class Achievement implements Serializable {
             throw new InvalidPlayerForAchievementException("Player cannot be null");
         }
         if(players.contains(p)){
-            throw new InvalidPlayerForAchievementException("Player already has this spell");
+            return;
         }
         players.add(p);
     }

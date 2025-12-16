@@ -36,9 +36,10 @@ public class Spell implements Serializable {
             throw new InvalidPlayerForSpellException("Player cannot be null");
         }
         if(players.contains(p)){
-            throw new InvalidPlayerForSpellException("Player already has this spell");
+            return;
         }
         players.add(p);
+        p.addNewSpell(this);
     }
     public void removePlayer(Player p){
         if (p == null){
