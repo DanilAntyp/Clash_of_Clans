@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Building implements Serializable {
+public abstract class Building implements Serializable {
     private double hitPoints;
     private int maxLevel;
     private double buildTime;
