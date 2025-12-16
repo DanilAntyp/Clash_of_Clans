@@ -12,15 +12,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Building implements Serializable {
+public abstract class Building implements Serializable {
     private double hitPoints;
     private int maxLevel;
     private double buildTime;
     private double resourceCost;
     private double upgradeCost; //derived
     private double upgradeConstructionTime; //derived
-
-
 
     private List<BuildingInstance> instances = new ArrayList<>();
 
@@ -29,7 +27,27 @@ public class Building implements Serializable {
     public static List<Building> getExtent() {
         return Collections.unmodifiableList(EXTENT);
     }
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(EXTENT, file);
+    }
 
+    public static void loadExtent(Path file) {
+        List<Building> loaded = ExtentPersistence.loadExtent(file);
+        EXTENT.clear();
+        EXTENT.addAll(loaded);
+    }
+
+
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        EXTENT.clear();
+    }
+    public static Building find(java.util.function.Predicate<Building> filter) {
+        return EXTENT.stream()
+                .filter(filter)
+                .findFirst()
+                .orElse(null);
+    }
     public Building() {}
 
     //first level building
@@ -105,10 +123,11 @@ public class Building implements Serializable {
     }
 
     //depends on the level of the building
-    public void setUpgradeCost(BuildingInstance instance) {
+    public void levelUpUpgradeCost(BuildingInstance instance) {
         if (instance == null) throw new InvalidBuildingArgumentException("instance cannot be null");
         int lvl = instance.getCurrentLevel();
         int currentLevel = instance.getCurrentLevel();
+        currentLevel ++;
         if (lvl > maxLevel)
             throw new InvalidBuildingStateException("Current level exceeds maxLevel");
         switch (currentLevel) {
@@ -144,7 +163,7 @@ public class Building implements Serializable {
         }
     }
     //depends on the level of the building
-    public void setUpgradeConstructionTime(BuildingInstance instance) {
+    public void levelUpUpgradeConstructionTime(BuildingInstance instance) {
         int currentLevel = instance.getCurrentLevel();
             if (instance == null) throw new InvalidBuildingArgumentException("instance cannot be null");
             int lvl = instance.getCurrentLevel();
@@ -208,23 +227,6 @@ public class Building implements Serializable {
     public List<BuildingInstance> getInstances() {
         return instances;
     }
-    public static void saveExtent(Path file) {
-        ExtentPersistence.saveExtent(EXTENT, file);
-    }
 
-    public static void loadExtent(Path file) {
-        EXTENT = ExtentPersistence.loadExtent(file);
-    }
-
-    public static void deleteExtent(Path file) {
-        ExtentPersistence.deleteExtent(file);
-        EXTENT.clear();
-    }
-    public static Building find(java.util.function.Predicate<Building> filter) {
-        return EXTENT.stream()
-                .filter(filter)
-                .findFirst()
-                .orElse(null);
-    }
 }
 

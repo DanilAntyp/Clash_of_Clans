@@ -1,6 +1,7 @@
 package com.example.clashofclans.theRest;
 
 import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.buildings.Building;
 import com.example.clashofclans.clanRelated.Membership;
 import com.example.clashofclans.enums.VillageType;
 import com.example.clashofclans.exceptions.battle.BattleException;
@@ -242,7 +243,9 @@ public class Player implements Serializable {
         ExtentPersistence.saveExtent(EXTENT, file);
     }
     public static void loadExtent(Path file) {
-        EXTENT = ExtentPersistence.loadExtent(file);
+        List<Player> loaded = ExtentPersistence.loadExtent(file);
+        EXTENT.clear();
+        EXTENT.addAll(loaded);
     }
 
     public int getVillagesCount() {

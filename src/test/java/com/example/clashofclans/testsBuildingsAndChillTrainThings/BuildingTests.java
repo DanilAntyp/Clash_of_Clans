@@ -16,13 +16,13 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BuildingsAndTrainingWitChillingTests{
+class BuildingTests {
 
     private Village village;
     private ArmyBuilding barracks;
     private ArmyBuilding armyCamp;
-    private Building building;
     private BuildingInstance buildingInstance;
+    private ArmyBuilding building;
     private DefensiveBuilding cannon;
     private ResourceBuilding goldMine;
     private BuildingInstance armyCampInstance;
@@ -33,14 +33,14 @@ class BuildingsAndTrainingWitChillingTests{
     @BeforeEach
     void setUp() {
         village = new Village(VillageType.regular, new Player("testPlayer"));
-        barracks = new ArmyBuilding(ArmyBuildingType.barracks, 50);
-        armyCamp = new ArmyBuilding(ArmyBuildingType.armyCamp, 100);
-        building = new Building(100, 5, 2, 500);
+        barracks = new ArmyBuilding(100, 5, 2, 500,ArmyBuildingType.barracks, 50);
+        armyCamp = new ArmyBuilding(100, 5, 2, 500,ArmyBuildingType.armyCamp, 100);
+        building = new ArmyBuilding(100, 5, 2, 500,ArmyBuildingType.armyCamp, 100);
         buildingInstance = new BuildingInstance(village, building, 100, 1,
                 LocalDateTime.now().plusHours(2), new int[]{0,0}, false
         );
-        cannon = new DefensiveBuilding(DefBuildingType.cannon, 50, 5, DefTargetType.ground);
-        goldMine = new ResourceBuilding(ResourceBuildingTypes.goldMine, 500, 50);
+        cannon = new DefensiveBuilding(100, 5, 2, 500,DefBuildingType.cannon, 50, 5, DefTargetType.ground);
+        goldMine = new ResourceBuilding(100, 5, 2, 500, ResourceBuildingTypes.goldMine, 50);
 
         barracksInstance = new BuildingInstance(village,barracks, 100, 1,
                 LocalDateTime.now().plusHours(1), false);
@@ -97,9 +97,9 @@ class BuildingsAndTrainingWitChillingTests{
 
     @Test
     void testUpgradeCostAndTime() {
-        building.setUpgradeCost(buildingInstance);
-        building.setUpgradeConstructionTime(buildingInstance);
-        assertEquals(1000, buildingInstance.getBuilding().getUpgradeCost(), 0.01); // Original cost
+        building.levelUpUpgradeCost(buildingInstance);
+        building.levelUpUpgradeConstructionTime(buildingInstance);
+        assertEquals(2000, buildingInstance.getBuilding().getUpgradeCost()); // Original cost
     }
 
     @Test
@@ -123,6 +123,7 @@ class BuildingsAndTrainingWitChillingTests{
     @Test
     void testResourceBuildingProperties() {
         assertEquals(ResourceBuildingTypes.goldMine, goldMine.getType());
+        goldMine.setMaxStorageCapacity(500);
         assertEquals(500, goldMine.getMaxStorageCapacity());
         assertEquals(50, goldMine.getProductionRate());
     }
@@ -131,8 +132,8 @@ class BuildingsAndTrainingWitChillingTests{
     void testCalculateMaxStorageCapacity() {
         BuildingInstance instance = new BuildingInstance(village, goldMine, 100, 3, LocalDateTime.now(), false
         );
-        goldMine.calculateMaxStorageCapacity(instance);
-        assertEquals(3000, goldMine.getMaxStorageCapacity());
+        goldMine.levelUpMaxStorageCapacity(instance);
+        assertEquals(6000, goldMine.getMaxStorageCapacity());
     }
     @Test
     void testAddToTrainingQueueAndChillBuffer() {
@@ -240,7 +241,7 @@ class BuildingsAndTrainingWitChillingTests{
 
     @Test
     void testAddToUnits_fromBuildingInstance() {
-        ArmyBuilding barracksBuilding = new ArmyBuilding(ArmyBuildingType.barracks, 100);
+        ArmyBuilding barracksBuilding = new ArmyBuilding(100, 5, 2, 500,ArmyBuildingType.barracks, 100);
         BuildingInstance barracksInstance = new BuildingInstance(
                 village, barracksBuilding, 100, 1,
                 LocalDateTime.now(), false
@@ -253,7 +254,7 @@ class BuildingsAndTrainingWitChillingTests{
 
     @Test
     void testRemoveFromUnitsQuantity_fromBuildingInstance() {
-        ArmyBuilding barracksBuilding = new ArmyBuilding(ArmyBuildingType.barracks, 2);
+        ArmyBuilding barracksBuilding = new ArmyBuilding(100, 5, 2, 500,ArmyBuildingType.barracks, 2);
         BuildingInstance barracksInstance = new BuildingInstance(
                 village, barracksBuilding, 100, 1,
                 LocalDateTime.now(), false

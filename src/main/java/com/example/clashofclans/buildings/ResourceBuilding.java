@@ -5,35 +5,35 @@ import com.example.clashofclans.exceptions.building.InvalidBuildingArgumentExcep
 import com.example.clashofclans.exceptions.building.InvalidBuildingStateException;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ResourceBuilding extends Building implements Serializable {
     private ResourceBuildingTypes type;
     private double maxStorageCapacity; // derived
     private double productionRate; //expressed in resource per hour
 
-    private static List<ResourceBuilding> EXTENT = new ArrayList<>();
-
-    public ResourceBuilding() {}
-
-    public ResourceBuilding(ResourceBuildingTypes type,
-                            double maxStorageCapacity,
+    public ResourceBuilding(double hitPoints,
+                            int maxLevel,
+                            double buildTime,
+                            double resourceCost,
+                            ResourceBuildingTypes type,
                             double productionRate) {
+
+        super(hitPoints, maxLevel, buildTime, resourceCost);
 
         if (type == null)
             throw new InvalidBuildingArgumentException("Resource building type cannot be null");
-
-        if (maxStorageCapacity < 0)
-            throw new InvalidBuildingArgumentException("Storage capacity cannot be negative");
 
         if (productionRate < 0)
             throw new InvalidBuildingArgumentException("Production rate cannot be negative");
 
         this.type = type;
-        this.maxStorageCapacity = maxStorageCapacity;
         this.productionRate = productionRate;
-        EXTENT.add(this);
+    }
+
+    public void updateDerivedValues(BuildingInstance instance) {
+        levelUpMaxStorageCapacity(instance);
+        levelUpUpgradeCost(instance);
+        levelUpUpgradeConstructionTime(instance);
     }
 
     public void addResources() {
@@ -50,8 +50,9 @@ public class ResourceBuilding extends Building implements Serializable {
     public double getProductionRate() { return productionRate; }
     public void setProductionRate(double productionRate) { this.productionRate = productionRate; }
 
-    public void calculateMaxStorageCapacity(BuildingInstance instance) {
+    public void levelUpMaxStorageCapacity(BuildingInstance instance) {
         int currentLevel = instance.getCurrentLevel();
+        currentLevel ++;
         if (instance == null)
             throw new InvalidBuildingArgumentException("BuildingInstance cannot be null");
 

@@ -12,11 +12,16 @@ public class ArmyBuilding extends Building implements Serializable {
     private int troopsCapacity;
 
 
-    private static List<Building> EXTENT = new ArrayList<>();
-
     public ArmyBuilding() {}
 
-    public ArmyBuilding(ArmyBuildingType type, int troopsCapacity) {
+    public ArmyBuilding(double hitPoints,
+                        int maxLevel,
+                        double buildTime,
+                        double resourceCost,
+                        ArmyBuildingType type,
+                        int troopsCapacity) {
+
+        super(hitPoints, maxLevel, buildTime, resourceCost);
 
         if (type == null)
             throw new InvalidBuildingArgumentException("Army building type cannot be null");
@@ -26,8 +31,8 @@ public class ArmyBuilding extends Building implements Serializable {
 
         this.type = type;
         this.troopsCapacity = troopsCapacity;
-        EXTENT.add(this);
     }
+
 
 
     public boolean isEnoughCapacity(long currentTroops) {

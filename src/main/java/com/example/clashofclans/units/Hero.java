@@ -1,12 +1,15 @@
 package com.example.clashofclans.units;
 
 
+import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.buildings.Building;
 import com.example.clashofclans.theRest.Village;
 import com.example.clashofclans.enums.AttackDomain;
 import com.example.clashofclans.enums.ResourceKind;
 import com.example.clashofclans.enums.UnitType;
 import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -63,6 +66,20 @@ public class Hero extends Unit {
         if (isBlank(upgradeSystem)) throw new InvalidUnitArgumentException("string cannot be empty");
         this.upgradeSystem = upgradeSystem.trim();
     }
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(EXTENT, file);
+    }
 
+    public static void loadExtent(Path file) {
+        List<Hero> loaded = ExtentPersistence.loadExtent(file);
+        EXTENT.clear();
+        EXTENT.addAll(loaded);
+    }
+
+
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        EXTENT.clear();
+    }
 
 }

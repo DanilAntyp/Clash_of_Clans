@@ -10,12 +10,15 @@ public final class ExtentPersistence {
 	private ExtentPersistence() {} // no instances
 
 	public static <T extends Serializable> void saveExtent(List<T> extent, Path file) {
+		System.out.println("Saving extent of size " + extent.size() + " to file " + file);
 		try (var out = new ObjectOutputStream(Files.newOutputStream(file))) {
 			out.writeObject(extent);
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new RuntimeException("Could not save extent to file: " + file, e);
 		}
 	}
+
 
 
 	public static <T extends Serializable> List<T> loadExtent(Path file) {

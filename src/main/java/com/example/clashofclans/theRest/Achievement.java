@@ -1,6 +1,7 @@
 package com.example.clashofclans.theRest;
 
 import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.buildings.Building;
 import com.example.clashofclans.exceptions.player.InvalidPlayerForAchievementException;
 import com.example.clashofclans.exceptions.player.InvalidPlayerForSpellException;
 import com.example.clashofclans.exceptions.unitExceptions.InvalidUnitArgumentException;
@@ -19,7 +20,26 @@ public class Achievement implements Serializable {
     private String reward;
     private Set<Player> players = new HashSet<>();
 
-    private static List<Player> EXTENT = new ArrayList<>();
+    private static List<Achievement> EXTENT = new ArrayList<>();
+
+    public static List<Achievement> getEXTENT() {
+        return EXTENT;
+    }
+    public static void saveExtent(Path file) {
+        ExtentPersistence.saveExtent(EXTENT, file);
+    }
+
+    public static void loadExtent(Path file) {
+        List<Achievement> loaded = ExtentPersistence.loadExtent(file);
+        EXTENT.clear();
+        EXTENT.addAll(loaded);
+    }
+
+
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        EXTENT.clear();
+    }
 
     public Achievement(String name, String description, String type, String reward) {
         this.name = name;
@@ -62,8 +82,4 @@ public class Achievement implements Serializable {
         return reward;
     }
 
-    public static void deleteExtent(Path file) {
-        ExtentPersistence.deleteExtent(file);
-        EXTENT.clear();
-    }
 }
