@@ -1,5 +1,6 @@
 package com.example.clashofclans.theRest;
 import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.buildings.Building;
 import com.example.clashofclans.clanRelated.ClanWar;
 import com.example.clashofclans.enums.BattleType;
 import com.example.clashofclans.exceptions.battle.*;
@@ -134,7 +135,9 @@ public class Battle implements Serializable {
     }
 
     public static void loadExtent(Path file) {
-        extent = ExtentPersistence.loadExtent(file);
+        List<Battle> loaded = ExtentPersistence.loadExtent(file);
+        extent.clear();
+        extent.addAll(loaded);
     }
 
     public static void deleteExtent(Path file) {

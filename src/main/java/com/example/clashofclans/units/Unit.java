@@ -155,7 +155,9 @@ public abstract class Unit implements Serializable {
     }
 
     public static void loadExtent(Path file) {
-        EXTENT = ExtentPersistence.loadExtent(file);
+        List<Unit> loaded = ExtentPersistence.loadExtent(file);
+        EXTENT.clear();
+        EXTENT.addAll(loaded);
     }
 
     public static void deleteExtent(Path file) {

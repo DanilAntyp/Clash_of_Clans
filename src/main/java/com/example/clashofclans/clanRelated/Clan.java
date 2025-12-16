@@ -1,6 +1,7 @@
 package com.example.clashofclans.clanRelated;
 
 import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.buildings.Building;
 import com.example.clashofclans.theRest.Player;
 import com.example.clashofclans.enums.ClanRole;
 import com.example.clashofclans.exceptions.clan.calnWarAddingExemption;
@@ -180,7 +181,9 @@ public class Clan implements Serializable {
     }
 
     public static void loadExtent(Path file) {
-        EXTENT = ExtentPersistence.loadExtent(file);
+        List<Clan> loaded = ExtentPersistence.loadExtent(file);
+        EXTENT.clear();
+        EXTENT.addAll(loaded);
     }
 
     public static void deleteExtent(Path file) {

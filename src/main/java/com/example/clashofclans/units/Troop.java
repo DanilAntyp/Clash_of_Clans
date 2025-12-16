@@ -1,6 +1,7 @@
 package com.example.clashofclans.units;
 
 import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.buildings.Building;
 import com.example.clashofclans.theRest.Village;
 import com.example.clashofclans.buildings.BuildingInstance;
 import com.example.clashofclans.enums.AttackDomain;
@@ -105,5 +106,13 @@ public final class Troop extends Unit {
     public Integer getDarkElixirCost() { return darkElixirCost; }
 
     public static void saveExtent(Path file) { ExtentPersistence.saveExtent(EXTENT, file); }
-    public static void loadExtent(Path file) { EXTENT = ExtentPersistence.loadExtent(file); }
+    public static void loadExtent(Path file) {
+        List<Troop> loaded = ExtentPersistence.loadExtent(file);
+        EXTENT.clear();
+        EXTENT.addAll(loaded);
+    }
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        EXTENT.clear();
+    }
 }

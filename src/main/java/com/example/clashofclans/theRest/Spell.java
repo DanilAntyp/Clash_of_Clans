@@ -1,6 +1,7 @@
 package com.example.clashofclans.theRest;
 
 import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.buildings.Building;
 import com.example.clashofclans.enums.SpellType;
 
 import java.io.Serializable;
@@ -39,6 +40,12 @@ public class Spell implements Serializable {
     }
 
     public static void loadExtent(Path file) {
-        EXTENT = ExtentPersistence.loadExtent(file);
+        List<Spell> loaded = ExtentPersistence.loadExtent(file);
+        EXTENT.clear();
+        EXTENT.addAll(loaded);
+    }
+    public static void deleteExtent(Path file) {
+        ExtentPersistence.deleteExtent(file);
+        EXTENT.clear();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.clashofclans.clanRelated;
 
+import com.example.clashofclans.buildings.Building;
 import com.example.clashofclans.theRest.Battle;
 import com.example.clashofclans.ExtentPersistence;
 import com.example.clashofclans.exceptions.battle.InvalidBattleTimeException;
@@ -163,7 +164,9 @@ public class ClanWar implements Serializable {
     }
 
     public static void loadExtent(Path file) {
-        extent = ExtentPersistence.loadExtent(file);
+        List<ClanWar> loaded = ExtentPersistence.loadExtent(file);
+        extent.clear();
+        extent.addAll(loaded);
     }
 
     public static void deleteExtent(Path file) {

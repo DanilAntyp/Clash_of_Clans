@@ -1,6 +1,7 @@
 package com.example.clashofclans.clanRelated;
 
 import com.example.clashofclans.ExtentPersistence;
+import com.example.clashofclans.buildings.Building;
 import com.example.clashofclans.exceptions.clan.clanBanException;
 import com.example.clashofclans.theRest.Player;
 import com.example.clashofclans.enums.ClanRole;
@@ -141,7 +142,9 @@ public class Membership implements Serializable {
     }
 
     public static void loadExtent(Path file) {
-        extent = ExtentPersistence.loadExtent(file);
+        List<Membership> loaded = ExtentPersistence.loadExtent(file);
+        extent.clear();
+        extent.addAll(loaded);
     }
 
     public static void deleteExtent(Path file) {
