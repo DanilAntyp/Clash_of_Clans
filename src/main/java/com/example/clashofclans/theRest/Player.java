@@ -26,11 +26,11 @@ public class Player implements Serializable {
 
     private static List<Player> EXTENT = new ArrayList<>();
 
-     public Player(String username){
-         if (username == null || username.trim().isEmpty()) {
-             throw new playerNameException("Username cannot be empty.");
-         }
-         this.username = username;
+    public Player(String username){
+        if (username == null || username.trim().isEmpty()) {
+            throw new playerNameException("Username cannot be empty.");
+        }
+        this.username = username;
         this.level = 1;
         this.trophies = 0;
         this.achivements = new ArrayList<>();
@@ -41,21 +41,21 @@ public class Player implements Serializable {
 
         Village village=new Village(VillageType.regular,this);//when new user created they get their village
 
-         EXTENT.add(this);
+        EXTENT.add(this);
     }
 
     public void visitFriendsVillage(Player p){
         if (p == null) {
             throw new missingPlayerException("Cannot ban a null player.");
         }
-         //idk the logic
+        //idk the logic
     }
 
     public void challangeFriend(Player p){
         if (p == null) {
             throw new missingPlayerException("Cannot ban a null player.");
         }
-         //idk the logic
+        //idk the logic
     }
 
     //setter-getters
@@ -66,32 +66,28 @@ public class Player implements Serializable {
         if (username == null || username.trim().isEmpty()) {
             throw new playerNameException("Username cannot be empty.");
         }
-         this.username = username;
+        this.username = username;
     }
+
     public int getLevel() {
         return level;
-    }
-    public int getTrophies() {
-        return trophies;
-    }
-    public String getLeague() {
-        return leauge;
     }
     public void setLevel(int level) {
         this.level = level;
     }
+
+    public int getTrophies() {
+        return trophies;
+    }
     public void setTrophies(int trophies) {
         this.trophies = trophies;
     }
+
+    public String getLeague() {
+        return leauge;
+    }
     public void setLeague(String leauge) {
         this.leauge = leauge;
-    }
-    public int getVillagesCount() {
-        int count = 0;
-        for (Village v : villages) {
-            if (v != null) count++;
-        }
-        return count;
     }
 
     public Membership getMembership() {
@@ -102,24 +98,87 @@ public class Player implements Serializable {
     }
 
     public ArrayList<Achievement> getAchievements() {return achivements;}
-    public void addNewAchievement(Achievement achievement) {achivements.add(achievement); achievement.addPlayer(this);}
-    public void removeAchievement(Achievement achievement) {achivements.remove(achievement); achievement.removePlayer(this);}
+    public void addNewAchivement(Achievement achivement) {
+        try {
+            if (achivement==null) {
+                throw new NullEntryExeption("achivement cannot be null");
+            }if(this.achivements.contains(achivement)){
+                return;
+            }
+            this.achivements.add(achivement);
+            achivement.addPlayer(this);
+        }catch(duplicateEntryExeption | NullEntryExeption e){
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+    public void removeAchivement(Achievement achivement) {
+        try {
+            if (achivement==null) {
+                throw new NullEntryExeption("achivement cannot be null");
+            }if(!this.achivements.contains(achivement)){
+                throw new InvalidEntryException("achivement already exists in users inventory");
+            }
+            this.achivements.remove(achivement);
+            achivement.removePlayer(this);
+        }catch(InvalidEntryException | NullEntryExeption e){
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+
     public ArrayList<Spell> getSpells() {return spells;}
     public void addNewSpell(Spell spell) {
-         try {
-             if(this.spells.contains(spell)){
-                 throw new duplicateEntryExeption("Spell already exists in users inventory");
-             }
-             this.spells.add(spell);
-         }catch(duplicateEntryExeption e){
-             System.out.println(e.getMessage());
-             throw e;
-         }
+        try {
+            if (spell==null) {
+                throw new NullEntryExeption("Spell cannot be null");
+            }if(this.spells.contains(spell)){
+                return;
+            }
+            this.spells.add(spell);
+            spell.addPlayer(this);
+        }catch(duplicateEntryExeption | NullEntryExeption e){
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+    public void removeSpell(Spell spell) {
+        try {
+            if (spell==null) {
+                throw new NullEntryExeption("Spell cannot be null");
+            }if(!this.spells.contains(spell)){
+                throw new InvalidEntryException("Spell already exists in users inventory");
+            }
+            this.spells.remove(spell);
+            spell.removePlayer(this);
+        }catch(InvalidEntryException | NullEntryExeption e){
+            System.out.println(e.getMessage());
+            throw e;
+        }
     }
 
     public void addVillage(Village village) {
-         villages[1]=village;
+        villages[1]=village;
     }
+    public void removeVillage(Village village) {
+        try {
+            if (village==null) {
+                throw new NullEntryExeption("Spell cannot be null");
+            }
+            for (int i=0;i<villages.length;i++) {
+                if (villages[i].equals(village)) {
+                    villages[i].delete();
+                    villages[i]=null;
+                    break;
+                }
+            }
+
+        }catch(NullEntryExeption e){
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+    public Village[] getVillages() {return villages;}
 
     public void addFriend(Player player) {
         try {
@@ -135,9 +194,7 @@ public class Player implements Serializable {
             throw e;
         }
     }
-
     public ArrayList getFriends() {return friends;}
-
     public void removeFriend(Player player) {
         try {
             if(this==player){
@@ -157,14 +214,13 @@ public class Player implements Serializable {
         if (getVillagesCount() >= 2) {
             throw new villageLimitReachedException("Player cannot have more than two villages.");
         }
-         if (villages[0] == null) villages[0] = v;
+        if (villages[0] == null) villages[0] = v;
         else villages[1] = v;
     }
 
     public static List<Player> getExtent() {
         return Collections.unmodifiableList(EXTENT);
     }
-
     //THIS ONE IS FOR opposite of AGREGATION
     public void delete() {
         for (Player friend : new ArrayList<>(friends)) {
@@ -182,15 +238,18 @@ public class Player implements Serializable {
 
         EXTENT.remove(this);
     }
-
     public static void saveExtent(Path file) {
         ExtentPersistence.saveExtent(EXTENT, file);
     }
-
     public static void loadExtent(Path file) {
         EXTENT = ExtentPersistence.loadExtent(file);
     }
 
-    public Village[] getVillages() {return villages;}
+    public int getVillagesCount() {
+        int count = 0;
+        for (Village v : villages) {
+            if (v != null) count++;
+        }
+        return count;
+    }
 }
-//league is gonna be enum
