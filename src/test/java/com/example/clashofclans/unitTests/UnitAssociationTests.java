@@ -8,11 +8,14 @@ import com.example.clashofclans.theRest.Player;
 import com.example.clashofclans.theRest.Village;
 import com.example.clashofclans.units.Hero;
 import com.example.clashofclans.units.Troop;
+import com.example.clashofclans.units.Unit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.format.annotation.DurationFormat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -139,11 +142,11 @@ class UnitAssociationTests {
     void testHeroComposition() {
         assertThrows(InvalidUnitArgumentException.class, () -> {
             new Hero(null, 500, 50, 25, AttackDomain.GROUND, ResourceKind.ELIXIR,
-                    UnitType.BARBARIAN_KING, "Iron Fist", 60, "Levels");
+                    UnitType.BARBARIAN_KING, "Iron Fist", 60, "Levels", 40000);
         });
 
         Hero king = new Hero(village, 500, 50, 25, AttackDomain.GROUND, ResourceKind.ELIXIR,
-                UnitType.BARBARIAN_KING, "Iron Fist", 60, "Levels");
+                UnitType.BARBARIAN_KING, "Iron Fist", 60, "Levels", 40000);
 
         assertTrue(village.getUnits().contains(king), "Hero should be added to Village units");
     }
@@ -175,5 +178,65 @@ class UnitAssociationTests {
 
         assertThrows(InvalidUnitArgumentException.class, () -> t.setHitPoint(-1));
         assertThrows(InvalidUnitArgumentException.class, () -> t.setDamage(0));
+    }
+
+
+// --- INHERITANCE / FLATTENING TESTS ---
+
+    @Test
+    void testFlattening_TroopCostIntegrity() {
+        //if uni is Elixir_User then DarkElixirCost must be null and vice versa
+
+        Troop barb = new Troop(village, 100, 20, 5, AttackDomain.GROUND, ResourceKind.ELIXIR,
+                UnitType.BARBARIAN, AttackStyle.GROUND_TROOP, 100);
+
+        assertNotNull(barb.getElixirCost());
+        assertNull(barb.getDarkElixirCost(), "Flattening error: Dark elixir cost should be null for Elixir unit");
+
+        Troop minion = new Troop(village, 50, 10, 2, AttackDomain.AIR, ResourceKind.DARK_ELIXIR,
+                UnitType.MINION, AttackStyle.RANGED_TROOP, 5);
+
+        assertNull(minion.getElixirCost(), "Flattening error: Elixir cost should be null for Dark Elixir unit");
+        assertNotNull(minion.getDarkElixirCost());
+    }
+
+    @Test
+    void testFlattening_AttackDomainLogic() {
+        //here we showcase that RANGE is taken correctly from AttackDomain
+        Troop ground = new Troop(village, 100, 20, 5, AttackDomain.GROUND, ResourceKind.ELIXIR,
+                UnitType.BARBARIAN, AttackStyle.GROUND_TROOP, 100);
+
+        Troop air = new Troop(village, 50, 10, 2, AttackDomain.AIR, ResourceKind.DARK_ELIXIR,
+                UnitType.MINION, AttackStyle.RANGED_TROOP, 5);
+
+        assertEquals(50, ground.getRange(), "Ground unit should have range 50");
+        assertEquals(100, air.getRange(), "Air unit should have range 100");
+    }
+
+    @Test
+    void testInheritance_Polymorphism() {
+        Unit myHero = new Hero(village, 500, 50, 25, AttackDomain.GROUND, ResourceKind.ELIXIR,
+                UnitType.BARBARIAN_KING, "Fist", 60, "Levels", 40000);
+
+        Unit myTroop = new Troop(village, 100, 20, 5, AttackDomain.GROUND, ResourceKind.ELIXIR,
+                UnitType.BARBARIAN, AttackStyle.GROUND_TROOP, 100);
+
+        assertTrue(myHero instanceof Hero);
+        assertTrue(myHero instanceof Unit);
+        assertTrue(myTroop instanceof Troop);
+        assertTrue(myTroop instanceof Unit);
+
+        assertNotNull(myHero.getElixirCost());
+        assertEquals(40000, myHero.getElixirCost());
+    }
+
+    @Test
+    void testFlattening_Safeguards() {
+        assertThrows(InvalidUnitArgumentException.class, () -> {
+            new Troop(village, 100, 20, 5,
+                    AttackDomain.AIR,
+                    ResourceKind.ELIXIR,
+                    UnitType.BARBARIAN, AttackStyle.GROUND_TROOP, 100);
+        });
     }
 }

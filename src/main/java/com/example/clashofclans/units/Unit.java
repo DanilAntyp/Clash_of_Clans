@@ -33,6 +33,9 @@ public abstract class Unit implements Serializable {
     private final ResourceKind resourceKind;
     private final UnitType type;
 
+    private Integer elixirCost;
+    private Integer darkElixirCost;
+
     private Village village;
 
     private Set<Unit> units = new HashSet<>();
@@ -47,7 +50,7 @@ public abstract class Unit implements Serializable {
 
 
     protected Unit(Village village, int hitPoint,int damage,int housingSpace,
-                   AttackDomain attackDomain, ResourceKind resourceKind, UnitType unitType) {
+                   AttackDomain attackDomain, ResourceKind resourceKind, UnitType unitType, Integer cost) {
 
         if(village==null){
             throw new InvalidUnitArgumentException("Unit must belong to a Village");
@@ -69,10 +72,26 @@ public abstract class Unit implements Serializable {
         this.resourceKind=Objects.requireNonNull(resourceKind);
         this.type=Objects.requireNonNull(unitType);
 
+        setCost(resourceKind, cost);
+
         this.village.addUnit(this);
 
         EXTENT.add(this);
     }
+
+    private void setCost(ResourceKind resourceKind, Integer cost){
+        if (cost==null || cost<0) throw new InvalidUnitArgumentException("cost must be >=0");
+        if (resourceKind==ResourceKind.ELIXIR){
+            this.elixirCost = cost;
+            this.darkElixirCost = null;
+        } else {
+            this.darkElixirCost = cost;
+            this.elixirCost = null;
+        }
+    }
+
+    public Integer getElixirCost() { return elixirCost; }
+    public Integer getDarkElixirCost() { return darkElixirCost; }
 
     public void deleteUnit(){
         if (this.village!=null){

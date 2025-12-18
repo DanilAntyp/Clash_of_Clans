@@ -183,7 +183,7 @@ class BuildingTests {
     void testMoveToArmyCampFailWrongType() {
         Unit invalidUnit =new Hero(village, 1200, 250, 25,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN_KING,
-                "Rage", 300, "upgrade");
+                "Rage", 300, "upgrade", 40000);
         assertThrows(UnitCompatibilityException.class,
                 () -> barracksInstance.moveToArmyCamp(invalidUnit, armyCampInstance));
     }
@@ -203,7 +203,7 @@ class BuildingTests {
     void testMoveToBarrackFailWrongType() {
         Unit invalidUnit = new Hero(village, 1200, 250, 25,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN_KING,
-                "Rage", 300, "upgrade");
+                "Rage", 300, "upgrade", 40000);
         assertThrows(UnitCompatibilityException.class,
                 () -> barracksInstance.moveToBarrack(invalidUnit, barracksInstance));
     }

@@ -77,12 +77,12 @@ public class UnitModelTests {
         assertThrows(InvalidUnitArgumentException.class, () -> new Hero(village,
                 1000, 50, 25,
                 AttackDomain.GROUND, ResourceKind.DARK_ELIXIR, UnitType.MINION_KING,
-                "  ", 300, "upgrade"
+                "  ", 300, "upgrade", 40000
         ));
         assertThrows(InvalidUnitArgumentException.class, () -> new Hero(village,
                 1000, 50, 25,
                 AttackDomain.GROUND, ResourceKind.DARK_ELIXIR, UnitType.BARBARIAN_KING,
-                "Rage", 300, " "
+                "Rage", 300, " ", 40000
         ));
     }
 
@@ -146,7 +146,7 @@ public class UnitModelTests {
         assertThrows(InvalidUnitArgumentException.class, () -> new Hero(village,
                 1000, 50, 25,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN,
-                "Rage", 300, "upgrade"
+                "Rage", 300, "upgrade", 40000
         ));
     }
 
@@ -154,18 +154,18 @@ public class UnitModelTests {
     void barbarianKing_isElixirGround_only() {
         new Hero(village,1200, 250, 25,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.BARBARIAN_KING,
-                "Rage", 300, "upgrade");
+                "Rage", 300, "upgrade", 40000);
 
         assertThrows(InvalidUnitArgumentException.class, () -> new Hero(village,
                 1200, 250, 25,
                 AttackDomain.AIR, ResourceKind.ELIXIR, UnitType.BARBARIAN_KING,
-                "Rage", 300, "upgrade"
+                "Rage", 300, "upgrade", 40000
         ));
 
         assertThrows(InvalidUnitArgumentException.class, () -> new Hero(
                 village,1200, 250, 25,
                 AttackDomain.GROUND, ResourceKind.DARK_ELIXIR, UnitType.BARBARIAN_KING,
-                "Rage", 300, "upgrade"
+                "Rage", 300, "upgrade", 40000
         ));
     }
 
@@ -173,17 +173,17 @@ public class UnitModelTests {
     void grandWarden_isElixirAir_only() {
         new Hero(village,1000, 200, 25,
                 AttackDomain.AIR, ResourceKind.ELIXIR, UnitType.GRAND_WARDEN,
-                "Life Aura", 450, "upgrade");
+                "Life Aura", 450, "upgrade", 40000);
 
         assertThrows(InvalidUnitArgumentException.class, () -> new Hero(
                 village,1000, 200, 25,
                 AttackDomain.GROUND, ResourceKind.ELIXIR, UnitType.GRAND_WARDEN,
-                "Life Aura", 450, "upgrade"
+                "Life Aura", 450, "upgrade", 40000
         ));
         assertThrows(InvalidUnitArgumentException.class, () -> new Hero(
                 village,1000, 200, 25,
                 AttackDomain.AIR, ResourceKind.DARK_ELIXIR, UnitType.GRAND_WARDEN,
-                "Life Aura", 450, "upgrade"
+                "Life Aura", 450, "upgrade", 40000
         ));
     }
 
